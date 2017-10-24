@@ -10,9 +10,17 @@
 <html>
 <head>
   <%@ include file="cabecera.jsp"%>
+  <style type="text/css">
+  .text { font-family: arial; font-size:11pt;  }
+  div.agre {
+    position: relative;
+    left: 700px;
+    
+    }
+  </style>
   
 </head>
-<body class="hold-transition skin-blue sidebar-mini">
+<body class="hold-transition skin-red sidebar-mini">
 <div class="wrapper">
 
   <header class="main-header">
@@ -33,6 +41,7 @@
         Sistema de Gestión de Engorda de Vacunos
       </h1>
 
+ 
     </section>
         <div >
 
@@ -43,42 +52,57 @@
         <br></br>
             <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Administrar grupos</h3>
-            </div>
-                
+              <h3 class="box-title">Administrar vacunos</h3>
+              
+            <div class="agre">
+            <div class="col-sm-2">
+	        <td>
+	            <a href="create.htm" class="btn btn-block btn-info"><i class="fa fa-plus"> Agregar</i></a>
+	        </td>
+	        </div>
+	        </div>
+	        
+            </div>  
+
             <!-- /.box-header -->
             <div class="box-body">
-              <table id="example2" class="table table-bordered table-hover">
+              <table id="example" class="table table-bordered table-hover">
                 <thead>
                 <tr>
                   <th>ID</th>
+                  <th>Nombre</th>
                   <th>Estado</th>
-                  <th>Fecha Ingreso</th>
+                  <th>Fecha Ingreso</th> 
                   <th>Fecha Salida</th>
-                  <th>Editar</th>
-                  <th>Eliminar</th>
+                  
+                  <th>Acciones</th>
+                  
                 </tr>
                 </thead>
                 <tbody>
-                                <% 
-            LinkedList<grupoTO> list = (LinkedList<grupoTO>) session.getAttribute("list");
-            if(list != null)
-                for (int i = 0; i < list.size(); i++) {
-                    grupoTO task = list.get(i);
-            %>
-            <tr> <td><%=task.getId_grupo()%></td> <td><%=task.getEstado()%></td> <td><%=task.getFecha_ingreso()%></td> <td><%=task.getFecha_Salida()%></td><td><a href="#" class="btn btn-success"><i class="fa fa-edit"> Editar</i></a></td><td><a href="#" class="btn btn-danger" data-toggle="modal" data-target="#modal-info"><i class="fa fa-close"> Eliminar</i></a></td>  </tr>
-            <%} else{%>
-                <h1>No hay datos</h1>
-            <%}%> 
+
+                    <% 
+                    LinkedList<grupoTO> list = (LinkedList<grupoTO>) request.getAttribute("lista");
+                    if(list != null)
+                        for (int i = 0; i < list.size(); i++) {
+                            grupoTO task = list.get(i);
+                    %>
+                    <tr> <td><%=task.getId_grupo()%></td> <td><%=task.getNombre()%></td> <td><%=task.getEstado()%></td> <td><%=task.getFecha_ingreso()%></td> <td><%=task.getFecha_Salida()%></td> 
+                    <td><a href="editarV.htm?id=<%=task.getId_grupo()%>" class="btn btn-success"><i class="fa fa-edit"> Editar</i></a> &nbsp; &nbsp; &nbsp;
+                    <a href="deleteVacuno.htm?id=<%=task.getId_grupo()%>" class="btn btn-danger"  onclick="return confirm('¿Está seguro que desea eliminar el grupo con ID:  <%=task.getId_grupo()%>?');"><i class="fa fa-close"> Eliminar</i></a></td>  </tr>
+                    <%} else{%>
+                        <h1>No hay datos</h1>
+                    <%}%> 
                 </tbody>
                 <tfoot>
                 <tr>
                   <th>ID</th>
+                  <th>Nombre</th>
                   <th>Estado</th>
                   <th>Fecha Ingreso</th>
                   <th>Fecha Salida</th>
-                  <th>Editar</th>
-                  <th>Eliminar</th>
+                  <th>Acciones</th>
+            
                   
                 </tr>
                 </tfoot>
@@ -86,14 +110,12 @@
               
             </div>
             
+           
+
+            
             <!-- /.box-body -->
           </div>  
-        <div class="col-sm-2">
-        <td>
-          
-            <a href="vacunoController?action=create" class="btn btn-block btn-info"><i class="fa fa-plus"> Agregar</i></a>
-        </td>
-        </div> 
+
    
     </section>
 
@@ -102,6 +124,7 @@
 
     <!-- /.content -->
   </div>
+
   <!-- /.content-wrapper -->
   <footer class="main-footer">
     <%@ include file="pieDePagina.jsp"%>
@@ -116,6 +139,17 @@
 
 
 <%@ include file="scripts.jsp"%>
+<script>
+$(function () {
+    $('#example').DataTable({
+      'paging'      : true,
+      'lengthChange': true,
+      'searching'   : false,
+      'ordering'    : true,
+      'info'        : true,
+      'autoWidth'   : true
+    })
+  })
+</script>
 </body>
 </html>
-

@@ -18,7 +18,7 @@ public class grupoDAO {
     private static final String READ_QUERY="select * from task where id=?";
     private static final String READ_ALL ="select * from pinio";
     private static final String READ_PEND ="select * from task WHERE estado = FALSE";
-    private static final String DB_NAME="jd";
+    private static final String DB_NAME="bddjd";
     private static final String PORT="3306";
     private static final String URL="jdbc:mysql://localhost/"+DB_NAME;    
     private static final String USER="root";
@@ -35,7 +35,7 @@ public class grupoDAO {
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
                 result= new grupoTO();
-                result.setId_grupo(rs.getString("idPinio"));
+                result.setId_grupo(rs.getInt("idPinio"));
                 result.setNombre(rs.getString("nombrePinio"));
                 result.setEstado(rs.getString("estado"));
                 result.setFecha_ingreso(rs.getDate("fechaIngreso"));
