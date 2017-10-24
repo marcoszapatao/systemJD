@@ -2,12 +2,16 @@ package com.proyecto.transferObject;
 import java.sql.Date;
 public class grupoTO {
     private String id_grupo;
+    private String nombre;
     private String estado;
     private Date fecha_ingreso;
     private Date fecha_Salida;
 
     public void setId_grupo(String id_grupo) {
         this.id_grupo = id_grupo;
+    }
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public void setEstado(String estado) {
@@ -25,6 +29,10 @@ public class grupoTO {
 
     public String getId_grupo() {
         return id_grupo;
+    }
+    
+    public String getNombre() {
+        return nombre;
     }
 
     public String getEstado() {

@@ -40,7 +40,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="grupoController?action=admin"><i class="fa fa-circle-o"></i> Administrar</a></li>
+            <li><a href="adminGrupo.htm"><i class="fa fa-circle-o"></i> Administrar</a></li>
             <li><a href="#"><i class="fa fa-circle-o"></i> Ver</a></li>
             
           </ul>

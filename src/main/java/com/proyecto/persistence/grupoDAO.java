@@ -16,7 +16,7 @@ public class grupoDAO {
     private static final String DELETE_QUERY="DELETE FROM task WHERE id=?";
     private static final String UPDATE_QUERY="UPDATE task SET start_date = ?,end_date = ?,description = ?,estado = ? WHERE id=?";
     private static final String READ_QUERY="select * from task where id=?";
-    private static final String READ_ALL ="select * from grupo";
+    private static final String READ_ALL ="select * from pinio";
     private static final String READ_PEND ="select * from task WHERE estado = FALSE";
     private static final String DB_NAME="jd";
     private static final String PORT="3306";
@@ -25,7 +25,7 @@ public class grupoDAO {
     private static final String PASSWORD="";
     private static Connection conexion = null;
     
-    public LinkedList<grupoTO> readAll() throws SQLException{
+    public LinkedList<grupoTO> readAllG() throws SQLException{
         LinkedList<grupoTO> list = new LinkedList<>();
         grupoTO result = null;
         
@@ -35,10 +35,11 @@ public class grupoDAO {
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
                 result= new grupoTO();
-                result.setId_grupo(rs.getString("id_grupo"));
+                result.setId_grupo(rs.getString("idPinio"));
+                result.setNombre(rs.getString("nombrePinio"));
                 result.setEstado(rs.getString("estado"));
-                result.setFecha_ingreso(rs.getDate("fecha_ingreso"));
-                result.setFecha_Salida(rs.getDate("fecha_salida"));
+                result.setFecha_ingreso(rs.getDate("fechaIngreso"));
+                result.setFecha_Salida(rs.getDate("fechaSalida"));
                 
                 list.add(result);
             }
