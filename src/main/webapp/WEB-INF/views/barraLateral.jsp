@@ -46,7 +46,7 @@
           </ul>
         </li>
         <li>
-          <a href="#">
+          <a href="inventario.htm">
             <i class="fa fa-th-list"></i> <span>Inventario</span>
           </a>
         </li>
