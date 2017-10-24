@@ -52,12 +52,12 @@
         <br></br>
             <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Administrar vacunos</h3>
+              <h3 class="box-title">Administrar grupos</h3>
               
             <div class="agre">
             <div class="col-sm-2">
 	        <td>
-	            <a href="create.htm" class="btn btn-block btn-info"><i class="fa fa-plus"> Agregar</i></a>
+	            <a href="createGrupo.htm" class="btn btn-block btn-info"><i class="fa fa-plus"> Agregar</i></a>
 	        </td>
 	        </div>
 	        </div>
@@ -88,8 +88,8 @@
                             grupoTO task = list.get(i);
                     %>
                     <tr> <td><%=task.getId_grupo()%></td> <td><%=task.getNombre()%></td> <td><%=task.getEstado()%></td> <td><%=task.getFecha_ingreso()%></td> <td><%=task.getFecha_Salida()%></td> 
-                    <td><a href="editarV.htm?id=<%=task.getId_grupo()%>" class="btn btn-success"><i class="fa fa-edit"> Editar</i></a> &nbsp; &nbsp; &nbsp;
-                    <a href="deleteVacuno.htm?id=<%=task.getId_grupo()%>" class="btn btn-danger"  onclick="return confirm('¿Está seguro que desea eliminar el grupo con ID:  <%=task.getId_grupo()%>?');"><i class="fa fa-close"> Eliminar</i></a></td>  </tr>
+                    <td><a href="editarGrupo.htm?id=<%=task.getId_grupo()%>" class="btn btn-success"><i class="fa fa-edit"> Editar</i></a> &nbsp; &nbsp; &nbsp;
+                    <a href="deleteGrupo.htm?id=<%=task.getId_grupo()%>" class="btn btn-danger"  onclick="return confirm('¿Está seguro que desea eliminar el grupo con ID:  <%=task.getId_grupo()%>?');"><i class="fa fa-close"> Eliminar</i></a></td>  </tr>
                     <%} else{%>
                         <h1>No hay datos</h1>
                     <%}%> 
