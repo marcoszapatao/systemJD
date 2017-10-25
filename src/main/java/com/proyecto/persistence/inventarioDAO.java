@@ -10,12 +10,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.proyecto.transferObject.inventarioTO;
+import com.proyecto.transferObject.vacunoTO;
 
 public class inventarioDAO {
     private static final String INSERT_QUERY ="insert into grupo(id_grupo,estado,fecha_ingreso,fecha_salida) values(?,?,?,?)";
     private static final String DELETE_QUERY="DELETE FROM task WHERE id=?";
     private static final String UPDATE_QUERY="UPDATE task SET start_date = ?,end_date = ?,description = ?,estado = ? WHERE id=?";
     private static final String READ_QUERY="select * from task where id=?";
+    private static final String READ_VA_INVEN="select vacuno.diio,raza.nombre,vacuno.tipo,pinio_has_vacuno.fechaMov from `pinio_has_vacuno` join `vacuno` on vacuno.idvacuno = pinio_has_vacuno.vacuno_idvacuno join `raza` on (raza.idraza=vacuno.raza_idraza) where pinio_has_vacuno.Pinio_idPinio=?";
     private static final String READ_ALL ="select idPinio,nombrePinio,estado,fechaIngreso,fechaSalida,count(vacuno_idvacuno) as nroVacunos from `pinio` join `pinio_has_vacuno` on(pinio.idPinio = pinio_has_vacuno.Pinio_idPinio) group by idPinio";
     private static final String READ_PEND ="select * from task WHERE estado = FALSE";
     private static final String DB_NAME="bddjd";
@@ -51,6 +53,30 @@ public class inventarioDAO {
         }
         return list;
     }
+    
+    public LinkedList<vacunoTO> leeVacunos(int id) throws SQLException{
+        LinkedList<vacunoTO> list = new LinkedList<>();
+        vacunoTO result = null;
+       try {
+           getConnection();
+           PreparedStatement ps = conexion.prepareStatement(READ_VA_INVEN);
+           ps.setInt(1,id);
+           ResultSet rs = ps.executeQuery();
+           while(rs.next()){
+               result= new vacunoTO();
+               result.setDiio(rs.getString("diio"));
+               result.setTipo(rs.getString("tipo"));
+               result.setRaza(rs.getString("nombre"));
+               result.setFechaIngreso(rs.getDate("fechaMov"));
+               list.add(result);
+           }
+       } catch (SQLException ex) {
+           Logger.getLogger(vacunoDAO.class.getName()).log(Level.SEVERE, null, ex);
+       } finally{
+           //conexion.close();
+       }
+       return list;
+   }
     
     
     private static Connection getConnection(){
