@@ -5,6 +5,7 @@
 --%>
 <%@page import="java.util.LinkedList"%>
 <%@page import="com.proyecto.transferObject.inventarioTO"%>
+<%@page import="com.proyecto.persistence.vacunoDAO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -40,7 +41,22 @@
       <h1>
         Sistema de Gestión de Engorda de Vacunos
       </h1>
+      <%vacunoDAO vacunito=new vacunoDAO();%>
+      <br></br>
+       <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box bg-green">
+            <div class="inner">
+              <h3><%=vacunito.totalVacunos()%></h3>
 
+              <p>Total de vacunos</p>
+            </div>
+            <div class="icon">
+              <i class="ion ion-stats-bars"></i>
+            </div>
+
+          </div>
+        </div>
  
     </section>
         <div >
@@ -48,6 +64,8 @@
         </div>
 
     <!-- Main content -->
+    <br></br>
+    <br></br>
     <section class="content">
         <br></br>
             <div class="box">
@@ -59,6 +77,7 @@
 
             <!-- /.box-header -->
             <div class="box-body">
+            
               <table id="example" class="table table-bordered table-hover">
                 <thead>
                 <tr>

@@ -5,6 +5,7 @@
 --%>
 <%@page import="java.util.LinkedList"%>
 <%@page import="com.proyecto.transferObject.vacunoTO"%>
+<%@page import="com.proyecto.persistence.inventarioDAO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -44,7 +45,7 @@
  
     </section>
         <div >
-
+          
         </div>
 
     <!-- Main content -->
@@ -56,7 +57,7 @@
               
 	        
             </div>  
-
+            
             <!-- /.box-header -->
             <div class="box-body">
               <table id="example" class="table table-bordered table-hover">
@@ -66,19 +67,20 @@
                   <th>Tipo</th>
                   <th>Raza</th> 
                   <th>Fecha Ingreso</th>
-                  
+                  <th>Nro. de Dias</th>
                   
                 </tr>
                 </thead>
                 <tbody>
-
+                    
                     <% 
+                    inventarioDAO dao = new inventarioDAO(); 
                     LinkedList<vacunoTO> list = (LinkedList<vacunoTO>) request.getAttribute("lista");
                     if(list != null)
                         for (int i = 0; i < list.size(); i++) {
                             vacunoTO task = list.get(i);
                     %>
-                    <tr> <td><%=task.getDiio()%></td> <td><%=task.getTipo()%></td> <td><%=task.getRaza()%></td> <td><%=task.getFechaIngreso()%></td> 
+                    <tr> <td><%=task.getDiio()%></td> <td><%=task.getTipo()%></td> <td><%=task.getRaza()%></td> <td><%=task.getFechaIngreso()%></td><td><%=dao.calculadias(task.getFechaIngreso())%></td> 
                      </tr>
                     <%} else{%>
                         <h1>No hay datos</h1>
@@ -90,7 +92,7 @@
                   <th>Tipo</th>
                   <th>Raza</th>
                   <th>Fecha Ingreso</th>
-                  
+                  <th>Nro. de dias</th>
             
                   
                 </tr>

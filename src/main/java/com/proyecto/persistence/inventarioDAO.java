@@ -1,10 +1,12 @@
 package com.proyecto.persistence;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -77,6 +79,25 @@ public class inventarioDAO {
        }
        return list;
    }
+    
+    public int calculadias(Date fecha) {
+    	
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		System.out.println(fecha);
+		
+		java.util.Date utilDate = new java.util.Date();
+		java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+		
+	
+		Date fechaInicial=fecha;
+		Date fechaFinal=sqlDate;
+ 
+		int dias=(int) ((fechaFinal.getTime()-fechaInicial.getTime())/86400000);
+ 
+		System.out.println("Hay "+dias+" dias de diferencia");
+    	
+    	return dias;
+    }
     
     
     private static Connection getConnection(){

@@ -15,6 +15,7 @@ import com.proyecto.transferObject.vacunoTO;
 public class vacunoDAO {
     private static final String INSERT_QUERY ="insert into vacuno(diio,tipo,fechaIngreso,raza_idraza) values(?,?,?,?)";
     private static final String DELETE_QUERY="DELETE FROM vacuno WHERE diio=?";
+    private static final String TOTAL_QUERY="SELECT count(*) as numeroV FROM `vacuno`";
     private static final String UPDATE_QUERY="UPDATE vacuno SET diio = ?,tipo = ?,raza_idraza = ?,fechaIngreso = ? WHERE diio=?";
     private static final String READ_QUERY="select diio,tipo,fechaIngreso,nombre from vacuno join raza on(vacuno.raza_idraza = raza.idraza) and diio=?";
     private static final String READ_RAZA="select idraza from raza where nombre=?";
@@ -155,6 +156,19 @@ public class vacunoDAO {
                 conexion.close();
         }
        return resultado;
+    }
+    
+    public int totalVacunos() throws SQLException {
+    	conexion = getConnection();
+        PreparedStatement ps1=conexion.prepareStatement(TOTAL_QUERY);
+        //ps1.setString(1, vacuno.getRaza());
+        ResultSet rs = ps1.executeQuery();
+        int nro=0;
+        if(rs.next()) {
+            nro =rs.getInt(1);
+            System.out.println(nro);
+        }
+        return nro;
     }
     
     private static Connection getConnection(){
