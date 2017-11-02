@@ -5,11 +5,48 @@
 --%>
 <%@page import="java.util.LinkedList"%>
 <%@page import="com.proyecto.transferObject.vacunoTO"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html>
 <head>
   <%@ include file="cabecera.jsp"%>
+    <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script>
+    //$(document).ready(function(){
+    	//console.log( "document loaded" );
+   	    
+    	//$('#botonEdit').click(function(){
+   	     function botonEdit(id){
+   		 //var id=$('#idvacuno').val();
+   		 console.log("IDEEE "+id);
+   		 $.ajax({
+   			 type:'GET',
+   			 url:"/systemjd/editarVa.htm?id="+id,
+   		     dataType:'json',
+   		     success:function(data){
+   		    	 console.log(data);
+   		    	 var vacunoDiio = data.diio;
+   		    	 var vacunoTipo = data.tipo;
+   		    	 var vacunoRaza = data.raza;
+   		    	 var vacunoFIn = data.fechaIngreso;
+   		    	 console.log("FECHA....."+vacunoFIn);
+   		    	 $("input[name*='diioo']" ).val(vacunoDiio);
+   		    	 $("#tipoV").html(vacunoTipo);
+   		    	 $("#razaV").html(vacunoRaza);
+   		    	 $("#fecha_ing" ).val(vacunoFIn);
+   		    	 //"input[name*='fecha_ing']"
+   		    	 $('#myModalEdit').modal('show');
+   		     },
+   		     error:function(jqXHR,errorThrown){
+   		    	 alert("Alerta "+errorThrown);
+   		     }
+   		 });
+   	 }
+   //});
+    </script>
+  
   <style type="text/css">
   .text { font-family: arial; font-size:11pt;  }
   div.agre {
@@ -57,7 +94,9 @@
             <div class="agre">
             <div class="col-sm-2">
 	        <td>
-	            <a href="create.htm" class="btn btn-block btn-info"><i class="fa fa-plus"> Agregar</i></a>
+	            <!--a href="create.htm" class="btn btn-block btn-info"><i class="fa fa-plus"> Agregar</i></a-->
+	            <a class="btn btn-block btn-info" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"> Agregar</i></a>
+	            
 	        </td>
 	        </div>
 	        </div>
@@ -86,8 +125,12 @@
                             vacunoTO task = list.get(i);
                     %>
                     <tr> <td><%=task.getDiio()%></td> <td><%=task.getTipo()%></td> <td><%=task.getRaza()%></td> <td><%=task.getFechaIngreso()%></td> 
-                    <td><a href="editarV.htm?id=<%=task.getDiio()%>" class="btn btn-success"><i class="fa fa-edit"> Editar</i></a> &nbsp; &nbsp; &nbsp;
-                    <a href="deleteVacuno.htm?id=<%=task.getDiio()%>" class="btn btn-danger"  onclick="return confirm('¿Está seguro que desea eliminar el vacuno con DIIO:  <%=task.getDiio()%>?');"><i class="fa fa-close"> Eliminar</i></a></td>  </tr>
+                    <td>
+                     <!--input type="hidden" id="idvacuno" value="<%=task.getDiio()%>"/-->
+                     <button type="button" class="btn btn-success"  onclick="botonEdit('<%=task.getDiio()%>');">Editar</button>
+                     &nbsp; &nbsp; &nbsp;
+                     <a href="deleteVacuno.htm?id=<%=task.getDiio()%>" class="btn btn-danger"  onclick="return confirm('¿Está seguro que desea eliminar el vacuno con DIIO:  <%=task.getDiio()%>?');"><i class="fa fa-close"> Eliminar</i></a>
+                     </td></tr>
                     <%} else{%>
                         <h1>No hay datos</h1>
                     <%}%> 
@@ -107,9 +150,164 @@
               
             </div>
             
-           
+            <!--------- Comienzo modal Agregar Vacuno ------------->
+            <div id="myModal" class="modal fade" role="dialog">
+			  <div class="modal-dialog">
+			
+			    <!-- Modal content-->
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <button type="button" class="close" data-dismiss="modal">&times;</button>
+			        <h4 class="modal-title">Ingrese Nuevo Vacuno</h4>
+			      </div>
+			      <div class="modal-body">
+			      
+			              <form class="form-horizontal" action="saveVacuno.htm" method="POST">
+			              <div class="box-body">
+			                <div class="form-horizontal">
+			                  <label class="col-sm-2 control-label">Ingrese DIIO</label>
+			
+			                  <div class="col-sm-10">
+			                    <input type="text" class="form-control" id="inputEmail3" name="diio" placeholder="Ej: 00 658 4484">
+			                  </div>
+			                </div>
+			                <br></br>
+			                
+			              <div class="form-horizontal">
+			                
+			                  <label  class="col-sm-2 control-label">Raza</label>
+			                <div class="col-sm-8">
+			                  <select name="raza" class="form-control select2" style="width: 100%;">
+			                  <option selected="selected">Seleccione una opción</option>
+			                  <option>Beefmaster</option>
+			                  <option>Angus</option>
+			                  <option>Hereford</option>
+			                  <option>Simmental</option>
+			                  </select>
+			                </div>
+			              </div>
+			                  <br></br>
+			                  
+			           <div class="form-horizontal">
+			                
+			               <label  class="col-sm-2 control-label">Tipo</label>
+			                <div class="col-sm-10">
+			                  <select name="tipo" class="form-control select2" style="width: 100%;">
+			                  <option selected="selected">Seleccione una opción</option>
+			                  <option>Vacuno</option>
+			                  <option>Vaquilla</option>
+			                  <option>Toro</option>
+			                  
+			                  </select>
+			                </div>
+			            </div>
+			                <br></br>
+			                
+			            <div class="form-horizontal">
+			                <label  class="col-sm-2 control-label">Fecha  <i class="fa fa-calendar"></i></label>         
+			                <div class="col-sm-10">
+			                  <input type="date" name="fecha_in" class="form-control pull-right" id="datepicker">
+			                </div>
+			             </div>
+			                  
+			              </div>
+			              <!-- /.box-body -->
+			              <div class="box-footer">
+			                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+			                <!-- input type="hidden" name="action" value="saveVacuno.htm"-->
+			                <button type="submit" class="btn btn-info pull-right"><i class="fa fa-floppy-o"> Guardar</i></button>
+			              </div>
+			              <!-- /.box-footer -->
+			            </form>
+			      </div>
+			      <div class="modal-footer">
+			        
+			      </div>
+			    </div>
+			
+			  </div>
+          </div>
 
-            
+          <!--------- FIN modal Agregar Vacuno ------------->
+          
+          <!-- Molda editar vacuno -->
+          <div id="myModalEdit" class="modal fade" role="dialog">
+			  <div class="modal-dialog">
+			
+			    <!-- Modal content-->
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <button type="button" class="close" data-dismiss="modal">&times;</button>
+			        <h4 class="modal-title">Editar Vacuno</h4>
+			      </div>
+			      <div class="modal-body">
+			      
+			              <form class="form-horizontal" action="actualizarVacuno.htm" method="GET">
+			              <div class="box-body">
+			                <div class="form-horizontal">
+			                  <label class="col-sm-2 control-label">Ingrese DIIO</label>
+			
+			                  <div class="col-sm-10">
+			                    <input type="text" class="form-control" name="diioo"></input>
+			                  </div>
+			                </div>
+			                <br></br>
+			                
+			              <div class="form-horizontal">
+			                
+			                  <label  class="col-sm-2 control-label">Raza</label>
+			                <div class="col-sm-8">
+			                  <select name="raza" class="form-control select2" style="width: 100%;">
+			                  <option id="razaV" selected="selected"></option>
+			                  <option>Beefmaster</option>
+			                  <option>Angus</option>
+			                  <option>Hereford</option>
+			                  <option>Simmental</option>
+			                  </select>
+			                </div>
+			              </div>
+			                  <br></br>
+			                  
+			           <div class="form-horizontal">
+			                
+			               <label  class="col-sm-2 control-label">Tipo</label>
+			                <div class="col-sm-10">
+			                  <select name="tipo" class="form-control select2" style="width: 100%;">
+			                  <option id="tipoV" selected="selected"></option>
+			                  <option>Vacuno</option>
+			                  <option>Vaquilla</option>
+			                  <option>Toro</option>
+			                  
+			                  </select>
+			                </div>
+			            </div>
+			                <br></br>
+			                
+			            <div class="form-horizontal">
+			                <label  class="col-sm-2 control-label">Fecha  <i class="fa fa-calendar"></i></label>
+			                <div class="col-sm-10">
+			                  <input id="fecha_ing" type="date" name="fecha_in" class="form-control pull-right">
+			                </div>
+			            </div>
+			                  
+			              </div>
+			              <!-- /.box-body -->
+			              <div class="box-footer">
+			                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+			                <!-- input type="hidden" name="action" value="saveVacuno.htm"-->
+			                <button type="submit" class="btn btn-info pull-right"><i class="fa fa-floppy-o"> Guardar</i></button>
+			              </div>
+			              <!-- /.box-footer -->
+			            </form>
+			      </div>
+			      <div class="modal-footer">
+			        
+			      </div>
+			    </div>
+			
+			  </div>
+          </div>
+          <!-- FIN modal editar -->            
             <!-- /.box-body -->
           </div>  
 
@@ -148,5 +346,6 @@ $(function () {
     })
   })
 </script>
+
 </body>
 </html>

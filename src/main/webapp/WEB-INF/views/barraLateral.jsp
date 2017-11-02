@@ -50,17 +50,13 @@
             <i class="fa fa-th-list"></i> <span>Inventario</span>
           </a>
         </li>
-        <li class="treeview">
+        <li>
           <a href="#">
             <i class="fa fa-pie-chart"></i>
             <span>Calcular Dieta</span>
-            <span class="pull-right-container">
-               <span class="label label-primary pull-right"></span>
-              <!--i class="fa fa-angle-left pull-right"></i-->
-            </span>
           </a>
-
         </li>
+        
         <li class="treeview">
           <a href="#">
             <i class="fa fa-leaf"></i>

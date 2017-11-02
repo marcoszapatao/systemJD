@@ -97,6 +97,7 @@ public class vacunoDAO {
                 result.setTipo(rs.getString("tipo"));
                 result.setRaza(rs.getString("nombre"));
                 result.setFechaIngreso(rs.getDate("fechaIngreso"));
+                System.out.println("Entro al read"+result.getDiio());
             }
         } catch (SQLException ex) {
             Logger.getLogger(vacunoDAO.class.getName()).log(Level.SEVERE, null, ex);

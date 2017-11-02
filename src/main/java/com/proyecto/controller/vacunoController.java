@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 
@@ -80,9 +81,23 @@ public class vacunoController {
 		return vista;
 	}
 	
+	//Prueba de JQUERY
+	@RequestMapping(value = "/editarVa", method = RequestMethod.GET)
+	@ResponseBody
+	public vacunoTO editarVa(
+			@RequestParam(value = "id", required = false, defaultValue = "World") String diio, ModelAndView vista) throws SQLException {
+        System.out.println("Llego al editarVa");
+		vacunoDAO dao = new vacunoDAO();
+        vacunoTO vacuno = dao.read(diio);
+		System.out.println("En ediat : "+vacuno.getDiio());
+		//vista.addObject("update", task);
+		//vista.setViewName("editarVacuno");
+		return vacuno;
+	}
+	
 	@RequestMapping(value = "/actualizarVacuno", method = RequestMethod.GET)
 	public ModelAndView actualizarV(
-			@RequestParam(value = "diio", required = false, defaultValue = "World") String diio, 
+			@RequestParam(value = "diioo", required = false, defaultValue = "World") String diio, 
 			@RequestParam(value = "raza", required = false, defaultValue = "World") String raza,
 			@RequestParam(value = "tipo", required = false, defaultValue = "World") String tipo,
 			@RequestParam(value = "fecha_in", required = false, defaultValue = "World") String fecha_in,
@@ -91,6 +106,10 @@ public class vacunoController {
 	        vacunoDAO dao = new vacunoDAO();
 	        vacunoTO to = new vacunoTO();
 			java.sql.Date fecha = java.sql.Date.valueOf(fecha_in);
+			System.out.println(diio);
+			System.out.println(raza);
+			System.out.println(tipo);
+			System.out.println(fecha);
 			to.setFechaIngreso(fecha);
 			to.setDiio(diio);
 			to.setRaza(raza);
