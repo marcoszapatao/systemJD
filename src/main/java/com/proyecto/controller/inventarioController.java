@@ -2,11 +2,13 @@ package com.proyecto.controller;
 
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.LinkedList;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.proyecto.persistence.inventarioDAO;
@@ -24,13 +26,20 @@ public class inventarioController {
 	}
 	
 	@RequestMapping(value = "/verInven", method = RequestMethod.GET)
+	@ResponseBody
 	public ModelAndView verInventario(
 			@RequestParam(value = "id", required = false, defaultValue = "World") int idVacuno, ModelAndView vista) throws SQLException {
         inventarioDAO dao = new inventarioDAO();
-        
-		
 		vista.addObject("lista", dao.leeVacunos(idVacuno));
 		vista.setViewName("verInventario");
 		return vista;
+	}
+	
+    /*Prueba con ajax*/
+	@RequestMapping(value = "/verInventa", method = RequestMethod.GET)
+	public @ResponseBody LinkedList<vacunoTO> verInven(@RequestParam(value = "id", required = false, defaultValue = "World") int idVacuno) throws SQLException{
+		inventarioDAO dao = new inventarioDAO();
+		LinkedList<vacunoTO> list = dao.leeVacunos(idVacuno);
+		return list;
 	}
 }

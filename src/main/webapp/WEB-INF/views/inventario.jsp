@@ -6,6 +6,9 @@
 <%@page import="java.util.LinkedList"%>
 <%@page import="com.proyecto.transferObject.inventarioTO"%>
 <%@page import="com.proyecto.persistence.vacunoDAO"%>
+
+<%@page import="com.proyecto.transferObject.vacunoTO"%>
+<%@page import="com.proyecto.persistence.inventarioDAO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -19,6 +22,47 @@
     
     }
   </style>
+  <script>
+     function botonVer(id){
+   		 console.log("IDEEE "+id);
+   		 $.ajax({
+   			 type:'GET',
+   			 url:"/systemjd/verInventa.htm?id="+id,
+   		     //dataType:'json',
+   		     success:function(data){
+                var result = "<thead><tr><th>Diio</th><th>Tipo</th><th>Raza</th><th>Fecha</th><th>Nro. de dias</th></tr></thead>";
+                result += "<tbody>";
+                $.each(data,function(k,v){
+                	result += "<tr>";
+                	result += "<td>";
+                	result += v.diio
+                	result += "</td>";
+                	result += "<td>";
+                	result += v.tipo
+                	result += "</td>";
+                	result += "<td>";
+                	result += v.raza
+                	result += "</td>";
+                	result += "<td>";
+                	result += v.fechaIngreso
+                	result += "</td>";
+                	result += "<td>";
+                	result += v.tipo
+                	result += "</td>";
+                	result += "</tr>";
+                })
+                
+                result += "</tbody>";
+                $("#result").html(result);
+                
+                $('#myModalVer').modal('show');
+   		     },
+   		     error:function(jqXHR,errorThrown){
+   		    	 alert("Alerta "+errorThrown);
+   		     }
+   		 });
+   	 }
+  </script>
   
 </head>
 <body class="hold-transition skin-red sidebar-mini">
@@ -101,8 +145,9 @@
                             inventarioTO task = list.get(i);
                     %>
                     <tr> <td><%=task.getNombre()%></td><td><%=task.getNroAnimales()%></td> <td><%=task.getEstado()%></td> <td><%=task.getFecha_ingreso()%></td> <td><%=task.getFecha_Salida()%></td> 
-                    <td><a href="verInven.htm?id=<%=task.getId_grupo()%>" class="btn btn-success"><i class="fa fa-edit"> Ver</i></a>
-                    </td>  </tr>
+                    <!-- td><a href="verInven.htm?id=<%=task.getId_grupo()%>" class="btn btn-success"><i class="fa fa-edit"> Ver</i></a>
+                    </td-->
+                    <td><button type="button" class="btn btn-success"  onclick="botonVer('<%=task.getId_grupo()%>');">Ver</button></td>  </tr>
                     <%} else{%>
                         <h1>No hay datos</h1>
                     <%}%> 
@@ -123,8 +168,44 @@
               </table>
               
             </div>
-            
-           
+            <!-- Comienza modal-------------- -->
+            <div id="myModalVer" class="modal fade" role="dialog">
+			  <div class="modal-dialog">
+			
+			    <!-- Modal content-->
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <button type="button" class="close" data-dismiss="modal">&times;</button>
+			        <h4 class="modal-title">Vacunos en grupo:</h4>
+			      </div>
+			      <div class="modal-body">
+			       <center>
+			          <table id="result" class="table table-bordered table-hover">
+			             <thead>
+			                <tr>
+			                   <th>Diio</th>
+			                   <td>Tipo</td>
+			                   <td>Raza</td>
+			                   <td>Fecha</td>
+			                   <td>Nro. de dias</td>
+			                </tr>
+			             </thead>
+			             <tbody>
+			             </tbody>
+			          </table>
+                   </center>
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+			      </div>
+			    </div>
+			
+			  </div>
+          </div>
+            <!-- Tremina modal -->
+			
+			  </div>
+          </div>
 
             
             <!-- /.box-body -->
@@ -161,7 +242,63 @@ $(function () {
       'searching'   : false,
       'ordering'    : true,
       'info'        : true,
-      'autoWidth'   : true
+      'autoWidth'   : true,
+      "language": {
+          "sProcessing":    "Procesando...",
+          "sLengthMenu":    "Mostrar _MENU_ registros",
+          "sZeroRecords":   "No se encontraron resultados",
+          "sEmptyTable":    "Ningún dato disponible en esta tabla",
+          "sInfo":          "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+          "sInfoEmpty":     "Mostrando registros del 0 al 0 de un total de 0 registros",
+          "sInfoFiltered":  "(filtrado de un total de _MAX_ registros)",
+          "sInfoPostFix":   "",
+          "sSearch":        "Buscar:",
+          "sUrl":           "",
+          "sInfoThousands":  ",",
+          "sLoadingRecords": "Cargando...",
+          "oPaginate": {
+              "sFirst":    "Primero",
+              "sLast":    "Último",
+              "sNext":    "Siguiente",
+              "sPrevious": "Anterior"
+          },
+          "oAria": {
+              "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+              "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+          }
+      }
+    })
+      $('#result').DataTable({
+      'paging'      : false,
+      'lengthChange': true,
+      'searching'   : false,
+      'ordering'    : false,
+      'info'        : false,
+      'autoWidth'   : true,
+      "language": {
+          "sProcessing":    "Procesando...",
+          "sLengthMenu":    "Mostrar _MENU_ registros",
+          "sZeroRecords":   "No se encontraron resultados",
+          "sEmptyTable":    "Ningún dato disponible en esta tabla",
+          "sInfo":          "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+          "sInfoEmpty":     "Mostrando registros del 0 al 0 de un total de 0 registros",
+          "sInfoFiltered":  "(filtrado de un total de _MAX_ registros)",
+          "sInfoPostFix":   "",
+          "sSearch":        "Buscar:",
+          "sUrl":           "",
+          "sInfoThousands":  ",",
+          "sLoadingRecords": "Cargando...",
+          "oPaginate": {
+              "sFirst":    "Primero",
+              "sLast":    "Último",
+              "sNext":    "Siguiente",
+              "sPrevious": "Anterior"
+          },
+          "oAria": {
+              "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+              "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+          }
+      }
     })
   })
 </script>

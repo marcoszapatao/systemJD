@@ -95,7 +95,7 @@
             <div class="col-sm-2">
 	        <td>
 	            <!--a href="create.htm" class="btn btn-block btn-info"><i class="fa fa-plus"> Agregar</i></a-->
-	            <a class="btn btn-block btn-info" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"> Agregar</i></a>
+	            <a class="btn btn-block btn-info" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i>  Agregar</a>
 	            
 	        </td>
 	        </div>
@@ -127,9 +127,9 @@
                     <tr> <td><%=task.getDiio()%></td> <td><%=task.getTipo()%></td> <td><%=task.getRaza()%></td> <td><%=task.getFechaIngreso()%></td> 
                     <td>
                      <!--input type="hidden" id="idvacuno" value="<%=task.getDiio()%>"/-->
-                     <button type="button" class="btn btn-success"  onclick="botonEdit('<%=task.getDiio()%>');">Editar</button>
+                     <button type="button" class="btn btn-success"  onclick="botonEdit('<%=task.getDiio()%>');"><i class="fa fa-edit"></i> Editar</button>
                      &nbsp; &nbsp; &nbsp;
-                     <a href="deleteVacuno.htm?id=<%=task.getDiio()%>" class="btn btn-danger"  onclick="return confirm('¿Está seguro que desea eliminar el vacuno con DIIO:  <%=task.getDiio()%>?');"><i class="fa fa-close"> Eliminar</i></a>
+                     <a href="deleteVacuno.htm?id=<%=task.getDiio()%>" class="btn btn-danger"  onclick="return confirm('¿Está seguro que desea eliminar el vacuno con DIIO:  <%=task.getDiio()%>?');"><i class="fa fa-close"></i>  Eliminar</a>
                      </td></tr>
                     <%} else{%>
                         <h1>No hay datos</h1>
@@ -342,7 +342,31 @@ $(function () {
       'searching'   : false,
       'ordering'    : true,
       'info'        : true,
-      'autoWidth'   : true
+      'autoWidth'   : true,
+      "language": {
+          "sProcessing":    "Procesando...",
+          "sLengthMenu":    "Mostrar _MENU_ registros",
+          "sZeroRecords":   "No se encontraron resultados",
+          "sEmptyTable":    "Ningún dato disponible en esta tabla",
+          "sInfo":          "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+          "sInfoEmpty":     "Mostrando registros del 0 al 0 de un total de 0 registros",
+          "sInfoFiltered":  "(filtrado de un total de _MAX_ registros)",
+          "sInfoPostFix":   "",
+          "sSearch":        "Buscar:",
+          "sUrl":           "",
+          "sInfoThousands":  ",",
+          "sLoadingRecords": "Cargando...",
+          "oPaginate": {
+              "sFirst":    "Primero",
+              "sLast":    "Último",
+              "sNext":    "Siguiente",
+              "sPrevious": "Anterior"
+          },
+          "oAria": {
+              "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+              "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+          }
+      }
     })
   })
 </script>
