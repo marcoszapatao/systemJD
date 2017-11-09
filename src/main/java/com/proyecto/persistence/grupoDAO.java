@@ -12,7 +12,10 @@ import java.util.logging.Logger;
 import com.proyecto.transferObject.grupoTO;
 
 public class grupoDAO {
-    private static final String INSERT_QUERY ="insert into grupo(id_grupo,estado,fecha_ingreso,fecha_salida) values(?,?,?,?)";
+    private static final String INSERT_QUERY ="insert into pinio(nombrePinio,estado,fechaIngreso) values(?,?,?)";
+    private static final String INSERT_PINIOVACUNO="insert into pinio_has_vacuno(Pinio_idPinio,vacuno_idvacuno,fechaMov) values (?,?,?)";
+    private static final String READ_IDVACUNO="select idvacuno from vacuno where diio=?";
+    private static final String READ_MAX="select MAX(idPinio) from pinio";
     private static final String DELETE_QUERY="DELETE FROM task WHERE id=?";
     private static final String UPDATE_QUERY="UPDATE task SET start_date = ?,end_date = ?,description = ?,estado = ? WHERE id=?";
     private static final String READ_QUERY="select * from task where id=?";
@@ -49,6 +52,57 @@ public class grupoDAO {
             conexion.close();
         }
         return list;
+    }
+    
+    public void createGrupo(grupoTO grupo,String[]vacunos) throws SQLException {
+    	try{ 
+    	conexion = getConnection();
+    	 PreparedStatement ps = conexion.prepareStatement(INSERT_QUERY);
+         ps.setString(1, grupo.getNombre());
+         ps.setString(2,grupo.getEstado());
+         Date fe =grupo.getFecha_ingreso();
+         ps.setDate(3, fe);
+         ps.executeUpdate();
+         
+         conexion = getConnection();
+    	 PreparedStatement ps2 = conexion.prepareStatement(READ_MAX);
+         ResultSet rs2 = ps2.executeQuery();
+         int idpinio=0;
+         if(rs2.next()) {
+             idpinio =rs2.getInt(1);
+             System.out.println("id piño"+idpinio);
+         }
+         
+         java.util.Date utilDate = new java.util.Date();
+         java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+         System.out.println("fecha "+sqlDate);
+         conexion = getConnection();
+         for(int i=0;i<vacunos.length;i++) {
+        	 PreparedStatement ps1 = conexion.prepareStatement(READ_IDVACUNO);
+             ps1.setString(1,vacunos[i+1]);
+             ResultSet rs = ps1.executeQuery();
+             int idvacuno=0;
+             if(rs.next()) {
+                 idvacuno =rs.getInt(1);
+                 System.out.println("id vacuno "+idvacuno);
+             }
+             conexion = getConnection();
+             PreparedStatement ps3 = conexion.prepareStatement(INSERT_PINIOVACUNO);
+             ps3.setInt(1,idpinio);
+             ps3.setInt(2, idvacuno);
+             ps3.setDate(3, sqlDate);
+             ps3.executeUpdate();
+             
+
+             
+         }
+         
+    	}catch(SQLException e){
+            System.out.println(e);
+        }finally{
+            if(conexion!=null)
+                conexion.close();
+        }
     }
     
     

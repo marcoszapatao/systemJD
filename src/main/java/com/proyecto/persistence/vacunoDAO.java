@@ -20,6 +20,8 @@ public class vacunoDAO {
     private static final String READ_QUERY="select diio,tipo,fechaIngreso,nombre from vacuno join raza on(vacuno.raza_idraza = raza.idraza) and diio=?";
     private static final String READ_RAZA="select idraza from raza where nombre=?";
     private static final String READ_ALL ="select diio,tipo,fechaIngreso,nombre from vacuno join raza on(vacuno.raza_idraza = raza.idraza)";
+    private static final String READ_VSINGRUPO =
+    		"SELECT diio,tipo,fechaIngreso,nombre FROM vacuno join raza on(vacuno.raza_idraza=raza.idraza) WHERE not vacuno.idvacuno in(select pinio_has_vacuno.vacuno_idvacuno from pinio_has_vacuno)";
     private static final String READ_PEND ="select * from task WHERE estado = FALSE";
     private static final String DB_NAME="bddjd";
     private static final String PORT="3306";
@@ -83,6 +85,34 @@ public class vacunoDAO {
         }
         return lista;
     }
+        
+        public LinkedList<vacunoTO> readVsinG() throws SQLException{
+        LinkedList<vacunoTO> lista = new LinkedList<>();
+        vacunoTO result = null;
+        Connection conn = null;
+        try {
+            conn = getConnection();
+            PreparedStatement ps = conn.prepareStatement(READ_VSINGRUPO);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                result= new vacunoTO();
+                result.setDiio(rs.getString("diio"));
+                result.setTipo(rs.getString("tipo"));
+                result.setRaza(rs.getString("nombre"));
+                result.setFechaIngreso(rs.getDate("fechaIngreso"));
+                System.out.println("paso aqui");
+                lista.add(result);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(vacunoDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally{
+            conn.close();
+        }
+        return lista;
+    }
+        
+        
+        
         public vacunoTO read(String id) throws SQLException{
          vacunoTO result = null;
         

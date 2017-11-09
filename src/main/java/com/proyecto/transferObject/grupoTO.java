@@ -6,6 +6,11 @@ public class grupoTO {
     private String estado;
     private Date fecha_ingreso;
     private Date fecha_Salida;
+    private int peso;
+    
+    public void setPeso(int peso) {
+        this.peso = peso;
+    }
 
     public void setId_grupo(int id_grupo) {
         this.id_grupo = id_grupo;
@@ -29,6 +34,9 @@ public class grupoTO {
 
     public int getId_grupo() {
         return id_grupo;
+    }
+    public int getPeso() {
+        return peso;
     }
     
     public String getNombre() {

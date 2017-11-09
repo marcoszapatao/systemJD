@@ -33,6 +33,12 @@
                 var result = "<thead><tr><th>Diio</th><th>Tipo</th><th>Raza</th><th>Fecha</th><th>Nro. de dias</th></tr></thead>";
                 result += "<tbody>";
                 $.each(data,function(k,v){
+                	fecha = new Date();
+                	fecha2 = new Date(v.fechaIngreso);
+                	
+                	one_day=1000*60*60*24;
+                	diferencia = Math.ceil((fecha.getTime()-fecha2.getTime())/(one_day));
+                	
                 	result += "<tr>";
                 	result += "<td>";
                 	result += v.diio
@@ -47,7 +53,7 @@
                 	result += v.fechaIngreso
                 	result += "</td>";
                 	result += "<td>";
-                	result += v.tipo
+                	result += diferencia
                 	result += "</td>";
                 	result += "</tr>";
                 })
