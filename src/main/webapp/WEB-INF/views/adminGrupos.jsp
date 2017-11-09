@@ -17,6 +17,22 @@
     left: 700px;
     
     }
+        .modal-header {
+    background-color: #dd4b39;
+
+    }
+    .modal-body{
+    background-color:#ecf0f5;
+    }
+    .box-footer{
+    background-color:#ecf0f5;
+    }
+    .modal-lg {
+  max-width: 700px;
+    }
+    .table{
+    background-color:#ffffff;
+    }
   </style>
   
   <script>
@@ -207,32 +223,32 @@
             <!--------------------------------- Comienxo modal ------------------->
             
             <div id="myModalAgregarG" class="modal fade" role="dialog">
-			  <div class="modal-dialog">
+			  <div class="modal-dialog modal-lg">
 			
 			    <!-- Modal content-->
 			    <div class="modal-content">
 			      <div class="modal-header">
 			        <button type="button" class="close" data-dismiss="modal">&times;</button>
-			        <h4 class="modal-title">Crear Grupo:</h4>
+			        <h4 class="modal-title"><font color="white">Crear Grupo:</font></h4>
 			      </div>
 			      <div class="modal-body">
                       <!-- action="saveGrupo.htm" method="GET" esto va abajo -->
 		           <form class="form-horizontal" id="form_crearG">
 		              <div class="box-body">
 		                <div class="form-horizontal">
-		                  <label for="inputEmail3" class="col-sm-2 control-label">Ingrese Nombre</label>
+		                  <label for="inputEmail3" class="col-sm-3 control-label">Ingrese Nombre</label>
 		
-		                  <div class="col-sm-10">
+		                  <div class="col-sm-9">
 		                    <input type="text" class="form-control" id="nombreGrupo" name="nombre" placeholder="Ej: GrupoUno">
 		                  </div>
 		                </div> 
 		                
 		                <br></br>
-		                <br></br>
+		              
 		              <div class="form-horizontal">
 		                
-		                  <label  class="col-sm-2 control-label">Estado</label>
-		                <div class="col-sm-10">
+		                  <label  class="col-sm-3 control-label">Estado</label>
+		                <div class="col-sm-9">
 		                  <select name="estado" id="estadoGrupo" class="form-control select2" style="width: 100%;">
 		                  <option selected="selected">Seleccione una opción</option>
 		                  <option>Engorda</option>
@@ -243,23 +259,22 @@
 		              </div>
 		                  <br></br>
 		                  
-		                <br></br>
+		            
 		             
 		                <div class="form-horizontal">
-		                  <label for="inputEmail3" class="col-sm-2 control-label">Peso Total(Kg)</label>
+		                  <label for="inputEmail3" class="col-sm-3 control-label">Peso Total(Kg)</label>
 		
-		                  <div class="col-sm-10">
+		                  <div class="col-sm-9">
 		                    <input type="text" class="form-control" id="pesoGrupo" name="peso" placeholder="Ej: 1000">
 		                  </div>
 		                </div> 
 		                
 		                <br></br>
-		                <br></br>
-		             
+		              
 		            <div class="form-horizontal">
-		                <label  class="col-sm-2 control-label">Fecha de ingreso  <i class="fa fa-calendar"></i></label>
+		                <label  class="col-sm-3 control-label">Fecha de ingreso  <i class="fa fa-calendar"></i></label>
 		                
-		                <div class="col-sm-10">
+		                <div class="col-sm-9">
 		                <!--div class="input-group date"-->
 		                  <!--div class="input-group-addon"-->
 		                    
@@ -270,10 +285,10 @@
 		                <!-- /.input group -->
 		              </div>
 		              <br></br>
-		              <br></br>
-		              <label  class="col-sm-2 control-label">Seleccione vacunos</label>
+		           
+		              <label  class="col-sm-3 control-label">Seleccione vacunos</label>
 		              <!--------------------------- Aqui comienza la tabla------------------- -->
-		              <div class="col-sm-10">
+		              <div class="col-sm-9">
 		              <table id="resultado" class="table table-bordered table-hover">
 			             <thead>
 			                <tr>
@@ -297,9 +312,6 @@
 		            </form>
                       
                       
-			      </div>
-			      <div class="modal-footer">
-			        
 			      </div>
 			    </div>
 			

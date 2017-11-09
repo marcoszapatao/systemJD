@@ -21,6 +21,22 @@
     left: 700px;
     
     }
+            .modal-header {
+    background-color: #dd4b39;
+
+    }
+    .modal-body{
+    background-color:#ecf0f5;
+    }
+    .modal-footer{
+    background-color:#ecf0f5;
+    }
+    .box-footer{
+    background-color:#ecf0f5;
+    }
+    .table{
+    background-color:#ffffff;
+    }
   </style>
   <script>
      function botonVer(id){
@@ -182,7 +198,7 @@
 			    <div class="modal-content">
 			      <div class="modal-header">
 			        <button type="button" class="close" data-dismiss="modal">&times;</button>
-			        <h4 class="modal-title">Vacunos en grupo:</h4>
+			        <h4 class="modal-title"><font color="white">Vacunos en grupo:</font></h4>
 			      </div>
 			      <div class="modal-body">
 			       <center>

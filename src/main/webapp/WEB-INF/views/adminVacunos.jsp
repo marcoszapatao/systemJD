@@ -48,12 +48,25 @@
     </script>
   
   <style type="text/css">
-  .text { font-family: arial; font-size:11pt;  }
-  div.agre {
+    .text { font-family: arial; font-size:11pt;  }
+    div.agre {
     position: relative;
     left: 700px;
     
     }
+    .modal-header {
+    background-color: #dd4b39;
+
+    }
+    .modal-body{
+    background-color:#ecf0f5;
+    }
+    .box-footer{
+    background-color:#ecf0f5;
+    }
+    .modal-lg {
+  max-width: 700px;
+}
   </style>
   
 </head>
@@ -152,22 +165,22 @@
             
             <!--------- Comienzo modal Agregar Vacuno ------------->
             <div id="myModal" class="modal fade" role="dialog">
-			  <div class="modal-dialog">
+			  <div class="modal-dialog modal-lg">
 			
 			    <!-- Modal content-->
 			    <div class="modal-content">
 			      <div class="modal-header">
 			        <button type="button" class="close" data-dismiss="modal">&times;</button>
-			        <h4 class="modal-title">Ingrese Nuevo Vacuno</h4>
+			        <h4 class="modal-title"><font color="white">Ingrese Nuevo Vacuno</font></h4>
 			      </div>
 			      <div class="modal-body">
 			      
 			              <form class="form-horizontal" action="saveVacuno.htm" method="POST">
 			              <div class="box-body">
 			                <div class="form-horizontal">
-			                  <label class="col-sm-2 control-label">Ingrese DIIO</label>
+			                  <label class="col-sm-3 control-label">Ingrese DIIO</label>
 			
-			                  <div class="col-sm-10">
+			                  <div class="col-sm-9">
 			                    <input type="text" class="form-control" id="inputEmail3" name="diio" placeholder="Ej: 00 658 4484">
 			                  </div>
 			                </div>
@@ -175,8 +188,8 @@
 			                
 			              <div class="form-horizontal">
 			                
-			                  <label  class="col-sm-2 control-label">Raza</label>
-			                <div class="col-sm-8">
+			                  <label  class="col-sm-3 control-label">Raza</label>
+			                <div class="col-sm-9">
 			                  <select name="raza" class="form-control select2" style="width: 100%;">
 			                  <option selected="selected">Seleccione una opción</option>
 			                  <option>Beefmaster</option>
@@ -190,8 +203,8 @@
 			                  
 			           <div class="form-horizontal">
 			                
-			               <label  class="col-sm-2 control-label">Tipo</label>
-			                <div class="col-sm-10">
+			               <label  class="col-sm-3 control-label">Tipo</label>
+			                <div class="col-sm-9">
 			                  <select name="tipo" class="form-control select2" style="width: 100%;">
 			                  <option selected="selected">Seleccione una opción</option>
 			                  <option>Vacuno</option>
@@ -204,8 +217,8 @@
 			                <br></br>
 			                
 			            <div class="form-horizontal">
-			                <label  class="col-sm-2 control-label">Fecha  <i class="fa fa-calendar"></i></label>         
-			                <div class="col-sm-10">
+			                <label  class="col-sm-3 control-label">Fecha  <i class="fa fa-calendar"></i></label>         
+			                <div class="col-sm-9">
 			                  <input type="date" name="fecha_in" class="form-control pull-right" id="datepicker">
 			                </div>
 			             </div>
@@ -215,14 +228,12 @@
 			              <div class="box-footer">
 			                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
 			                <!-- input type="hidden" name="action" value="saveVacuno.htm"-->
-			                <button type="submit" class="btn btn-info pull-right"><i class="fa fa-floppy-o"> Guardar</i></button>
+			                <button type="submit" class="btn btn-info pull-right"><i class="fa fa-floppy-o"></i> Guardar</button>
 			              </div>
 			              <!-- /.box-footer -->
 			            </form>
 			      </div>
-			      <div class="modal-footer">
-			        
-			      </div>
+
 			    </div>
 			
 			  </div>
@@ -232,22 +243,22 @@
           
           <!-- Molda editar vacuno -->
           <div id="myModalEdit" class="modal fade" role="dialog">
-			  <div class="modal-dialog">
+			  <div class="modal-dialog modal-lg">
 			
 			    <!-- Modal content-->
 			    <div class="modal-content">
 			      <div class="modal-header">
 			        <button type="button" class="close" data-dismiss="modal">&times;</button>
-			        <h4 class="modal-title">Editar Vacuno</h4>
+			        <h4 class="modal-title"><font color="white">Editar Vacuno</font></h4>
 			      </div>
 			      <div class="modal-body">
 			      
 			              <form class="form-horizontal" action="actualizarVacuno.htm" method="GET">
 			              <div class="box-body">
 			                <div class="form-horizontal">
-			                  <label class="col-sm-2 control-label">Ingrese DIIO</label>
+			                  <label class="col-sm-3 control-label">Ingrese DIIO</label>
 			
-			                  <div class="col-sm-10">
+			                  <div class="col-sm-9">
 			                    <input type="text" class="form-control" name="diioo"></input>
 			                  </div>
 			                </div>
@@ -255,8 +266,8 @@
 			                
 			              <div class="form-horizontal">
 			                
-			                  <label  class="col-sm-2 control-label">Raza</label>
-			                <div class="col-sm-8">
+			                  <label  class="col-sm-3 control-label">Raza</label>
+			                <div class="col-sm-9">
 			                  <select name="raza" class="form-control select2" style="width: 100%;">
 			                  <option id="razaV" selected="selected"></option>
 			                  <option>Beefmaster</option>
@@ -270,8 +281,8 @@
 			                  
 			           <div class="form-horizontal">
 			                
-			               <label  class="col-sm-2 control-label">Tipo</label>
-			                <div class="col-sm-10">
+			               <label  class="col-sm-3 control-label">Tipo</label>
+			                <div class="col-sm-9">
 			                  <select name="tipo" class="form-control select2" style="width: 100%;">
 			                  <option id="tipoV" selected="selected"></option>
 			                  <option>Vacuno</option>
@@ -284,8 +295,8 @@
 			                <br></br>
 			                
 			            <div class="form-horizontal">
-			                <label  class="col-sm-2 control-label">Fecha  <i class="fa fa-calendar"></i></label>
-			                <div class="col-sm-10">
+			                <label  class="col-sm-3 control-label">Fecha  <i class="fa fa-calendar"></i></label>
+			                <div class="col-sm-9">
 			                  <input id="fecha_ing" type="date" name="fecha_in" class="form-control pull-right">
 			                </div>
 			            </div>
@@ -295,13 +306,10 @@
 			              <div class="box-footer">
 			                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
 			                <!-- input type="hidden" name="action" value="saveVacuno.htm"-->
-			                <button type="submit" class="btn btn-info pull-right"><i class="fa fa-floppy-o"> Guardar</i></button>
+			                <button type="submit" class="btn btn-info pull-right"><i class="fa fa-floppy-o"></i> Guardar</button>
 			              </div>
 			              <!-- /.box-footer -->
 			            </form>
-			      </div>
-			      <div class="modal-footer">
-			        
 			      </div>
 			    </div>
 			
