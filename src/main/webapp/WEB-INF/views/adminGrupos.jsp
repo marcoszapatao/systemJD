@@ -44,7 +44,7 @@
 		     //dataType:'json',
 		     success:function(data){
                   
-		    	  var result = "<thead><tr><th>Seleccione</th><th>Diio</th></tr></thead>";
+		    	  var result = "<thead><tr><th>Marcar todos   <input type=checkbox id=marcaTodo></input></th><th>Diio</th></tr></thead>";
                   result += "<tbody>";
                   var num = 1;
                   $.each(data,function(k,v){
@@ -70,12 +70,16 @@
                   $("#resultado").html(result);
              
              $('#myModalAgregarG').modal('show');
+	   		  $("#marcaTodo").change(function () {
+			      $("input:checkbox").prop('checked', $(this).prop("checked"));
+			  });
 		     },
 		     error:function(jqXHR,errorThrown){
 		    	 alert("Alerta "+errorThrown);
 		     }
 		 });
 	 }
+
 
      function botonCrearG(){
     	 /*INCLUIR DIIO DE VACUNOS SELECCIONADOS EN EL FORM EN UNA ARREGLO*/
@@ -197,7 +201,7 @@
                         for (int i = 0; i < list.size(); i++) {
                             grupoTO task = list.get(i);
                     %>
-                    <tr> <td><%=task.getId_grupo()%></td> <td><%=task.getNombre()%></td> <td><%=task.getEstado()%></td> <td><%=task.getFecha_ingreso()%></td> <td><%=task.getFecha_Salida()%></td> 
+                    <tr> <td><%=task.getId_grupo()%></td> <td><%=task.getNombre()%></td> <td><%=task.getEstado()%></td> <td><%=task.getFecha_ingreso()%></td> <%if(task.getFecha_Salida()!=null){%><td><%=task.getFecha_Salida()%></td><% }else{%><td> - </td><% }%></td> 
                     <td><a href="editarGrupo.htm?id=<%=task.getId_grupo()%>" class="btn btn-success"><i class="fa fa-edit"></i>  Editar</a> &nbsp; &nbsp; &nbsp;
                     <a href="deleteGrupo.htm?id=<%=task.getId_grupo()%>" class="btn btn-danger"  onclick="return confirm('¿Está seguro que desea eliminar el grupo con ID:  <%=task.getId_grupo()%>?');"><i class="fa fa-close"></i>  Eliminar</a></td>  </tr>
                     <%} else{%>

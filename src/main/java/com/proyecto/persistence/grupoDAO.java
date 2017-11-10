@@ -14,6 +14,7 @@ import com.proyecto.transferObject.grupoTO;
 public class grupoDAO {
     private static final String INSERT_QUERY ="insert into pinio(nombrePinio,estado,fechaIngreso) values(?,?,?)";
     private static final String INSERT_PINIOVACUNO="insert into pinio_has_vacuno(Pinio_idPinio,vacuno_idvacuno,fechaMov) values (?,?,?)";
+    private static final String INSERT_PESO="insert into peso(pesoPinio,fecha,trabajador_idtrabajador,Pinio_idPinio) values (?,?,?,?)";
     private static final String READ_IDVACUNO="select idvacuno from vacuno where diio=?";
     private static final String READ_MAX="select MAX(idPinio) from pinio";
     private static final String DELETE_QUERY="DELETE FROM task WHERE id=?";
@@ -56,14 +57,15 @@ public class grupoDAO {
     
     public void createGrupo(grupoTO grupo,String[]vacunos) throws SQLException {
     	try{ 
-    	conexion = getConnection();
+    	 /*Inserta datos en tabla pinio*/
+    	 conexion = getConnection();
     	 PreparedStatement ps = conexion.prepareStatement(INSERT_QUERY);
          ps.setString(1, grupo.getNombre());
          ps.setString(2,grupo.getEstado());
          Date fe =grupo.getFecha_ingreso();
          ps.setDate(3, fe);
          ps.executeUpdate();
-         
+         /*Obtiene el id del piño que recien se inserto*/
          conexion = getConnection();
     	 PreparedStatement ps2 = conexion.prepareStatement(READ_MAX);
          ResultSet rs2 = ps2.executeQuery();
@@ -72,14 +74,16 @@ public class grupoDAO {
              idpinio =rs2.getInt(1);
              System.out.println("id piño"+idpinio);
          }
-         
+         /*Obtiene fecha del sistema*/
          java.util.Date utilDate = new java.util.Date();
          java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
          System.out.println("fecha "+sqlDate);
+         
+         /*Obtiene el idvacuno segun su diio */
          conexion = getConnection();
-         for(int i=0;i<vacunos.length;i++) {
+         for(int i=1;i<vacunos.length;i++) {
         	 PreparedStatement ps1 = conexion.prepareStatement(READ_IDVACUNO);
-             ps1.setString(1,vacunos[i+1]);
+             ps1.setString(1,vacunos[i]);
              ResultSet rs = ps1.executeQuery();
              int idvacuno=0;
              if(rs.next()) {
@@ -87,15 +91,24 @@ public class grupoDAO {
                  System.out.println("id vacuno "+idvacuno);
              }
              conexion = getConnection();
+             /*Inserta una tupla por cada diio en la tabla pinio_has_vacuno*/
              PreparedStatement ps3 = conexion.prepareStatement(INSERT_PINIOVACUNO);
              ps3.setInt(1,idpinio);
              ps3.setInt(2, idvacuno);
              ps3.setDate(3, sqlDate);
-             ps3.executeUpdate();
-             
-
-             
+             ps3.executeUpdate();   
          }
+         
+         /*Inserta el peso del grupo en la tabla peso*/
+         conexion = getConnection();
+         
+         PreparedStatement ps4 = conexion.prepareStatement(INSERT_PESO);
+         ps4.setInt(1,grupo.getPeso());
+         ps4.setDate(2,sqlDate);
+         int tra = 1;
+         ps4.setInt(3,tra);
+         ps4.setInt(4,idpinio);
+         ps4.executeUpdate();
          
     	}catch(SQLException e){
             System.out.println(e);

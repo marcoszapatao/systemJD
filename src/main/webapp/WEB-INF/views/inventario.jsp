@@ -166,7 +166,7 @@
                         for (int i = 0; i < list.size(); i++) {
                             inventarioTO task = list.get(i);
                     %>
-                    <tr> <td><%=task.getNombre()%></td><td><%=task.getNroAnimales()%></td> <td><%=task.getEstado()%></td> <td><%=task.getFecha_ingreso()%></td> <td><%=task.getFecha_Salida()%></td> 
+                    <tr> <td><%=task.getNombre()%></td><td><%=task.getNroAnimales()%></td> <td><%=task.getEstado()%></td> <td><%=task.getFecha_ingreso()%></td> <%if(task.getFecha_Salida()!=null){%><td><%=task.getFecha_Salida()%></td><% }else{%><td> - </td><% }%></td> 
                     <!-- td><a href="verInven.htm?id=<%=task.getId_grupo()%>" class="btn btn-success"><i class="fa fa-edit"> Ver</i></a>
                     </td-->
                     <td><button type="button" class="btn btn-success"  onclick="botonVer('<%=task.getId_grupo()%>');">Ver</button></td>  </tr>
@@ -209,7 +209,7 @@
 			                   <td>Tipo</td>
 			                   <td>Raza</td>
 			                   <td>Fecha</td>
-			                   <td>Nro. de dias</td>
+			                   <td>Nro. de días</td>
 			                </tr>
 			             </thead>
 			             <tbody>
