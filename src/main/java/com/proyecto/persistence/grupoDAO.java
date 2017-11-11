@@ -10,6 +10,7 @@ import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import com.proyecto.transferObject.grupoTO;
+import com.proyecto.transferObject.vacunoTO;
 
 public class grupoDAO {
     private static final String INSERT_QUERY ="insert into pinio(nombrePinio,estado,fechaIngreso) values(?,?,?)";
@@ -19,7 +20,7 @@ public class grupoDAO {
     private static final String READ_MAX="select MAX(idPinio) from pinio";
     private static final String DELETE_QUERY="DELETE FROM task WHERE id=?";
     private static final String UPDATE_QUERY="UPDATE task SET start_date = ?,end_date = ?,description = ?,estado = ? WHERE id=?";
-    private static final String READ_QUERY="select * from task where id=?";
+    private static final String READ_QUERY="select nombrePinio,estado,fechaIngreso,fechaSalida,pesoPinio from pinio join peso on(pinio.idPinio = peso.Pinio_idPinio) where idPinio=?";
     private static final String READ_ALL ="select * from pinio";
     private static final String READ_PEND ="select * from task WHERE estado = FALSE";
     private static final String DB_NAME="bddjd";
@@ -81,9 +82,12 @@ public class grupoDAO {
          
          /*Obtiene el idvacuno segun su diio */
          conexion = getConnection();
-         for(int i=1;i<vacunos.length;i++) {
+         System.out.println("tamaño arr "+vacunos.length);
+         int tamano = vacunos.length - 1;
+         for(int i=1;i<tamano;i++) {
         	 PreparedStatement ps1 = conexion.prepareStatement(READ_IDVACUNO);
-             ps1.setString(1,vacunos[i]);
+             System.out.println("iiii"+i);
+        	 ps1.setString(1,vacunos[i]);
              ResultSet rs = ps1.executeQuery();
              int idvacuno=0;
              if(rs.next()) {
@@ -98,10 +102,11 @@ public class grupoDAO {
              ps3.setDate(3, sqlDate);
              ps3.executeUpdate();   
          }
-         
-         /*Inserta el peso del grupo en la tabla peso*/
+         System.out.println("ANTES");
+         insertapeso(grupo,sqlDate,idpinio);
+    	System.out.println("DESPUES");
+         /*Inserta el peso del grupo en la tabla peso
          conexion = getConnection();
-         
          PreparedStatement ps4 = conexion.prepareStatement(INSERT_PESO);
          ps4.setInt(1,grupo.getPeso());
          ps4.setDate(2,sqlDate);
@@ -109,13 +114,49 @@ public class grupoDAO {
          ps4.setInt(3,tra);
          ps4.setInt(4,idpinio);
          ps4.executeUpdate();
-         
+         */
     	}catch(SQLException e){
             System.out.println(e);
         }finally{
             if(conexion!=null)
                 conexion.close();
         }
+    }
+    
+    public void insertapeso(grupoTO grupo,Date fecha,int id) throws SQLException {
+    	System.out.println("DENTRO");
+    	conexion = getConnection();
+        PreparedStatement ps4 = conexion.prepareStatement(INSERT_PESO);
+        ps4.setInt(1,grupo.getPeso());
+        ps4.setDate(2,fecha);
+        int tra = 1;
+        ps4.setInt(3,tra);
+        ps4.setInt(4,id);
+        ps4.executeUpdate();
+    }
+    
+    public grupoTO readG(int id) throws SQLException{
+        grupoTO result = null;
+        
+       try {
+           getConnection();
+           PreparedStatement ps = conexion.prepareStatement(READ_QUERY);
+           ps.setInt(1,id);
+           ResultSet rs = ps.executeQuery();
+           while(rs.next()){
+               result= new grupoTO();
+               result.setNombre(rs.getString("nombrePinio"));
+               result.setEstado(rs.getString("estado"));
+               result.setPeso(rs.getInt("pesoPinio"));
+               result.setFecha_ingreso(rs.getDate("fechaIngreso"));
+               result.setFecha_Salida(rs.getDate("fechaSalida"));
+           }
+       } catch (SQLException ex) {
+           Logger.getLogger(vacunoDAO.class.getName()).log(Level.SEVERE, null, ex);
+       } finally{
+           //conexion.close();
+       }
+       return result;
     }
     
     

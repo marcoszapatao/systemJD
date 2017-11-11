@@ -85,4 +85,14 @@ public class grupoController {
 		vista.setViewName("adminGrupos");
 		return vista;
 	}
+	
+	@RequestMapping(value = "/editarGrupo", method = RequestMethod.GET)
+	@ResponseBody
+	public grupoTO editarGrupo(
+			@RequestParam(value = "id", required = false, defaultValue = "World") int id, ModelAndView vista) throws SQLException {
+		grupoDAO dao = new grupoDAO();
+        grupoTO grupo = dao.readG(id);
+		//System.out.println("En ediat : "+grupo.getDiio());
+		return grupo;
+	}
 }

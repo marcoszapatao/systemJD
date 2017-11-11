@@ -130,6 +130,71 @@
         // });
          /*FIN usando ajax*/
      }
+     
+     function botonEditG(id){
+    	 $.ajax({
+    		 type:'GET',
+   			 url:"/systemjd/editarGrupo.htm?id="+id,
+   		     dataType:'json',
+   		     success:function(data){
+   		    	var grupoNombre = data.nombre;
+   		    	var grupoPeso = data.peso;
+   		    	var grupoEstado = data.estado;
+   		    	var grupoFechaI = data.fecha_ingreso;
+   		    	var grupoFechaS = data.fecha_Salida;
+   		    	$("input[name*='nombre']" ).val(grupoNombre);
+   		    	$("input[name*='pesaje']" ).val(grupoPeso);
+   		    	$("#estadoG").html(grupoEstado);
+   		    	$("#fechaIn" ).val(grupoFechaI);
+   		    	$("#fechaSa" ).val(grupoFechaS);
+   		    	
+   		    	//$('#myModalEditarG').modal('show');
+   		     },
+   		     error:function(jqXHR,errorThrown){
+   		    	 alert("Alerta "+errorThrown);
+   		     }
+    	 })
+		 $.ajax({
+			 type:'GET',
+			 url:"/systemjd/crearGrupo.htm",
+		     //dataType:'json',
+		     success:function(data){
+                  
+		    	  var result = "<thead><tr><th>Marcar todos   <input type=checkbox id=marcaTodos></input></th><th>Diio</th></tr></thead>";
+                  result += "<tbody>";
+                  var num = 1;
+                  $.each(data,function(k,v){
+                  	cont++;
+                	var id = v.diio;
+                	result += "<tr>";
+                  	result += "<td>";
+                  	result += "<center>";
+                  	result += "<input class=messageCheckbox";
+                  	result += num
+                  	result +=" type=checkbox value='";
+                  	num++;
+                  	result += id
+                  	result += "'>";
+                  	result += "</center>";
+                  	result += "</td>";
+                  	result += "<td>";
+                  	result += v.diio
+                  	result += "</td>";
+                  	result += "</tr>";
+                  })
+                  result += "</tbody>";
+                  $("#tablaresultado").html(result);
+             
+             $('#myModalEditarG').modal('show');
+	   		  $("#marcaTodos").change(function () {
+			      $("input:checkbox").prop('checked', $(this).prop("checked"));
+			  });
+		     },
+		     error:function(jqXHR,errorThrown){
+		    	 alert("Alerta "+errorThrown);
+		     }
+		 });
+     }
   </script>
   
 </head>
@@ -202,7 +267,8 @@
                             grupoTO task = list.get(i);
                     %>
                     <tr> <td><%=task.getId_grupo()%></td> <td><%=task.getNombre()%></td> <td><%=task.getEstado()%></td> <td><%=task.getFecha_ingreso()%></td> <%if(task.getFecha_Salida()!=null){%><td><%=task.getFecha_Salida()%></td><% }else{%><td> - </td><% }%></td> 
-                    <td><a href="editarGrupo.htm?id=<%=task.getId_grupo()%>" class="btn btn-success"><i class="fa fa-edit"></i>  Editar</a> &nbsp; &nbsp; &nbsp;
+                    <td>
+                    <button type="button" class="btn btn-success"  onclick="botonEditG('<%=task.getId_grupo()%>');"><i class="fa fa-edit"></i> Editar</button> &nbsp; &nbsp; &nbsp;
                     <a href="deleteGrupo.htm?id=<%=task.getId_grupo()%>" class="btn btn-danger"  onclick="return confirm('¿Está seguro que desea eliminar el grupo con ID:  <%=task.getId_grupo()%>?');"><i class="fa fa-close"></i>  Eliminar</a></td>  </tr>
                     <%} else{%>
                         <h1>No hay datos</h1>
@@ -243,7 +309,7 @@
 		                  <label for="inputEmail3" class="col-sm-3 control-label">Ingrese Nombre</label>
 		
 		                  <div class="col-sm-9">
-		                    <input type="text" class="form-control" id="nombreGrupo" name="nombre" placeholder="Ej: GrupoUno">
+		                    <input type="text" class="form-control" id="nombreGrupo" name="name" placeholder="Ej: GrupoUno">
 		                  </div>
 		                </div> 
 		                
@@ -323,6 +389,112 @@
           </div>
             <!-- Fin modal -->
             
+            
+            
+            
+            
+            <!-- ----Comienzo modal editar grupo---- -->
+            
+            <div id="myModalEditarG" class="modal fade" role="dialog">
+			  <div class="modal-dialog modal-lg">
+			
+			    <!-- Modal content-->
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <button type="button" class="close" data-dismiss="modal">&times;</button>
+			        <h4 class="modal-title"><font color="white">Editar Grupo:</font></h4>
+			      </div>
+			      <div class="modal-body">
+                      <!-- action="saveGrupo.htm" method="GET" esto va abajo -->
+		           <form class="form-horizontal" id="form_crearG">
+		              <div class="box-body">
+		                <div class="form-horizontal">
+		                  <label for="inputEmail3" class="col-sm-3 control-label">Ingrese Nombre</label>
+		
+		                  <div class="col-sm-9">
+		                    <input type="text" class="form-control" id="nameGrupo" name="nombre" placeholder="Ej: GrupoUno">
+		                  </div>
+		                </div> 
+		                
+		                <br></br>
+		              
+		              <div class="form-horizontal">
+		                
+		                  <label  class="col-sm-3 control-label">Estado</label>
+		                <div class="col-sm-9">
+		                  <select name="estado" id="estadoGrupo" class="form-control select2" style="width: 100%;">
+		                  <option id="estadoG" selected="selected"></option>
+		                  <option>Engorda</option>
+		                  <option>Pradera</option>
+		                  <option>Vendido</option>
+		                  </select>
+		                </div>
+		              </div>
+		                  <br></br>
+		                  
+		            
+		             
+		                <div class="form-horizontal">
+		                  <label for="inputEmail3" class="col-sm-3 control-label">Peso Total(Kg)</label>
+		
+		                  <div class="col-sm-9">
+		                    <input type="text" class="form-control" id="pesajeGrupo" name="pesaje" placeholder="Ej: 1000">
+		                  </div>
+		                </div> 
+		                
+		                <br></br>
+		              
+		            <div class="form-horizontal">
+		                <label  class="col-sm-3 control-label">Fecha de ingreso  <i class="fa fa-calendar"></i></label>
+		                
+		                <div class="col-sm-9">
+		                  <input type="date" id="fechaIn" name="fecha_in" class="form-control pull-right" id="datepicker">
+		                </div>
+		              </div>
+		              <br></br>
+		              
+		              <div class="form-horizontal">
+		                <label  class="col-sm-3 control-label">Fecha de salida  <i class="fa fa-calendar"></i></label>
+		                
+		                <div class="col-sm-9">
+		                  <input type="date" id="fechaSa" name="fecha_sa" class="form-control pull-right" id="datepicker">
+		                </div>
+		              </div>
+		              <br></br>
+		           
+		              <label  class="col-sm-3 control-label">Seleccione vacunos</label>
+		              <!--------------------------- Aqui comienza la tabla------------------- -->
+		              <div class="col-sm-9">
+		              <table id="tablaresultado" class="table table-bordered table-hover">
+			             <thead>
+			                <tr>
+			                   <th>Seleccione</th>
+			                   <th>Diio</th>
+			                </tr>
+			             </thead>
+			             <tbody>
+			             </tbody>
+			          </table>
+		              </div>    
+		              </div>
+		              <!-- /.box-body -->
+		              <div class="box-footer">
+		                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+		                <!-- input type="hidden" name="action" value="saveVacuno.htm"-->
+		                <!-- button type="submit" class="btn btn-info pull-right"><i class="fa fa-floppy-o"> Guardar</i></button-->
+		                <button type="submit" class="btn btn-info pull-right"  onclick="botonCrearG();"><i class="fa fa-floppy-o"></i>  Guardar</button>
+		              </div>
+		              <!-- /.box-footer -->
+		            </form>
+                      
+                      
+			      </div>
+			    </div>
+			
+			  </div>
+          </div>
+            
+            <!-- Fin modal editar grupo -->            
             <!-- /.box-body -->
           </div>  
 

@@ -86,7 +86,7 @@ public class vacunoController {
 	@ResponseBody
 	public vacunoTO editarVa(
 			@RequestParam(value = "id", required = false, defaultValue = "World") String diio, ModelAndView vista) throws SQLException {
-        System.out.println("Llego al editarVa");
+
 		vacunoDAO dao = new vacunoDAO();
         vacunoTO vacuno = dao.read(diio);
 		System.out.println("En ediat : "+vacuno.getDiio());
