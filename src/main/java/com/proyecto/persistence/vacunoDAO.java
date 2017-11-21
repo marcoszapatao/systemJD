@@ -22,12 +22,20 @@ public class vacunoDAO {
     private static final String READ_ALL ="select diio,tipo,fechaIngreso,nombre from vacuno join raza on(vacuno.raza_idraza = raza.idraza)";
     private static final String READ_VSINGRUPO =
     		"SELECT diio,tipo,fechaIngreso,nombre FROM vacuno join raza on(vacuno.raza_idraza=raza.idraza) WHERE not vacuno.idvacuno in(select pinio_has_vacuno.vacuno_idvacuno from pinio_has_vacuno)";
+    private static final String READ_VSINGRUPOYENGRUPO=
+    		"SELECT diio,tipo,fechaIngreso,nombre FROM `vacuno` join `raza` on(vacuno.raza_idraza=raza.idraza) WHERE not vacuno.idvacuno in(select pinio_has_vacuno.vacuno_idvacuno from `pinio_has_vacuno` where pinio_has_vacuno.Pinio_idPinio<>?)";
+    
     private static final String READ_PEND ="select * from task WHERE estado = FALSE";
-    private static final String DB_NAME="bddjd";
-    private static final String PORT="3306";
-    private static final String URL="jdbc:mysql://localhost/"+DB_NAME;    
+   private static final String DB_NAME="bddjd_nueva";
+   private static final String PORT="3306";
+   private static final String URL="jdbc:mysql://localhost/"+DB_NAME;    
     private static final String USER="root";
-    private static final String PASSWORD="";
+   private static final String PASSWORD="";
+    /*private static final String DB_NAME="mezapata";
+    private static final String PORT="3306";
+    private static final String URL="jdbc:mysql://146.83.196.166/"+DB_NAME;    
+    private static final String USER="mezapata";
+    private static final String PASSWORD="KrN5EfGXoBA3";*/
     private static Connection conexion = null;
     
     public int createVacuno(vacunoTO vacuno) throws SQLException{
@@ -93,6 +101,32 @@ public class vacunoDAO {
         try {
             conn = getConnection();
             PreparedStatement ps = conn.prepareStatement(READ_VSINGRUPO);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                result= new vacunoTO();
+                result.setDiio(rs.getString("diio"));
+                result.setTipo(rs.getString("tipo"));
+                result.setRaza(rs.getString("nombre"));
+                result.setFechaIngreso(rs.getDate("fechaIngreso"));
+                System.out.println("paso aqui");
+                lista.add(result);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(vacunoDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally{
+            conn.close();
+        }
+        return lista;
+    }
+        
+        public LinkedList<vacunoTO> readVsinGyenGrupo(int idgrupo) throws SQLException{
+        LinkedList<vacunoTO> lista = new LinkedList<>();
+        vacunoTO result = null;
+        Connection conn = null;
+        try {
+            conn = getConnection();
+            PreparedStatement ps = conn.prepareStatement(READ_VSINGRUPOYENGRUPO);
+            ps.setInt(1,idgrupo);
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
                 result= new vacunoTO();

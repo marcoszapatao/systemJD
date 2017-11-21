@@ -108,7 +108,7 @@
             <div class="col-sm-2">
 	        <td>
 	            <!--a href="create.htm" class="btn btn-block btn-info"><i class="fa fa-plus"> Agregar</i></a-->
-	            <a class="btn btn-block btn-info" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i>  Agregar</a>
+	            <a class="btn btn-block btn-info btn-sm" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i>  Agregar</a>
 	            
 	        </td>
 	        </div>
@@ -140,9 +140,9 @@
                     <tr> <td><%=task.getDiio()%></td> <td><%=task.getTipo()%></td> <td><%=task.getRaza()%></td> <td><%=task.getFechaIngreso()%></td> 
                     <td>
                      <!--input type="hidden" id="idvacuno" value="<%=task.getDiio()%>"/-->
-                     <button type="button" class="btn btn-success"  onclick="botonEdit('<%=task.getDiio()%>');"><i class="fa fa-edit"></i> Editar</button>
+                     <button type="button" class="btn btn-success btn-xs"  onclick="botonEdit('<%=task.getDiio()%>');"><i class="fa fa-edit"></i> Editar</button>
                      &nbsp; &nbsp; &nbsp;
-                     <a href="deleteVacuno.htm?id=<%=task.getDiio()%>" class="btn btn-danger"  onclick="return confirm('¿Está seguro que desea eliminar el vacuno con DIIO:  <%=task.getDiio()%>?');"><i class="fa fa-close"></i>  Eliminar</a>
+                     <a href="deleteVacuno.htm?id=<%=task.getDiio()%>" class="btn btn-danger btn-xs"  onclick="return confirm('¿Está seguro que desea eliminar el vacuno con DIIO:  <%=task.getDiio()%>?');"><i class="fa fa-close"></i>  Eliminar</a>
                      </td></tr>
                     <%} else{%>
                         <h1>No hay datos</h1>
@@ -181,7 +181,7 @@
 			                  <label class="col-sm-3 control-label">Ingrese DIIO</label>
 			
 			                  <div class="col-sm-9">
-			                    <input type="text" class="form-control" id="inputEmail3" name="diio" placeholder="Ej: 00 658 4484">
+			                    <input type="text" class="form-control" id="inputEmail3" name="diio" placeholder="Ej: 00 658 4484" required>
 			                  </div>
 			                </div>
 			                <br></br>

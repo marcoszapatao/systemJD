@@ -85,14 +85,34 @@
     	 /*INCLUIR DIIO DE VACUNOS SELECCIONADOS EN EL FORM EN UNA ARREGLO*/
     	 var checkedValue = ["Inicio"];
     	 for(var i=1; i<(cont+1); i++){
+        	 alert(i);
     		 var message = "messageCheckbox";
     		 var letra = i;
     		 var res = message.concat(letra);
     		 //alert(res);
     		 var valor =$('.'+res+':checked').val();
     		 //alert("valor "+valor);
+    		 if(valor === undefined){
+            	 
+             }else{
+        		 checkedValue.push(valor);
+             }
+         /*
+         //var valor = "si";
+         //while(valor != undefined){
+    		 var message = "messageCheckbox";
+    		 var letra = i;
+    		 var res = message.concat(letra);
+    		 //letra++;
+    		 //alert(res);
+    		 var valor =$('.'+res+':checked').val();
+    		 //alert("valor "+valor);
+    		 if(valor === undefined){
+    			 break;
+    		 }
     		 checkedValue.push(valor);
-
+    	 //}
+         */
     	 }
     	 //for(var i=0; i<6; i++){
     		 //alert(checkedValue[i]);
@@ -130,7 +150,7 @@
         // });
          /*FIN usando ajax*/
      }
-     
+     var contador = 0;
      function botonEditG(id){
     	 $.ajax({
     		 type:'GET',
@@ -142,21 +162,22 @@
    		    	var grupoEstado = data.estado;
    		    	var grupoFechaI = data.fecha_ingreso;
    		    	var grupoFechaS = data.fecha_Salida;
-   		    	$("input[name*='nombre']" ).val(grupoNombre);
-   		    	$("input[name*='pesaje']" ).val(grupoPeso);
-   		    	$("#estadoG").html(grupoEstado);
-   		    	$("#fechaIn" ).val(grupoFechaI);
-   		    	$("#fechaSa" ).val(grupoFechaS);
+   		    	$("input[name*='idGrupoE']" ).val(id);
+   		    	$("input[name*='nombreE']" ).val(grupoNombre);
+   		    	$("input[name*='pesajeE']" ).val(grupoPeso);
+   		    	$("#estadoGE").html(grupoEstado);
+   		    	$("#fechaInE" ).val(grupoFechaI);
+   		    	$("#fechaSaE" ).val(grupoFechaS);
    		    	
-   		    	//$('#myModalEditarG').modal('show');
+   		    	$('#myModalEditarG').modal('show');
    		     },
    		     error:function(jqXHR,errorThrown){
    		    	 alert("Alerta "+errorThrown);
    		     }
     	 })
-		 $.ajax({
+		 /*$.ajax({
 			 type:'GET',
-			 url:"/systemjd/crearGrupo.htm",
+			 url:"/systemjd/obtieneVacunosEditar.htm?id="+id,
 		     //dataType:'json',
 		     success:function(data){
                   
@@ -164,7 +185,7 @@
                   result += "<tbody>";
                   var num = 1;
                   $.each(data,function(k,v){
-                  	cont++;
+                  	contador++;
                 	var id = v.diio;
                 	result += "<tr>";
                   	result += "<td>";
@@ -193,7 +214,42 @@
 		     error:function(jqXHR,errorThrown){
 		    	 alert("Alerta "+errorThrown);
 		     }
-		 });
+		 });*/
+     }
+     
+     
+     function botonActualizarG(){
+    	 /*INCLUIR DIIO DE VACUNOS SELECCIONADOS EN EL FORM EN UNA ARREGLO
+    	 alert("Entro aqui en boton")
+    	 var checkedValue = ["Inicio"];
+    	 for(var i=1; i<(contador+1); i++){
+        	 alert(i);
+    		 var message = "messageCheckbox";
+    		 var letra = i;
+    		 var res = message.concat(letra);
+    		 //alert(res);
+    		 var valor =$('.'+res+':checked').val();
+    		 alert("valor "+valor);
+    		 if(valor === undefined){
+            	 
+             }else{
+        		 checkedValue.push(valor);
+             }
+    	 };
+    	 alert("Paso el for");*/
+        /*----------------OTRAS PRUEBAS------------*/
+        var id = $('input[type=hidden]').val();
+        var name = jQuery("#nameGrupoE").val();
+        var estado = jQuery("#estadoGrupoE").val();
+        var fecha = jQuery("#fechaInE").val();
+        var peso = jQuery("#pesajeGrupoE").val();
+        var object = {id:id,name:name,estado:estado,fecha:fecha,peso:peso};
+        jQuery.ajax("/systemjd/actualizaG.htm",
+        	    {
+        	        type:"POST",
+        	        data: object
+        	    }); 
+        window.location.reload(true);
      }
   </script>
   
@@ -236,7 +292,7 @@
             <div class="col-sm-2">
 	        <td>
 	            <!-- a href="createGrupo.htm" class="btn btn-block btn-info"><i class="fa fa-plus"> Agregar</i></a-->
-	            <button type="button" class="btn btn-block btn-info"  onclick="botonAgregarGru();"><i class="fa fa-plus"></i>  Agregar</button>
+	            <button type="button" class="btn btn-block btn-info btn-sm"  onclick="botonAgregarGru();"><i class="fa fa-plus"></i>  Agregar</button>
 	        </td>
 	        </div>
 	        </div>
@@ -268,8 +324,8 @@
                     %>
                     <tr> <td><%=task.getId_grupo()%></td> <td><%=task.getNombre()%></td> <td><%=task.getEstado()%></td> <td><%=task.getFecha_ingreso()%></td> <%if(task.getFecha_Salida()!=null){%><td><%=task.getFecha_Salida()%></td><% }else{%><td> - </td><% }%></td> 
                     <td>
-                    <button type="button" class="btn btn-success"  onclick="botonEditG('<%=task.getId_grupo()%>');"><i class="fa fa-edit"></i> Editar</button> &nbsp; &nbsp; &nbsp;
-                    <a href="deleteGrupo.htm?id=<%=task.getId_grupo()%>" class="btn btn-danger"  onclick="return confirm('¿Está seguro que desea eliminar el grupo con ID:  <%=task.getId_grupo()%>?');"><i class="fa fa-close"></i>  Eliminar</a></td>  </tr>
+                    <button type="button" class="btn btn-success btn-xs"  onclick="botonEditG('<%=task.getId_grupo()%>');"><i class="fa fa-edit"></i> Editar</button> &nbsp; &nbsp; &nbsp;
+                    <a href="deleteGrupo.htm?id=<%=task.getId_grupo()%>" class="btn btn-danger btn-xs"  onclick="return confirm('¿Está seguro que desea eliminar el grupo con ID:  <%=task.getId_grupo()%>?');"><i class="fa fa-close"></i>  Eliminar</a></td>  </tr>
                     <%} else{%>
                         <h1>No hay datos</h1>
                     <%}%> 
@@ -408,11 +464,14 @@
                       <!-- action="saveGrupo.htm" method="GET" esto va abajo -->
 		           <form class="form-horizontal" id="form_crearG">
 		              <div class="box-body">
+		              
+		                <input type="hidden" id ="idGrupoE" name="idGrupoE">
+		                
 		                <div class="form-horizontal">
 		                  <label for="inputEmail3" class="col-sm-3 control-label">Ingrese Nombre</label>
 		
 		                  <div class="col-sm-9">
-		                    <input type="text" class="form-control" id="nameGrupo" name="nombre" placeholder="Ej: GrupoUno">
+		                    <input type="text" class="form-control" id="nameGrupoE" name="nombreE" placeholder="Ej: GrupoUno">
 		                  </div>
 		                </div> 
 		                
@@ -422,8 +481,8 @@
 		                
 		                  <label  class="col-sm-3 control-label">Estado</label>
 		                <div class="col-sm-9">
-		                  <select name="estado" id="estadoGrupo" class="form-control select2" style="width: 100%;">
-		                  <option id="estadoG" selected="selected"></option>
+		                  <select name="estadoE" id="estadoGrupoE" class="form-control select2" style="width: 100%;">
+		                  <option id="estadoGE" selected="selected"></option>
 		                  <option>Engorda</option>
 		                  <option>Pradera</option>
 		                  <option>Vendido</option>
@@ -438,7 +497,7 @@
 		                  <label for="inputEmail3" class="col-sm-3 control-label">Peso Total(Kg)</label>
 		
 		                  <div class="col-sm-9">
-		                    <input type="text" class="form-control" id="pesajeGrupo" name="pesaje" placeholder="Ej: 1000">
+		                    <input type="text" class="form-control" id="pesajeGrupoE" name="pesajeE" placeholder="Ej: 1000">
 		                  </div>
 		                </div> 
 		                
@@ -448,7 +507,7 @@
 		                <label  class="col-sm-3 control-label">Fecha de ingreso  <i class="fa fa-calendar"></i></label>
 		                
 		                <div class="col-sm-9">
-		                  <input type="date" id="fechaIn" name="fecha_in" class="form-control pull-right" id="datepicker">
+		                  <input type="date" id="fechaInE" name="fecha_inE" class="form-control pull-right">
 		                </div>
 		              </div>
 		              <br></br>
@@ -457,14 +516,14 @@
 		                <label  class="col-sm-3 control-label">Fecha de salida  <i class="fa fa-calendar"></i></label>
 		                
 		                <div class="col-sm-9">
-		                  <input type="date" id="fechaSa" name="fecha_sa" class="form-control pull-right" id="datepicker">
+		                  <input type="date" id="fechaSaE" name="fecha_saE" class="form-control pull-right" id="datepicker">
 		                </div>
 		              </div>
 		              <br></br>
 		           
-		              <label  class="col-sm-3 control-label">Seleccione vacunos</label>
+		              <!-- label  class="col-sm-3 control-label">Seleccione vacunos</label-->
 		              <!--------------------------- Aqui comienza la tabla------------------- -->
-		              <div class="col-sm-9">
+		              <!--div class="col-sm-9">
 		              <table id="tablaresultado" class="table table-bordered table-hover">
 			             <thead>
 			                <tr>
@@ -475,14 +534,14 @@
 			             <tbody>
 			             </tbody>
 			          </table>
-		              </div>    
+		              </div-->    
 		              </div>
 		              <!-- /.box-body -->
 		              <div class="box-footer">
 		                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
 		                <!-- input type="hidden" name="action" value="saveVacuno.htm"-->
 		                <!-- button type="submit" class="btn btn-info pull-right"><i class="fa fa-floppy-o"> Guardar</i></button-->
-		                <button type="submit" class="btn btn-info pull-right"  onclick="botonCrearG();"><i class="fa fa-floppy-o"></i>  Guardar</button>
+		                <button type="submit" class="btn btn-info pull-right"  onclick="botonActualizarG();"><i class="fa fa-floppy-o"></i>  Guardar</button>
 		              </div>
 		              <!-- /.box-footer -->
 		            </form>

@@ -22,11 +22,16 @@ public class inventarioDAO {
     private static final String READ_VA_INVEN="select vacuno.diio,raza.nombre,vacuno.tipo,pinio_has_vacuno.fechaMov from `pinio_has_vacuno` join `vacuno` on vacuno.idvacuno = pinio_has_vacuno.vacuno_idvacuno join `raza` on (raza.idraza=vacuno.raza_idraza) where pinio_has_vacuno.Pinio_idPinio=?";
     private static final String READ_ALL ="select idPinio,nombrePinio,estado,fechaIngreso,fechaSalida,count(vacuno_idvacuno) as nroVacunos from `pinio` join `pinio_has_vacuno` on(pinio.idPinio = pinio_has_vacuno.Pinio_idPinio) group by idPinio";
     private static final String READ_PEND ="select * from task WHERE estado = FALSE";
-    private static final String DB_NAME="bddjd";
+    private static final String DB_NAME="bddjd_nueva";
     private static final String PORT="3306";
     private static final String URL="jdbc:mysql://localhost/"+DB_NAME;    
     private static final String USER="root";
     private static final String PASSWORD="";
+    /*private static final String DB_NAME="mezapata";
+    private static final String PORT="3306";
+    private static final String URL="jdbc:mysql://146.83.196.166/"+DB_NAME;    
+    private static final String USER="mezapata";
+    private static final String PASSWORD="KrN5EfGXoBA3";*/
     private static Connection conexion = null;
     
     public LinkedList<inventarioTO> readAllInven() throws SQLException{
