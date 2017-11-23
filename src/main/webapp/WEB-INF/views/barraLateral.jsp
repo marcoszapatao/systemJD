@@ -66,8 +66,8 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="#"><i class="fa fa-circle-o"></i> Administrar</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i> Ver</a></li>
+            <li><a href="adminInsumo.htm"><i class="fa fa-circle-o"></i> Administrar</a></li>
+            <li><a href="registrarCompra.htm"><i class="fa fa-circle-o"></i> Registrar compra</a></li>
  
           </ul>
         </li>
