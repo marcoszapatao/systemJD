@@ -1,5 +1,6 @@
 package com.proyecto.controller;
 
+import java.sql.Date;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.HashMap;
@@ -112,6 +113,29 @@ public class insumoController {
 			vista.addObject("lista", daoo.readAllI());
 			vista.setViewName("adminInsumos");
 			return vista;
+	}
+	
+	
+	@RequestMapping(value = "/compra", method = RequestMethod.POST)
+	public ModelAndView compra(
+			@RequestParam(value = "insumo", required = false, defaultValue = "World") String insumo,
+			@RequestParam(value = "proveedor", required = false, defaultValue = "World") String proveedor,
+			@RequestParam(value = "fechaCompra", required = false, defaultValue = "World") String fecha,
+			@RequestParam(value = "documento", required = false, defaultValue = "World") String documento,
+			@RequestParam(value = "cantidad", required = false, defaultValue = "World") int cantidad,
+			ModelAndView vista) throws SQLException {
+		    insumoDAO dao = new insumoDAO();
+		    java.sql.Date fechaC = java.sql.Date.valueOf(fecha);
+		    dao.ingresaCompra(insumo,proveedor,fechaC,documento,cantidad);
+
+			insumoDAO daoi = new insumoDAO();
+			vista.addObject("lista", daoi.readAllI());
+			
+			proveedorDAO daop = new proveedorDAO();
+			vista.addObject("proveedores",daop.readAllP());
+			vista.addObject("compraRegistrada","compraRegistrada");
+		    vista.setViewName("registraCompra");
+		    return vista;
 	}
 	
 

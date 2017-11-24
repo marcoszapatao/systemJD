@@ -9,4 +9,4 @@
     <div class="pull-right hidden-xs">
       <b>Version</b> 1.0.0
     </div>
-      <strong>Desarrollado por <a href="https://adminlte.io">Marcos Zapata Otárola</a> - 2017</strong>   <img src="assets/dist/img/ubblo.png" width="23" height="35">
+      <strong>Desarrollado por <a href="#">Marcos Zapata Otárola</a> Universidad del Bío-Bío - 2017</strong>   <img src="assets/dist/img/ubblo.png" width="23" height="35">

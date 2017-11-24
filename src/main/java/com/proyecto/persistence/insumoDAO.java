@@ -17,6 +17,11 @@ public class insumoDAO {
 	private static final String INSERT_QUERY="insert into insumo(nombreInsumo,descripcion,tipoInsumo_idtipoInsumo) values(?,?,?)";
 	private static final String READ_ALL ="select idinsumo,insumo.nombreInsumo as nombre,insumo.descripcion,tipoinsumo.nombreInsumo as tipo from insumo join tipoinsumo on(insumo.tipoInsumo_idtipoInsumo = tipoinsumo.idtipoInsumo)";  
 	private static final String READ_TIPOS ="select nombreInsumo from tipoinsumo";
+	private static final String READ_DISPONIBLE="select cantidad_actual from cantidad_disponible where insumo_idinsumo=?";
+	private static final String INSERT_COMPRA="insert into insumo_has_proveedor(insumo_idinsumo,proveedor_idproveedor,fechaCompra,nroDocumento,cantidad) values(?,?,?,?,?)";
+	private static final String READ_INSUMO = "select idinsumo from insumo where nombreInsumo=?";
+	private static final String READ_PROVEEDOR="select idproveedor from proveedor where nombre=?";
+	private static final String UPDATE_DISPO="update cantidad_disponible set cantidad_actual=? where insumo_idinsumo=?";
 	private static final String UPDATE_QUERY="UPDATE insumo SET nombreInsumo = ?,descripcion = ?,tipoInsumo_idtipoInsumo = ? WHERE idinsumo=?";
     private static final String READ_QUERY="select idinsumo,insumo.nombreInsumo as nombre,insumo.descripcion,tipoinsumo.nombreInsumo as tipo from insumo join tipoinsumo on(insumo.tipoInsumo_idtipoInsumo = tipoinsumo.idtipoInsumo) and idinsumo=?";
 	private static final String DELETE_QUERY="DELETE FROM insumo WHERE idinsumo=?";
@@ -159,6 +164,57 @@ public class insumoDAO {
     }
     
 
+    public void ingresaCompra(String insumo, String proveedor,Date fecha,String documento, int cantidad) throws SQLException {
+    	
+    	try {
+    	conexion = getConnection();
+        PreparedStatement ps1=conexion.prepareStatement(READ_INSUMO);
+        ps1.setString(1,insumo);
+        ResultSet rs = ps1.executeQuery();
+        int idinsumo=0;
+        if(rs.next()) {
+            idinsumo =rs.getInt(1);
+        }
+        
+    	conexion = getConnection();
+        PreparedStatement ps2=conexion.prepareStatement(READ_PROVEEDOR);
+        ps2.setString(1,proveedor);
+        ResultSet rs2 = ps2.executeQuery();
+        int idproveedor=0;
+        if(rs2.next()) {
+            idproveedor =rs2.getInt(1);
+        }
+        
+    	conexion = getConnection();
+        PreparedStatement ps3=conexion.prepareStatement(INSERT_COMPRA);
+        ps3.setInt(1, idinsumo);
+        ps3.setInt(2, idproveedor);
+        ps3.setDate(3, fecha);
+        ps3.setString(4,documento);
+        ps3.setInt(5, cantidad);
+        ps3.executeUpdate();
+        
+    	conexion = getConnection();
+        PreparedStatement ps4=conexion.prepareStatement(READ_DISPONIBLE);
+        ps4.setInt(1,idinsumo);
+        ResultSet rs3 = ps4.executeQuery();
+        int disponible=0;
+        if(rs3.next()) {
+            disponible =rs3.getInt(1);
+        }
+        
+        int nuevaDisponibilidad = disponible+cantidad;
+        
+    	conexion = getConnection();
+        PreparedStatement ps5=conexion.prepareStatement(UPDATE_DISPO);
+        ps5.setInt(1, nuevaDisponibilidad);
+        ps5.setInt(2, idinsumo);
+        ps5.executeUpdate();
+    	}catch(SQLException e) {
+            System.out.println("ERROR: "+e);
+    	}
+    	
+    }
 	
     private static Connection getConnection(){
         try{

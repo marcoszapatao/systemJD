@@ -78,13 +78,15 @@
 
     <!-- Main content -->
     <section class="content">
+
                    <!-- Horizontal Form -->
           <div class="box box-info">
             <div class="box-header with-border">
               <h3 class="box-title">Registrar compra de insumo</h3>
             </div>
+            
             <!-- /.box-header -->
-            <form class="form-horizontal" action="saveVacuno.htm" method="POST">
+            <form class="form-horizontal" action="compra.htm" method="POST">
               <div class="box-body">
 
                    <% 
@@ -101,7 +103,7 @@
               <div class="form-horizontal">
                   <label  class="col-sm-2 control-label">Insumo</label>
                 <div class="col-sm-10">
-                  <select name="raza" class="form-control select2" style="width: 100%;">
+                  <select name="insumo" class="form-control select2" style="width: 100%;">
                   <option selected="selected">Seleccione una opción</option>
                   <%for(int j=0; j<arr.length;j++){ %>
                   <option><%=arr[j]%></option>
@@ -126,7 +128,7 @@
               <div class="form-horizontal">
                   <label  class="col-sm-2 control-label">Proveedor</label>
                 <div class="col-sm-10">
-                  <select name="raza" class="form-control select2" style="width: 100%;">
+                  <select name="proveedor" class="form-control select2" style="width: 100%;">
                   <option selected="selected">Seleccione una opción</option>
                   <%for(int p=0; p<arreglo.length;p++){ %>
                   <option><%=arreglo[p]%></option>
@@ -140,7 +142,7 @@
              <div class="form-horizontal">
 			 <label  class="col-sm-2 control-label">Fecha  <i class="fa fa-calendar"></i></label>         
 			      <div class="col-sm-10">
-			          <input type="date" name="fecha_in" class="form-control pull-right" id="datepicker">
+			          <input type="date" name="fechaCompra" class="form-control pull-right" id="datepicker">
 			      </div>
 			 </div>
 			 <br></br>
@@ -154,7 +156,7 @@
              <div class="form-horizontal">
 			 <label class="col-sm-2 control-label">Cantidad</label>
 			        <div class="col-sm-10">
-			            <input type="number" min="0" class="form-control" id="inputEmail3" name="diio" required>
+			            <input type="number" min="0" class="form-control" id="inputEmail3" name="cantidad" required>
 			        </div>
 			  </div>
 			  <br></br>
