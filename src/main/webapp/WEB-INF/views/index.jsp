@@ -2,6 +2,7 @@
 <html>
 <head>
  <%@ include file="cabecera.jsp"%>
+ <%@page import="com.proyecto.persistence.vacunoDAO"%>
 </head>
 <body class="hold-transition skin-red sidebar-mini">
 <div class="wrapper">
@@ -29,20 +30,20 @@
     <section class="content">
       <!-- Small boxes (Stat box) -->
       <div class="row">
-
+        <%vacunoDAO vacunito=new vacunoDAO();%>
         <!-- ./col -->
         <div class="col-lg-3 col-xs-6">
           <!-- small box -->
           <div class="small-box bg-green">
             <div class="inner">
-              <h3>1.251<sup style="font-size: 20px"></sup></h3>
+              <h3><%=vacunito.totalVacunos()%><sup style="font-size: 20px"></sup></h3>
 
               <p>N° Total de Vacunos</p>
             </div>
             <div class="icon">
               <i class="ion ion-stats-bars"></i>
             </div>
-            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+            <a href="inventario.htm" class="small-box-footer">Detalles <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
 
@@ -87,7 +88,7 @@
                   <td>Engorda</td>
                   <td>
                     <div class="progress progress-xs">
-                      <div class="progress-bar progress-bar-danger" style="width: 55%"></div>
+                      <div class="progress-bar progress-bar-danger" style="width: 70%"></div>
                     </div>
                   </td>
                   <td><span class="badge bg-red">55%</span></td>
@@ -97,7 +98,7 @@
                   <td>Pradera</td>
                   <td>
                     <div class="progress progress-xs">
-                      <div class="progress-bar progress-bar-yellow" style="width: 70%"></div>
+                      <div class="progress-bar progress-bar-yellow" style="width: 25%"></div>
                     </div>
                   </td>
                   <td><span class="badge bg-yellow">70%</span></td>
@@ -107,7 +108,7 @@
                   <td>Vendido</td>
                   <td>
                     <div class="progress progress-xs progress-striped active">
-                      <div class="progress-bar progress-bar-primary" style="width: 30%"></div>
+                      <div class="progress-bar progress-bar-primary" style="width: 5%"></div>
                     </div>
                   </td>
                   <td><span class="badge bg-light-blue">30%</span></td>
@@ -151,7 +152,7 @@
                   <td>Liposal</td>
                   <td>
                     <div class="progress progress-xs">
-                      <div class="progress-bar progress-bar-danger" style="width: 55%"></div>
+                      <div class="progress-bar progress-bar-danger" style="width: 100%"></div>
                     </div>
                   </td>
                   <td><span class="badge bg-red">55%</span></td>
@@ -161,7 +162,7 @@
                   <td>Algodón</td>
                   <td>
                     <div class="progress progress-xs">
-                      <div class="progress-bar progress-bar-yellow" style="width: 70%"></div>
+                      <div class="progress-bar progress-bar-success" style="width: 70%"></div>
                     </div>
                   </td>
                   <td><span class="badge bg-yellow">70%</span></td>

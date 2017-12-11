@@ -51,7 +51,7 @@
           </a>
         </li>
         <li>
-          <a href="#">
+          <a href="dietas.htm">
             <i class="fa fa-pie-chart"></i>
             <span>Calcular Dieta</span>
           </a>

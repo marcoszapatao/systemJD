@@ -134,7 +134,7 @@
         	        type:"POST",
         	        data: object
         	    }); 
-        window.location.reload(true);
+        //window.location.reload(true);
         /*------------------FIN PRUEBAS-------------*/
         
         /*Usando ajax*/

@@ -16,10 +16,13 @@ import com.proyecto.transferObject.vacunoTO;
 public class insumoDAO {
 	private static final String INSERT_QUERY="insert into insumo(nombreInsumo,descripcion,tipoInsumo_idtipoInsumo) values(?,?,?)";
 	private static final String READ_ALL ="select idinsumo,insumo.nombreInsumo as nombre,insumo.descripcion,tipoinsumo.nombreInsumo as tipo from insumo join tipoinsumo on(insumo.tipoInsumo_idtipoInsumo = tipoinsumo.idtipoInsumo)";  
+	private static final String READ_ALLA ="select idinsumo,insumo.nombreInsumo as nombre,insumo.descripcion,tipoinsumo.nombreInsumo as tipo from insumo join tipoinsumo on(insumo.tipoInsumo_idtipoInsumo = tipoinsumo.idtipoInsumo) where tipoInsumo_idtipoInsumo=1";  
 	private static final String READ_TIPOS ="select nombreInsumo from tipoinsumo";
+	private static final String READ_IDINSUMO ="select idinsumo from insumo where nombreInsumo=?";
 	private static final String READ_DISPONIBLE="select cantidad_actual from cantidad_disponible where insumo_idinsumo=?";
-	private static final String INSERT_COMPRA="insert into insumo_has_proveedor(insumo_idinsumo,proveedor_idproveedor,fechaCompra,nroDocumento,cantidad) values(?,?,?,?,?)";
+	private static final String INSERT_COMPRA="insert into insumo_has_proveedor(insumo_idinsumo,proveedor_idproveedor,fechaCompra,nroDocumento,cantidad,precio) values(?,?,?,?,?,?)";
 	private static final String READ_INSUMO = "select idinsumo from insumo where nombreInsumo=?";
+	private static final String INSERT_STOCK="insert into cantidad_disponible(cantidad_actual,insumo_idinsumo) values(?,?)";
 	private static final String READ_PROVEEDOR="select idproveedor from proveedor where nombre=?";
 	private static final String UPDATE_DISPO="update cantidad_disponible set cantidad_actual=? where insumo_idinsumo=?";
 	private static final String UPDATE_QUERY="UPDATE insumo SET nombreInsumo = ?,descripcion = ?,tipoInsumo_idtipoInsumo = ? WHERE idinsumo=?";
@@ -58,6 +61,30 @@ public class insumoDAO {
     return lista;
 }
 	
+	public LinkedList<insumoTO> readAllAlimento() throws SQLException{
+	    LinkedList<insumoTO> lista = new LinkedList<>();
+	    insumoTO result = null;
+	    Connection conn = null;
+	    try {
+	        conn = getConnection();
+	        PreparedStatement ps = conn.prepareStatement(READ_ALLA);
+	        ResultSet rs = ps.executeQuery();
+	        while(rs.next()){
+	            result= new insumoTO();
+	            result.setId_insumo(rs.getInt("idinsumo"));
+	            result.setNombre_insumo(rs.getString("nombre"));
+	            result.setDescripcion_insumo(rs.getString("descripcion"));
+	            result.setTipoInsumo(rs.getString("tipo"));
+	            lista.add(result);
+	        }
+	    } catch (SQLException ex) {
+	        Logger.getLogger(vacunoDAO.class.getName()).log(Level.SEVERE, null, ex);
+	    } finally{
+	        conn.close();
+	    }
+	    return lista;
+	}
+	
 	
 	public int createInsumo(insumoTO insumo) throws SQLException{
         int result =0;
@@ -78,6 +105,21 @@ public class insumoDAO {
         ps.setInt(3, idtipo);
         ps.executeUpdate();
         result = 1;
+        
+        PreparedStatement ps2 = conexion.prepareStatement(READ_IDINSUMO);
+        ps2.setString(1, insumo.getNombre_insumo());
+        ResultSet rs2 = ps2.executeQuery();
+        int idInsumo=0;
+        if(rs2.next()) {
+        	idInsumo = rs2.getInt(1);
+        }
+        conexion = getConnection();
+        PreparedStatement ps3 = conexion.prepareStatement(INSERT_STOCK);
+        float j =0;
+        ps3.setFloat(1,j);
+        ps3.setInt(2,idInsumo);
+        ps3.executeUpdate();
+        
         }catch(SQLException e){
             System.out.println(e);
         }finally{
@@ -164,7 +206,7 @@ public class insumoDAO {
     }
     
 
-    public void ingresaCompra(String insumo, String proveedor,Date fecha,String documento, int cantidad) throws SQLException {
+    public void ingresaCompra(String insumo, String proveedor,Date fecha,String documento, int cantidad, int precio) throws SQLException {
     	
     	try {
     	conexion = getConnection();
@@ -192,22 +234,23 @@ public class insumoDAO {
         ps3.setDate(3, fecha);
         ps3.setString(4,documento);
         ps3.setInt(5, cantidad);
+        ps3.setInt(6, precio);
         ps3.executeUpdate();
         
     	conexion = getConnection();
         PreparedStatement ps4=conexion.prepareStatement(READ_DISPONIBLE);
         ps4.setInt(1,idinsumo);
         ResultSet rs3 = ps4.executeQuery();
-        int disponible=0;
+        float disponible=0;
         if(rs3.next()) {
-            disponible =rs3.getInt(1);
+            disponible =rs3.getFloat(1);
         }
         
-        int nuevaDisponibilidad = disponible+cantidad;
+        float nuevaDisponibilidad = disponible+cantidad;
         
     	conexion = getConnection();
         PreparedStatement ps5=conexion.prepareStatement(UPDATE_DISPO);
-        ps5.setInt(1, nuevaDisponibilidad);
+        ps5.setFloat(1, nuevaDisponibilidad);
         ps5.setInt(2, idinsumo);
         ps5.executeUpdate();
     	}catch(SQLException e) {

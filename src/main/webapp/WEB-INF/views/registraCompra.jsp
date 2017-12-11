@@ -160,6 +160,13 @@
 			        </div>
 			  </div>
 			  <br></br>
+			 <div class="form-horizontal">
+			 <label class="col-sm-2 control-label">Precio</label>
+			        <div class="col-sm-10">
+			            <input type="number" min="0" class="form-control" id="inputEmail4" name="precio" required>
+			        </div>
+			  </div>
+			  <br></br>
                   
               </div>
               <!-- /.box-body -->

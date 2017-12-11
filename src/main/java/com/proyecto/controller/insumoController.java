@@ -123,10 +123,11 @@ public class insumoController {
 			@RequestParam(value = "fechaCompra", required = false, defaultValue = "World") String fecha,
 			@RequestParam(value = "documento", required = false, defaultValue = "World") String documento,
 			@RequestParam(value = "cantidad", required = false, defaultValue = "World") int cantidad,
+			@RequestParam(value = "precio", required = false, defaultValue = "World") int precio,
 			ModelAndView vista) throws SQLException {
 		    insumoDAO dao = new insumoDAO();
 		    java.sql.Date fechaC = java.sql.Date.valueOf(fecha);
-		    dao.ingresaCompra(insumo,proveedor,fechaC,documento,cantidad);
+		    dao.ingresaCompra(insumo,proveedor,fechaC,documento,cantidad,precio);
 
 			insumoDAO daoi = new insumoDAO();
 			vista.addObject("lista", daoi.readAllI());

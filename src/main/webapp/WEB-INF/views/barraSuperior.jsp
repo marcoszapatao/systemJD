@@ -7,7 +7,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
     <!-- Logo -->
-    <a href="index.jsp" class="logo">
+    <a  href="login.htm" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><b></b>JD</span>
       <!-- logo for regular state and mobile devices -->
