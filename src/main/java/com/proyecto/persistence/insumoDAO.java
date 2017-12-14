@@ -10,6 +10,7 @@ import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.proyecto.transferObject.cantidadDisponibleTO;
 import com.proyecto.transferObject.insumoTO;
 import com.proyecto.transferObject.vacunoTO;
 
@@ -28,8 +29,12 @@ public class insumoDAO {
 	private static final String UPDATE_QUERY="UPDATE insumo SET nombreInsumo = ?,descripcion = ?,tipoInsumo_idtipoInsumo = ? WHERE idinsumo=?";
     private static final String READ_QUERY="select idinsumo,insumo.nombreInsumo as nombre,insumo.descripcion,tipoinsumo.nombreInsumo as tipo from insumo join tipoinsumo on(insumo.tipoInsumo_idtipoInsumo = tipoinsumo.idtipoInsumo) and idinsumo=?";
 	private static final String DELETE_QUERY="DELETE FROM insumo WHERE idinsumo=?";
+	private static final String READ_GASTOS="SELECT sum(precio) FROM `insumo_has_proveedor` WHERE `insumo_has_proveedor`.`fechaCompra` BETWEEN '2017-12-01' and '2017-12-31'";
 	private static final String READ_NOMBRETIPO="select idtipoInsumo from tipoinsumo where nombreInsumo=?";
-    private static final String READ_PEND ="select * from task WHERE estado = FALSE";
+    private static final String READ_CANDIST="select * from cantidad_disponible";
+    private static final String DELETE_STOCK="delete from cantidad_disponible where insumo_idinsumo=?";
+    private static final String DELETE_INSUMOPROVEEDOR ="delete from insumo_has_proveedor where insumo_idinsumo=?";
+	
     private static final String DB_NAME="bddjd_nueva";
     private static final String PORT="3306";
     private static final String URL="jdbc:mysql://localhost/"+DB_NAME;    
@@ -133,6 +138,20 @@ public class insumoDAO {
     public boolean deleteInsumo(int id) throws SQLException{
         boolean resultado = false;
         try{
+        	/*Elimina tupla en cantidad_disponible*/
+            conexion = getConnection();
+            PreparedStatement ps1 = conexion.prepareStatement(DELETE_STOCK);
+            ps1.setInt(1,id);
+            ps1.executeUpdate();
+            
+            /*Elimina desde insumo_has_proveedor*/
+            conexion = getConnection();
+            PreparedStatement ps2 = conexion.prepareStatement(DELETE_INSUMOPROVEEDOR);
+            ps2.setInt(1,id);
+            ps2.executeUpdate();
+            
+            
+          /*Elimina desde tabla insumos*/  
           conexion = getConnection();
           PreparedStatement ps = conexion.prepareStatement(DELETE_QUERY);
           ps.setInt(1,id);
@@ -259,6 +278,43 @@ public class insumoDAO {
     	
     }
 	
+    public int obtieneGastos() throws SQLException{
+    	conexion = getConnection();
+        PreparedStatement ps=conexion.prepareStatement(READ_GASTOS);
+        //ps.setInt(1,idinsumo);
+        ResultSet rs = ps.executeQuery();
+        int gastos=0;
+        if(rs.next()) {
+            gastos =rs.getInt(1);
+        }
+        return gastos;
+    }
+    
+    public LinkedList<cantidadDisponibleTO> verCantidadDisponible() throws SQLException{
+        LinkedList<cantidadDisponibleTO> lista = new LinkedList<>();
+        cantidadDisponibleTO result = null;
+        Connection conn = null;
+        try {
+            conn = getConnection();
+            PreparedStatement ps = conn.prepareStatement(READ_CANDIST);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                result= new cantidadDisponibleTO();
+                result.setIdCantidadDisponible(rs.getInt("idcantidad_disponible"));
+                result.setCantidadActual(rs.getFloat("cantidad_actual"));
+                result.setIdInsumo(rs.getInt("insumo_idinsumo"));
+                
+                lista.add(result);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(vacunoDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally{
+            conn.close();
+        }
+        return lista;
+    }
+    
+    
     private static Connection getConnection(){
         try{
             Class.forName("com.mysql.jdbc.Driver");

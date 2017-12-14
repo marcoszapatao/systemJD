@@ -5,6 +5,7 @@
 --%>
 <%@page import="java.util.LinkedList"%>
 <%@page import="com.proyecto.transferObject.insumoTO"%>
+<%@page import="com.proyecto.transferObject.cantidadDisponibleTO"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>  
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -124,6 +125,7 @@
                   <th>Nombre</th>
                   <th>Descripcion</th> 
                   <th>Tipo</th>
+                  <th>Stock (Kg)</th>
                   <th>Acciones</th>
                   
                 </tr>
@@ -132,11 +134,13 @@
 
                     <% 
                     LinkedList<insumoTO> list = (LinkedList<insumoTO>) request.getAttribute("lista");
-                    if(list != null)
+                    LinkedList<cantidadDisponibleTO> list2 = (LinkedList<cantidadDisponibleTO>) request.getAttribute("cantidad");
+                    if(list != null && list2 != null)
                         for (int i = 0; i < list.size(); i++) {
                             insumoTO task = list.get(i);
+                            cantidadDisponibleTO cantidad = list2.get(i);
                     %>
-                    <tr> <td><%=task.getId_insumo()%></td> <td><%=task.getNombre_insumo()%></td> <td><%=task.getDescripcion_insumo()%></td> <td><%=task.getTipoInsumo()%></td> 
+                    <tr> <td><%=task.getId_insumo()%></td> <td><%=task.getNombre_insumo()%></td> <td><%=task.getDescripcion_insumo()%></td> <td><%=task.getTipoInsumo()%></td> <td><%=cantidad.getCantidadActual()%></td>
                     <td>
                      <!--input type="hidden" id="idvacuno" value="<%=task.getId_insumo()%>"/-->
                      <button type="button" class="btn btn-success btn-xs"  onclick="botonEdit('<%=task.getId_insumo()%>');"><i class="fa fa-edit"></i> Editar</button>
@@ -153,6 +157,7 @@
                   <th>Nombre</th>
                   <th>Descripción</th>
                   <th>Tipo</th>
+                  <th>Stock (Kg)</th>
                   <th>Acciones</th>
             
                   

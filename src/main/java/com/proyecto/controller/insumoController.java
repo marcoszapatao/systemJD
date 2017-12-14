@@ -1,37 +1,61 @@
 package com.proyecto.controller;
 
-import java.sql.Date;
+
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.LinkedList;
 
-import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+
 import com.proyecto.persistence.insumoDAO;
 import com.proyecto.persistence.proveedorDAO;
-import com.proyecto.persistence.vacunoDAO;
+import com.proyecto.transferObject.cantidadDisponibleTO;
 import com.proyecto.transferObject.insumoTO;
-import com.proyecto.transferObject.vacunoTO;
 
 @Controller
 public class insumoController {
 	@RequestMapping(value = "adminInsumo")
 	public ModelAndView admin(ModelAndView vista) throws SQLException, ParseException {
+		/*insumoDAO dao = new insumoDAO();
 		
-		insumoDAO dao = new insumoDAO();
 		vista.addObject("lista", dao.readAllI());
+		vista.addObject("cantidad",dao.readCantidadDisponible());
 		vista.setViewName("adminInsumos");
 		
 	
+		return vista;*/
+		insumoDAO insumoDAO = new insumoDAO();
+		LinkedList<insumoTO> lista = new LinkedList<>();
+		//MenuDAO menuDAO = new MenuDAO();
+		cantidadDisponibleTO cantidadTO = new cantidadDisponibleTO();
+		LinkedList<cantidadDisponibleTO> listaMenu = new LinkedList<>();
+		if (!insumoDAO.verCantidadDisponible().isEmpty()) {
+			listaMenu = insumoDAO.verCantidadDisponible();
+			// paso a la vista el promedio de las valoraciones de los menús
+			vista.addObject("cantidad", listaMenu);
+
+			// ahora buscar la info del menu para mostrarla
+			for (int i = 0; i < listaMenu.size(); i++) {
+				int idInsumo=listaMenu.get(i).getIdInsumo();
+				lista.add(insumoDAO.read(idInsumo));
+
+			}
+
+			vista.addObject("lista", lista);
+			vista.setViewName("adminInsumos");
+			
+		} else {
+			vista.setViewName("login");
+			
+		}
+
 		return vista;
 	}
 	
@@ -61,10 +85,34 @@ public class insumoController {
             to.setDescripcion_insumo(descripcion);
             to.setTipoInsumo(tipo);
 			dao.createInsumo(to);
-	
+	        /*
 	        insumoDAO daoo = new insumoDAO();
 			vista.addObject("lista", daoo.readAllI());
 			vista.setViewName("adminInsumos");
+			return vista;*/
+			insumoDAO insumoDAO = new insumoDAO();
+			LinkedList<insumoTO> lista = new LinkedList<>();
+			cantidadDisponibleTO cantidadTO = new cantidadDisponibleTO();
+			LinkedList<cantidadDisponibleTO> listaMenu = new LinkedList<>();
+			if (!insumoDAO.verCantidadDisponible().isEmpty()) {
+				listaMenu = insumoDAO.verCantidadDisponible();
+		
+				vista.addObject("cantidad", listaMenu);
+
+				for (int i = 0; i < listaMenu.size(); i++) {
+					int idInsumo=listaMenu.get(i).getIdInsumo();
+					lista.add(insumoDAO.read(idInsumo));
+
+				}
+
+				vista.addObject("lista", lista);
+				vista.setViewName("adminInsumos");
+				
+			} else {
+				vista.setViewName("login");
+				
+			}
+
 			return vista;
 	}
 	
@@ -74,9 +122,36 @@ public class insumoController {
 		insumoDAO dao = new insumoDAO();
         dao.deleteInsumo(id);
 		
+        /*
         insumoDAO daoo = new insumoDAO();
 		vista.addObject("lista", daoo.readAllI());
 		vista.setViewName("adminInsumos");
+		return vista;*/
+        
+        insumoDAO insumoDAO = new insumoDAO();
+		LinkedList<insumoTO> lista = new LinkedList<>();
+		cantidadDisponibleTO cantidadTO = new cantidadDisponibleTO();
+		LinkedList<cantidadDisponibleTO> listaMenu = new LinkedList<>();
+		if (!insumoDAO.verCantidadDisponible().isEmpty()) {
+			listaMenu = insumoDAO.verCantidadDisponible();
+			// paso a la vista el promedio de las valoraciones de los menús
+			vista.addObject("cantidad", listaMenu);
+
+			// ahora buscar la info del menu para mostrarla
+			for (int i = 0; i < listaMenu.size(); i++) {
+				int idInsumo=listaMenu.get(i).getIdInsumo();
+				lista.add(insumoDAO.read(idInsumo));
+
+			}
+
+			vista.addObject("lista", lista);
+			vista.setViewName("adminInsumos");
+			
+		} else {
+			vista.setViewName("login");
+			
+		}
+
 		return vista;
 	}
 	
@@ -108,10 +183,35 @@ public class insumoController {
 	        to.setDescripcion_insumo(descripcion);
 	        to.setTipoInsumo(tipo);
 	        dao.update(to);
-			
+			/*
 	        insumoDAO daoo = new insumoDAO();
 			vista.addObject("lista", daoo.readAllI());
 			vista.setViewName("adminInsumos");
+			return vista;*/
+	        insumoDAO insumoDAO = new insumoDAO();
+			LinkedList<insumoTO> lista = new LinkedList<>();
+			cantidadDisponibleTO cantidadTO = new cantidadDisponibleTO();
+			LinkedList<cantidadDisponibleTO> listaMenu = new LinkedList<>();
+			if (!insumoDAO.verCantidadDisponible().isEmpty()) {
+				listaMenu = insumoDAO.verCantidadDisponible();
+				// paso a la vista el promedio de las valoraciones de los menús
+				vista.addObject("cantidad", listaMenu);
+
+				// ahora buscar la info del menu para mostrarla
+				for (int i = 0; i < listaMenu.size(); i++) {
+					int idInsumo=listaMenu.get(i).getIdInsumo();
+					lista.add(insumoDAO.read(idInsumo));
+
+				}
+
+				vista.addObject("lista", lista);
+				vista.setViewName("adminInsumos");
+				
+			} else {
+				vista.setViewName("login");
+				
+			}
+
 			return vista;
 	}
 	

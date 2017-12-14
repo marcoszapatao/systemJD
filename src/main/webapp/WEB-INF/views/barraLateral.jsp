@@ -27,7 +27,7 @@
           </a>
           <ul class="treeview-menu">
             <li class="active"><a href="admin.htm"><i class="fa fa-circle-o"></i> Administrar</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i> Ver</a></li>
+           
           </ul>
         </li>
         <li class="treeview">
@@ -41,7 +41,7 @@
           </a>
           <ul class="treeview-menu">
             <li><a href="adminGrupo.htm"><i class="fa fa-circle-o"></i> Administrar</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i> Ver</a></li>
+            
             
           </ul>
         </li>
@@ -92,7 +92,7 @@
             <li><a href="pages/tables/simple.html"><i class="fa fa-circle-o"></i> Usuarios</a></li>
             <li><a href="pages/tables/data.html"><i class="fa fa-circle-o"></i> Proveedores</a></li>
             <li><a href="#"><i class="fa fa-circle-o"></i> Razas</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i> Patios de alimentaciÃ³n</a></li>
+            <li><a href="#"><i class="fa fa-circle-o"></i> Patios de alimentación</a></li>
           </ul>
         </li>
       </ul>

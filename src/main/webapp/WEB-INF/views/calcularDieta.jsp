@@ -41,36 +41,6 @@
 		  </style>
         <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
         <script>
-        /*
-          function botonCalcula(tamano){
-        	  var uno = 1;
-        	  var size = (parseInt(tamano) + parseInt(uno));
-        	  var checkedValue = ["Inicio"];
-        	 for(var i=1; i<size; i++){
-            	 //alert(i);
-        		 var message = "messageCheckbox";
-        		 var letra = i;
-        		 var res = message.concat(letra);
-        		 var valor =$('.'+res+':checked').val();
-        		 if(valor === undefined){
-                	 
-                 }else{
-            		 checkedValue.push(valor);
-                 }
-        	 }
-        	  var grupo = jQuery("#grupo").val();
-        	  //alert("ID:" + grupo);
-        	  var semana = jQuery("#semana").val();
-        	  //alert("grupo: "+grupo+"semana: "+semana + "insumos: " + checkedValue);
-        	  var object = {grupo:grupo,semana:semana};
-        	  jQuery.ajax(
-              	    {
-                        url:"/systemjd/calculando.htm?insumos="+checkedValue,        		  
-               	        type:"POST",
-              	        data: object,
-                        
-              	    });
-          }*/
           function botonCalcula(tamano){
         	  var uno = 1;
         	  var size = (parseInt(tamano) + parseInt(uno));
@@ -141,7 +111,8 @@
           }); 
           
           function peticion(valor){
-        	     alert(valor);
+        	     //alert(valor);
+        	     confirm("¿Está seguro que desea registrar dieta?");
 	           	 $.ajax({
 	       			 type:'POST',
 	       			 url:"/systemjd/descontar.htm?valores="+valor,
@@ -289,7 +260,7 @@
 			    <div class="modal-content">
 					      <div class="modal-header">
 					        <button type="button" class="close" data-dismiss="modal">&times;</button>
-					        <h4 class="modal-title"><font color="white">Vacunos en grupo:</font></h4>
+					        <h4 class="modal-title"><font color="white">Resultado cálculo de dietas:</font></h4>
 					      </div>
 					      <div class="modal-body">
 					       <center>
@@ -330,7 +301,16 @@
 	          </div>
 	        </div>
 	        <div class="box-body">
-	          Start creating your amazing application!
+	          El cálculo de dietas, corresponde al proceso de definir que cantidad de insumo se debe agregar a la
+	          mezcla con la que se alimentan los vacunos que se encuentran en engorda, esto viene definido según
+	          una cantidad de insumo que debe consumir al día un vacuno, además esta cantidad de insumo varia según 
+	          el tiempo de permanencia del grupo de vacunos en la empresa, ya sea una, dos, tres o cuatro semanas, 
+	          si lleva más tiempo se mantiene la dieta de la semana cuatro. Por ejemplo, si de sea calcular la dieta
+	          para un grupo de vacunos que contiene 20 animales, para un insumo X, y este tiene definida una cantidad
+	          de 0,05 Kg en cada comida para la primera semana, se procede a realizar el cálculo: 20*0,05*3 = 3. Este 
+	          resultado indica que este grupo de vacunos al día consume 3 Kg del insumo X, lo cual al momento de registrar 
+	          el cálculo de la dieta, se traduce en el descuento de 3 Kg de este insumo desde el stock disponible.
+	         
 	        </div>
 	        <!-- /.box-body -->
 	      </div>

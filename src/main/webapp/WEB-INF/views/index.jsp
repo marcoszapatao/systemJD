@@ -3,6 +3,7 @@
 <head>
  <%@ include file="cabecera.jsp"%>
  <%@page import="com.proyecto.persistence.vacunoDAO"%>
+  <%@page import="com.proyecto.persistence.insumoDAO"%>
 </head>
 <body class="hold-transition skin-red sidebar-mini">
 <div class="wrapper">
@@ -31,6 +32,7 @@
       <!-- Small boxes (Stat box) -->
       <div class="row">
         <%vacunoDAO vacunito=new vacunoDAO();%>
+        <%insumoDAO insumo= new insumoDAO(); %>
         <!-- ./col -->
         <div class="col-lg-3 col-xs-6">
           <!-- small box -->
@@ -52,14 +54,14 @@
           <!-- small box -->
           <div class="small-box bg-red">
             <div class="inner">
-              <h3>$2.167.470</h3>
+              <h3>$<%=insumo.obtieneGastos()%></h3>
 
-              <p>Gastos de Septiembre</p>
+              <p>Gastos del mes actual</p>
             </div>
             <div class="icon">
               <i class="ion ion-pie-graph"></i>
             </div>
-            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+            <a href="#" class="small-box-footer">Detalles <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
       </div>
