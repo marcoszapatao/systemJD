@@ -71,13 +71,10 @@
  
           </ul>
         </li>
-        <li class="treeview">
-          <a href="#">
+        <li>
+          <a href="generarInforme.htm">
             <i class="fa fa-file-pdf-o"></i> <span>Generar Reporte</span>
-            <span class="pull-right-container">
-              <!--i class="fa fa-angle-left pull-right"></i-->
-              <span class="label label-primary pull-right"></span>
-            </span>
+
           </a>
 
         </li>

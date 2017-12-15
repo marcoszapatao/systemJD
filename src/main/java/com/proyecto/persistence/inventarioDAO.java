@@ -21,6 +21,7 @@ public class inventarioDAO {
     private static final String READ_QUERY="select * from task where id=?";
     private static final String READ_VA_INVEN="select vacuno.diio,raza.nombre,vacuno.tipo,pinio_has_vacuno.fechaMov from `pinio_has_vacuno` join `vacuno` on vacuno.idvacuno = pinio_has_vacuno.vacuno_idvacuno join `raza` on (raza.idraza=vacuno.raza_idraza) where pinio_has_vacuno.Pinio_idPinio=?";
     private static final String READ_ALL ="select idPinio,nombrePinio,estado,fechaIngreso,fechaSalida,count(vacuno_idvacuno) as nroVacunos from `pinio` join `pinio_has_vacuno` on(pinio.idPinio = pinio_has_vacuno.Pinio_idPinio) group by idPinio";
+    private static final String READ_ALLXFECHA ="select idPinio,nombrePinio,estado,fechaIngreso,fechaSalida,count(vacuno_idvacuno) as nroVacunos from `pinio` join `pinio_has_vacuno` on(pinio.idPinio = pinio_has_vacuno.Pinio_idPinio) where fechaIngreso between ? and ? group by idPinio";
     private static final String READ_PEND ="select * from task WHERE estado = FALSE";
     private static final String DB_NAME="bddjd_nueva";
     private static final String PORT="3306";
@@ -41,6 +42,35 @@ public class inventarioDAO {
         try {
             getConnection();
             PreparedStatement ps = conexion.prepareStatement(READ_ALL);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                result= new inventarioTO();
+                result.setId_grupo(rs.getInt("idPinio"));
+                result.setNombre(rs.getString("nombrePinio"));
+                result.setNroAnimales(rs.getInt("nroVacunos"));
+                result.setEstado(rs.getString("estado"));
+                result.setFecha_ingreso(rs.getDate("fechaIngreso"));
+                result.setFecha_Salida(rs.getDate("fechaSalida"));
+                
+                list.add(result);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(grupoDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally{
+            conexion.close();
+        }
+        return list;
+    }
+    
+    public LinkedList<inventarioTO> readAllInvenxFecha(String fechaI, String fechaT) throws SQLException{
+        LinkedList<inventarioTO> list = new LinkedList<>();
+        inventarioTO result = null;
+        
+        try {
+            getConnection();
+            PreparedStatement ps = conexion.prepareStatement(READ_ALLXFECHA);
+            ps.setString(1,fechaI);
+            ps.setString(2, fechaT);
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
                 result= new inventarioTO();
