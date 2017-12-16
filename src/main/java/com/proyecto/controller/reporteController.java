@@ -44,7 +44,9 @@ import com.lowagie.text.Paragraph;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
+import com.proyecto.persistence.grupoDAO;
 import com.proyecto.persistence.inventarioDAO;
+import com.proyecto.persistence.vacunoDAO;
 import com.proyecto.transferObject.inventarioTO;
 
 @Controller
@@ -97,6 +99,8 @@ public class reporteController {
 
 		}
 		}
+		
+		if(tipo ==1) {
 		/*AQUI COMIENZA GENERACION DE REPORTE*/
 		inventarioDAO inventario = new inventarioDAO();
 		LinkedList<inventarioTO> inven = new LinkedList<inventarioTO>();
@@ -131,37 +135,97 @@ public class reporteController {
 		// color, etc.
 		Paragraph titulo = new Paragraph();
 		Paragraph saltolinea = new Paragraph();
+		Paragraph mensaje = new Paragraph();
+		Paragraph fechaIn = new Paragraph();
+		Paragraph fechaTe = new Paragraph();
+		Paragraph totalV = new Paragraph();
+		Paragraph tituloTipo = new Paragraph();
+		Paragraph tipoV = new Paragraph();
+		Paragraph tipoVa = new Paragraph();
+		Paragraph tipoT= new Paragraph();
+		Paragraph tituloEstado = new Paragraph();
+		Paragraph estadoEn = new Paragraph();
+		Paragraph estadoP = new Paragraph();
+		Paragraph estadoV = new Paragraph();
 		Paragraph footer = new Paragraph();
 
 		Image imagen = Image
-				.getInstance("http://www.carnesjd.cl/src/img/facebook/face_4.jpg");
-
-		imagen.scalePercent(75f);
+				.getInstance("C:\\Users\\Marcosz\\Desktop\\DOC_Tesis\\logoJD.jpg");
+		//http://www.carnesjd.cl/src/img/facebook/face_4.jpg
+		
+		imagen.scalePercent(15f);
 		imagen.setAlignment(Element.ALIGN_JUSTIFIED);
 
 		titulo.setFont(FontFactory.getFont("Times New Roman", 14, Font.BOLD));
 
-		titulo.add("Informe Inventario de animales");
+		titulo.add("Sistema de gestión de engorda de vacunos");
 
 		titulo.setAlignment(Element.ALIGN_CENTER);
-
+        
+		mensaje.setFont(FontFactory.getFont("Times New Roman",12));
+		mensaje.add("Reporte: Inventario de animales");
+		
+		fechaIn.setFont(FontFactory.getFont("Times New Roman",12));
+		fechaIn.add("Fecha Inicio: "+fechaI);
+		
+		fechaTe.setFont(FontFactory.getFont("Times New Roman",12));
+		fechaTe.add("Fecha Término: "+fechaT);
+		
+		vacunoDAO vacuno = new vacunoDAO();
+		int nro = vacuno.totalVacunos();
+		totalV.setFont(FontFactory.getFont("Times Nwe Roman",12));
+		totalV.add("Total de vacunos: "+nro);
+		
+		tituloTipo.setFont(FontFactory.getFont("Times New Roman",12,Font.BOLD));
+		tituloTipo.add("Tipo");
+		
+		int nroV = vacuno.totalVacunosTipo("Vacuno");
+		tipoV.setFont(FontFactory.getFont("Times New Roman",12));
+		tipoV.add("Vacunos: "+nroV);
+		
+		int nroVa = vacuno.totalVacunosTipo("Vaquilla");
+		tipoVa.setFont(FontFactory.getFont("Times New Roman",12));
+		tipoVa.add("Vaquilla: "+nroVa);
+		
+		int nroT = vacuno.totalVacunosTipo("Toro");
+		tipoT.setFont(FontFactory.getFont("Times New Roman",12));
+		tipoT.add("Toro: "+nroT);
+		
+		tituloEstado.setFont(FontFactory.getFont("Times New Roman",12,Font.BOLD));
+		tituloEstado.add("Estado");
+		
+		grupoDAO grupo = new grupoDAO();
+		int nroEs = grupo.totalVacunosEstado("Engorda");
+		estadoEn.setFont(FontFactory.getFont("Times New Roman",12));
+		estadoEn.add("Engorda: "+nroEs);
+		
+		int nroEsP = grupo.totalVacunosEstado("Pradera");
+		estadoP.setFont(FontFactory.getFont("Times New Roman",12));
+		estadoP.add("Pradera: "+nroEsP);
+		
+		int nroEsV = grupo.totalVacunosEstado("Pradera");
+		estadoV.setFont(FontFactory.getFont("Times New Roman",12));
+		estadoV.add("Vendido: "+nroEsV);
+		
 		// creamos la tabla con 3 columnas
 		PdfPTable tabla = new PdfPTable(4);
 		// añadimos contenido a las celdas
 
 		// Cabecera
 		tabla.addCell(new Paragraph("Nombre", FontFactory.getFont("arial", 14, Font.BOLD)));
-		tabla.addCell(new Paragraph("Tipo", FontFactory.getFont("arial", 14, Font.BOLD)));
-		tabla.addCell(new Paragraph("Precio", FontFactory.getFont("arial", 14, Font.BOLD)));
-		tabla.addCell(new Paragraph("Total Vendidos", FontFactory.getFont("arial", 14, Font.BOLD)));
+		tabla.addCell(new Paragraph("Estado", FontFactory.getFont("arial", 14, Font.BOLD)));
+		tabla.addCell(new Paragraph("Fecha Ingreso", FontFactory.getFont("arial", 14, Font.BOLD)));
+		tabla.addCell(new Paragraph("Nro. de animales", FontFactory.getFont("arial", 14, Font.BOLD)));
 
 		// Contenido
-
+		int total = 0;
 		for (int i = 0; i < inven.size(); i++) {
 			tabla.addCell(new Paragraph(inven.get(i).getNombre()));
 			tabla.addCell(new Paragraph(inven.get(i).getEstado()));
 			tabla.addCell(new Paragraph(("" + inven.get(i).getFecha_ingreso())));
 			tabla.addCell(new Paragraph("" + inven.get(i).getNroAnimales()));
+			int totalAnimales = inven.get(i).getNroAnimales();
+			total = total + totalAnimales ;
 		}
 
 		PdfPCell celdaFinal = new PdfPCell(new Paragraph("Total"));
@@ -169,7 +233,7 @@ public class reporteController {
 		// Indicamos cuantas columnas ocupa la celda
 		celdaFinal.setColspan(3);
 		tabla.addCell(celdaFinal);
-		tabla.addCell(new Paragraph("" + sesion.getAttribute("total")));
+		tabla.addCell(new Paragraph("" + total));
 
 		try {
 			// Agregamos el texto al documento.
@@ -180,6 +244,31 @@ public class reporteController {
 			documento.add(saltolinea);
 			documento.add(titulo);
 			documento.add(saltolinea);
+			documento.add(mensaje);
+			documento.add(saltolinea);
+			documento.add(fechaIn);
+			documento.add(saltolinea);
+			documento.add(fechaTe);
+			documento.add(saltolinea);
+			documento.add(totalV);
+			documento.add(saltolinea);
+			documento.add(saltolinea);
+			documento.add(tituloTipo);
+			documento.add(saltolinea);
+			documento.add(tipoV);
+			documento.add(saltolinea);
+			documento.add(tipoVa);
+			documento.add(saltolinea);
+			documento.add(tipoT);
+			documento.add(saltolinea);
+			documento.add(tituloEstado);
+			documento.add(saltolinea);
+			documento.add(estadoEn);
+			documento.add(saltolinea);
+			documento.add(estadoP);
+			documento.add(saltolinea);
+			documento.add(estadoV);
+			
 			documento.add(vacio1);
 			documento.add(tabla);
 			documento.add(saltolinea);
@@ -219,5 +308,9 @@ public class reporteController {
 		
 		vista.setViewName("generarReporte");
 		return vista;
+		}else {
+			vista.setViewName("generarReporte");
+			return vista;
+		}
 	}
 }

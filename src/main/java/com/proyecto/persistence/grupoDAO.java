@@ -25,7 +25,7 @@ public class grupoDAO {
     private static final String UPDATE_PESO_GRUPO="update peso set pesoPinio = ? where Pinio_idPinio = ?";
     private static final String READ_QUERY="select nombrePinio,estado,fechaIngreso,fechaSalida,pesoPinio from pinio join peso on(pinio.idPinio = peso.Pinio_idPinio) where idPinio=?";
     private static final String READ_ALL ="select * from pinio";
-    private static final String READ_PEND ="select * from task WHERE estado = FALSE";
+    private static final String TOTAL_QUERYESTADO ="select count(*) from `pinio_has_vacuno` join `pinio` on (pinio.idPinio=pinio_has_vacuno.Pinio_idPinio) where estado=?";
     private static final String READ_VACUNOSGRUPO=
     		"SELECT vacuno.idvacuno,vacuno.diio FROM vacuno join pinio_has_vacuno on(vacuno.idvacuno=pinio_has_vacuno.vacuno_idvacuno) WHERE pinio_has_vacuno.Pinio_idPinio=?";
     
@@ -237,6 +237,19 @@ public class grupoDAO {
         ps2.setInt(1,idGrupo);
         ps2.executeUpdate();
         
+    }
+    
+    public int totalVacunosEstado(String estado) throws SQLException {
+    	conexion = getConnection();
+        PreparedStatement ps1=conexion.prepareStatement(TOTAL_QUERYESTADO);
+        ps1.setString(1, estado);
+        ResultSet rs = ps1.executeQuery();
+        int nro=0;
+        if(rs.next()) {
+            nro =rs.getInt(1);
+            System.out.println(nro);
+        }
+        return nro;
     }
     
     private static Connection getConnection(){
