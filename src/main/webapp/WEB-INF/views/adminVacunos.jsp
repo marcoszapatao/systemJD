@@ -5,6 +5,7 @@
 --%>
 <%@page import="java.util.LinkedList"%>
 <%@page import="com.proyecto.transferObject.vacunoTO"%>
+<%@page import="com.proyecto.transferObject.razaTO"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
@@ -186,16 +187,25 @@
 			                </div>
 			                <br></br>
 			                
+			                   <% 
+			                    LinkedList<razaTO> listR = (LinkedList<razaTO>) request.getAttribute("raza");
+			                    String arr[]=new String[listR.size()];
+			                    if(listR != null){
+			                        
+			                    	for (int i = 0; i < listR.size(); i++) {
+			                            razaTO raza = listR.get(i);
+			                            arr[i]=raza.getNombreRaza();
+			                        }
+			                    }
+			                    %>
 			              <div class="form-horizontal">
-			                
 			                  <label  class="col-sm-3 control-label">Raza</label>
 			                <div class="col-sm-9">
 			                  <select name="raza" class="form-control select2" style="width: 100%;">
 			                  <option selected="selected">Seleccione una opción</option>
-			                  <option>Beefmaster</option>
-			                  <option>Angus</option>
-			                  <option>Hereford</option>
-			                  <option>Simmental</option>
+			                  <%for(int j=0; j<arr.length;j++){ %>
+			                  <option><%=arr[j]%></option>
+			                   <%} %>
 			                  </select>
 			                </div>
 			              </div>
@@ -264,20 +274,32 @@
 			                </div>
 			                <br></br>
 			                
+
+			              			                   <% 
+			                    LinkedList<razaTO> listRa = (LinkedList<razaTO>) request.getAttribute("raza");
+			                    String arr1[]=new String[listRa.size()];
+			                    if(listRa != null){
+			                        
+			                    	for (int i = 0; i < listRa.size(); i++) {
+			                            razaTO raza = listRa.get(i);
+			                            arr1[i]=raza.getNombreRaza();
+			                        }
+			                    }
+			                    %>
 			              <div class="form-horizontal">
-			                
 			                  <label  class="col-sm-3 control-label">Raza</label>
 			                <div class="col-sm-9">
 			                  <select name="raza" class="form-control select2" style="width: 100%;">
 			                  <option id="razaV" selected="selected"></option>
-			                  <option>Beefmaster</option>
-			                  <option>Angus</option>
-			                  <option>Hereford</option>
-			                  <option>Simmental</option>
+			                  <%for(int j=0; j<arr1.length;j++){ %>
+			                  <option><%=arr1[j]%></option>
+			                   <%} %>
 			                  </select>
 			                </div>
 			              </div>
 			                  <br></br>
+			                
+
 			                  
 			           <div class="form-horizontal">
 			                

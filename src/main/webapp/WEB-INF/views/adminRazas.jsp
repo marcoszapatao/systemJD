@@ -4,10 +4,8 @@
     Author     : Marcosz
 --%>
 <%@page import="java.util.LinkedList"%>
-<%@page import="com.proyecto.transferObject.insumoTO"%>
-<%@page import="com.proyecto.transferObject.cantidadDisponibleTO"%>
+<%@page import="com.proyecto.transferObject.razaTO"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>  
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>
@@ -25,19 +23,18 @@
    		 console.log("IDEEE "+id);
    		 $.ajax({
    			 type:'GET',
-   			 url:"/systemjd/editarIn.htm?id="+id,
+   			 url:"/systemjd/editarRa.htm?id="+id,
    		     dataType:'json',
    		     success:function(data){
    		    	 console.log(data);
-   		    	 var insumoId = data.id_insumo;
-   		    	 var insumoNombre = data.nombre_insumo;
-   		    	 var insumoDescripcion = data.descripcion_insumo;
-   		    	 var insumoTipo = data.tipoInsumo;
-   		    	$("input[name*='idInsumo']" ).val(insumoId);
-   		    	 $("input[name*='nombreInsumo']" ).val(insumoNombre);
-   		    	 $("input[name*='descripcion']" ).val(insumoDescripcion);
-   		    	 $("#tipoI").html(insumoTipo);
-   		    	 $('#myModalEditI').modal('show');
+   		    	 var razaId = data.idRaza;
+   		    	 var razaNombre = data.nombreRaza;
+   		    	 var razaDescrip = data.descripcionRaza;
+   		    	 alert(razaId+razaNombre+" "+razaDescrip);
+   		    	 $("input[name*='id']" ).val(razaId);
+   		    	 $("input[name*='diioo']" ).val(razaNombre);
+   		    	 $("input[name*='descrip']" ).val(razaDescrip);
+   		    	 $('#myModalEdit').modal('show');
    		     },
    		     error:function(jqXHR,errorThrown){
    		    	 alert("Alerta "+errorThrown);
@@ -102,7 +99,7 @@
         <br></br>
             <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Administrar Insumos</h3>
+              <h3 class="box-title">Administrar razas</h3>
               
             <div class="agre">
             <div class="col-sm-2">
@@ -114,7 +111,25 @@
 	        </div>
 	        </div>
 	        
-            </div>  
+            </div> 
+           <c:if test="${not empty correcto}">
+								<script>
+									toastr
+											.success("Inserción correcta");
+								</script>
+		   </c:if> 
+		   <c:if test="${not empty incorrecta}">
+								<script>
+									toastr
+											.error("Inserción incorrecta");
+								</script>
+		   </c:if>
+            		   <c:if test="${not empty elimino}">
+								<script>
+									toastr
+											.error("No se puedo eliminar, existe al menos un vacuno con esa raza");
+								</script>
+		   </c:if>
 
             <!-- /.box-header -->
             <div class="box-body">
@@ -124,8 +139,6 @@
                   <th>ID</th>
                   <th>Nombre</th>
                   <th>Descripción</th> 
-                  <th>Tipo</th>
-                  <th>Stock (Kg)</th>
                   <th>Acciones</th>
                   
                 </tr>
@@ -133,19 +146,17 @@
                 <tbody>
 
                     <% 
-                    LinkedList<insumoTO> list = (LinkedList<insumoTO>) request.getAttribute("lista");
-                    LinkedList<cantidadDisponibleTO> list2 = (LinkedList<cantidadDisponibleTO>) request.getAttribute("cantidad");
-                    if(list != null && list2 != null)
+                    LinkedList<razaTO> list = (LinkedList<razaTO>) request.getAttribute("lista");
+                    if(list != null)
                         for (int i = 0; i < list.size(); i++) {
-                            insumoTO task = list.get(i);
-                            cantidadDisponibleTO cantidad = list2.get(i);
+                            razaTO task = list.get(i);
                     %>
-                    <tr> <td><%=task.getId_insumo()%></td> <td><%=task.getNombre_insumo()%></td> <td><%=task.getDescripcion_insumo()%></td> <td><%=task.getTipoInsumo()%></td> <td><%=cantidad.getCantidadActual()%></td>
+                    <tr> <td><%=task.getIdRaza()%></td> <td><%=task.getNombreRaza()%></td> <td><%=task.getDescripcionRaza()%></td> 
                     <td>
-                     <!--input type="hidden" id="idvacuno" value="<%=task.getId_insumo()%>"/-->
-                     <button type="button" class="btn btn-success btn-xs"  onclick="botonEdit('<%=task.getId_insumo()%>');"><i class="fa fa-edit"></i> Editar</button>
+                     <!--input type="hidden" id="idvacuno" value="<%=task.getIdRaza()%>"/-->
+                     <button type="button" class="btn btn-success btn-xs"  onclick="botonEdit('<%=task.getIdRaza()%>');"><i class="fa fa-edit"></i> Editar</button>
                      &nbsp; &nbsp; &nbsp;
-                     <a href="deleteInsumo.htm?id=<%=task.getId_insumo()%>" class="btn btn-danger btn-xs"  onclick="return confirm('¿Está seguro que desea eliminar el insumo:  <%=task.getNombre_insumo()%>?');"><i class="fa fa-close"></i>  Eliminar</a>
+                     <a href="deleteRaza.htm?id=<%=task.getIdRaza()%>" class="btn btn-danger btn-xs"  onclick="return confirm('¿Está seguro que desea eliminar la raza:  <%=task.getNombreRaza()%>?');"><i class="fa fa-close"></i>  Eliminar</a>
                      </td></tr>
                     <%} else{%>
                         <h1>No hay datos</h1>
@@ -156,8 +167,6 @@
                   <th>ID</th>
                   <th>Nombre</th>
                   <th>Descripción</th>
-                  <th>Tipo</th>
-                  <th>Stock (Kg)</th>
                   <th>Acciones</th>
             
                   
@@ -175,42 +184,29 @@
 			    <div class="modal-content">
 			      <div class="modal-header">
 			        <button type="button" class="close" data-dismiss="modal">&times;</button>
-			        <h4 class="modal-title"><font color="white">Ingrese Nuevo Insumo</font></h4>
+			        <h4 class="modal-title"><font color="white">Ingrese Nueva Raza</font></h4>
 			      </div>
 			      <div class="modal-body">
 			      
-			              <form class="form-horizontal" action="saveInsumo.htm" method="POST">
+			              <form class="form-horizontal" action="saveRaza.htm" method="POST">
 			              <div class="box-body">
 			                <div class="form-horizontal">
 			                  <label class="col-sm-3 control-label">Ingrese Nombre</label>
+			
 			                  <div class="col-sm-9">
-			                    <input type="text" class="form-control" id="inputEmail3" name="nombre" placeholder="Ej: Liposal" required>
+			                    <input type="text" class="form-control" id="nombreRaza" name="nombre" placeholder="Ej: Angus" required>
 			                  </div>
 			                </div>
 			                <br></br>
-			                
-			               <div class="form-horizontal">
+			                <div class="form-horizontal">
 			                  <label class="col-sm-3 control-label">Ingrese Descripción</label>
+			
 			                  <div class="col-sm-9">
-			                    <input type="text" class="form-control" id="descrip" name="descripcion" placeholder="Descripción de insumo" required>
+			                    <input type="text" class="form-control" id="descripcionRaza" name="descripcion" required>
 			                  </div>
 			                </div>
 			                <br></br>
-			                
-			              <div class="form-horizontal">
-			                
-			                <label  class="col-sm-3 control-label">Seleccione Tipo</label>
-			                <div class="col-sm-9">
-			                  <select name="tipo" class="form-control select2" style="width: 100%;">
-			                  <option selected="selected">Seleccione una opción</option>
-			                  <option>Alimento</option>
-			                  <option>Suplemento</option>
-			                  </select>
-			                </div>
-			              </div>
-			                  <br></br>
-			                 
-
+			                  
 			                  
 			              </div>
 			              <!-- /.box-body -->
@@ -231,52 +227,36 @@
           <!--------- FIN modal Agregar Vacuno ------------->
           
           <!-- Molda editar vacuno -->
-          <div id="myModalEditI" class="modal fade" role="dialog">
+          <div id="myModalEdit" class="modal fade" role="dialog">
 			  <div class="modal-dialog modal-lg">
 			
 			    <!-- Modal content-->
 			    <div class="modal-content">
 			      <div class="modal-header">
 			        <button type="button" class="close" data-dismiss="modal">&times;</button>
-			        <h4 class="modal-title"><font color="white">Editar Insumo</font></h4>
+			        <h4 class="modal-title"><font color="white">Editar Vacuno</font></h4>
 			      </div>
 			      <div class="modal-body">
 			      
-			              <form class="form-horizontal" action="actualizarInsumo.htm" method="GET">
+			              <form class="form-horizontal" action="actualizarRaza.htm" method="POST">
 			              <div class="box-body">
-			              <input type="hidden" id ="idInsumo" name="idInsumo">
+			               <input type="hidden" class="form-control" name="id"></input>
 			                <div class="form-horizontal">
-			                  <label class="col-sm-3 control-label">Nombre</label>
+			                  <label class="col-sm-3 control-label">Ingrese Nombre</label>
 			
 			                  <div class="col-sm-9">
-			                    <input type="text" class="form-control" name="nombreInsumo"></input>
+			                    <input type="text" class="form-control" name="diioo"></input>
 			                  </div>
 			                </div>
 			                <br></br>
 			                <div class="form-horizontal">
-			                  <label class="col-sm-3 control-label">Descripción</label>
+			                  <label class="col-sm-3 control-label">Ingrese Descripción</label>
 			
 			                  <div class="col-sm-9">
-			                    <input type="text" class="form-control" name="descripcion"></input>
+			                    <input type="text" class="form-control" name="descrip"></input>
 			                  </div>
 			                </div>
 			                <br></br>
-			            
-			                  
-			           <div class="form-horizontal">
-			                
-			               <label  class="col-sm-3 control-label">Tipo</label>
-			                <div class="col-sm-9">
-			                  <select name="tipo" class="form-control select2" style="width: 100%;">
-			                  <option id="tipoI" selected="selected"></option>
-			                  <option>Alimento</option>
-			                  <option>Suplemento</option>
-			                  
-			                  </select>
-			                </div>
-			            </div>
-			                <br></br>
-			               
 			                  
 			              </div>
 			              <!-- /.box-body -->

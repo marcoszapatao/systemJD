@@ -86,9 +86,9 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="pages/tables/simple.html"><i class="fa fa-circle-o"></i> Usuarios</a></li>
-            <li><a href="pages/tables/data.html"><i class="fa fa-circle-o"></i> Proveedores</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i> Razas</a></li>
+            <li><a href="#"><i class="fa fa-circle-o"></i> Usuarios</a></li>
+            <li><a href="#"><i class="fa fa-circle-o"></i> Proveedores</a></li>
+            <li><a href="adminRazas.htm"><i class="fa fa-circle-o"></i> Razas</a></li>
             <li><a href="#"><i class="fa fa-circle-o"></i> Patios de alimentación</a></li>
           </ul>
         </li>

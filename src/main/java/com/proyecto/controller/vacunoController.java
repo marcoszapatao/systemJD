@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-
+import com.proyecto.persistence.razaDAO;
 import com.proyecto.persistence.vacunoDAO;
 
 import com.proyecto.transferObject.vacunoTO;
@@ -21,6 +21,8 @@ public class vacunoController {
 	@RequestMapping(value = "admin")
 	public ModelAndView ingresarV(ModelAndView vista) throws SQLException, ParseException {
 		vacunoDAO dao = new vacunoDAO();
+		razaDAO raza = new razaDAO();
+		vista.addObject("raza",raza.readAll());
 		vista.addObject("lista", dao.readAllV());
 		vista.setViewName("adminVacunos");
 		return vista;
@@ -52,6 +54,8 @@ public class vacunoController {
 			dao.createVacuno(to);
 	
 	        vacunoDAO daoo = new vacunoDAO();
+	        razaDAO razaV = new razaDAO();
+	        vista.addObject("raza",razaV.readAll());
 			vista.addObject("lista", daoo.readAllV());
 			vista.setViewName("adminVacunos");
 			return vista;
@@ -65,6 +69,8 @@ public class vacunoController {
         dao.delete(vacuno);
 		
         vacunoDAO daoo = new vacunoDAO();
+        razaDAO razaV = new razaDAO();
+        vista.addObject("raza",razaV.readAll());
 		vista.addObject("lista", daoo.readAllV());
 		vista.setViewName("adminVacunos");
 		return vista;
@@ -117,6 +123,8 @@ public class vacunoController {
 			dao.update(to);
 			
 	        vacunoDAO daoo = new vacunoDAO();
+	        razaDAO razaV = new razaDAO();
+	        vista.addObject("raza",razaV.readAll());
 			vista.addObject("lista", daoo.readAllV());
 			vista.setViewName("adminVacunos");
 			return vista;

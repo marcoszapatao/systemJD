@@ -269,7 +269,7 @@
 					                <tr>
 					                   <th>Insumo</th>
 					                   <td>Semana</td>
-					                   <td>Resultado</td>
+					                   <td>Resultado (Kg)</td>
 					                </tr>
 					             </thead>
 					             <tbody>
@@ -303,10 +303,10 @@
 	        <div class="box-body">
 	          El cálculo de dietas, corresponde al proceso de definir que cantidad de insumo se debe agregar a la
 	          mezcla con la que se alimentan los vacunos que se encuentran en engorda, esto viene definido según
-	          una cantidad de insumo que debe consumir al día un vacuno, además esta cantidad de insumo varia según 
+	          una cantidad de insumo que debe consumir al día un vacuno, además esta cantidad de insumo varía según 
 	          el tiempo de permanencia del grupo de vacunos en la empresa, ya sea una, dos, tres o cuatro semanas, 
 	          si lleva más tiempo se mantiene la dieta de la semana cuatro. Por ejemplo, si de sea calcular la dieta
-	          para un grupo de vacunos que contiene 20 animales, para un insumo X, y este tiene definida una cantidad
+	          para un grupo de vacunos que contiene 20 animales, para un insumo X, y éste tiene definida una cantidad
 	          de 0,05 Kg en cada comida para la primera semana, se procede a realizar el cálculo: 20*0,05*3 = 3. Este 
 	          resultado indica que este grupo de vacunos al día consume 3 Kg del insumo X, lo cual al momento de registrar 
 	          el cálculo de la dieta, se traduce en el descuento de 3 Kg de este insumo desde el stock disponible.

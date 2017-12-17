@@ -6,6 +6,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -278,7 +279,7 @@ public class insumoDAO {
     	
     }
 	
-    public int obtieneGastos() throws SQLException{
+    public String obtieneGastos() throws SQLException{
     	conexion = getConnection();
         PreparedStatement ps=conexion.prepareStatement(READ_GASTOS);
         //ps.setInt(1,idinsumo);
@@ -287,7 +288,9 @@ public class insumoDAO {
         if(rs.next()) {
             gastos =rs.getInt(1);
         }
-        return gastos;
+        DecimalFormat formatea = new DecimalFormat("###,###.##");
+        String gastosF = formatea.format(gastos);
+        return gastosF;
     }
     
     public LinkedList<cantidadDisponibleTO> verCantidadDisponible() throws SQLException{
