@@ -87,7 +87,7 @@
           </a>
           <ul class="treeview-menu">
             <li><a href="#"><i class="fa fa-circle-o"></i> Usuarios</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i> Proveedores</a></li>
+            <li><a href="adminProveedor.htm"><i class="fa fa-circle-o"></i> Proveedores</a></li>
             <li><a href="adminRazas.htm"><i class="fa fa-circle-o"></i> Razas</a></li>
             <li><a href="#"><i class="fa fa-circle-o"></i> Patios de alimentación</a></li>
           </ul>

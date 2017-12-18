@@ -10,9 +10,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.proyecto.transferObject.proveedorTO;
+import com.proyecto.transferObject.razaTO;
 
 public class proveedorDAO {
 	private static final String READ_ALL="select * from proveedor";
+	private static final String INSERT_QUERY ="insert into proveedor(nombre,rubro,rut,direccion) values(?,?,?,?)";
+	private static final String READ_QUERY ="select * from proveedor where idproveedor=?";
+	private static final String DELETE_QUERY ="delete from proveedor where idproveedor=?";
+	private static final String UPDATE_QUERY ="update proveedor set nombre=?,rubro=?,rut=?,direccion=? where idproveedor=?";
 	
     private static final String DB_NAME="bddjd_nueva";
     private static final String PORT="3306";
@@ -34,7 +39,7 @@ public class proveedorDAO {
 	            result.setIdProveedor(rs.getInt("idproveedor"));
 	            result.setNombreProveedor(rs.getString("nombre"));
 	            result.setRubroProveedor(rs.getString("rubro"));
-	            result.setRutProveedor(rs.getString("rubro"));
+	            result.setRutProveedor(rs.getString("rut"));
 	            result.setDireccionProveedor(rs.getString("direccion"));
 
 	            lista.add(result);
@@ -47,6 +52,88 @@ public class proveedorDAO {
 	    return lista;
 	}
 	
+    public int createProveedor(proveedorTO proveedor) throws SQLException {
+    	int r = 0;
+    	try {
+    	conexion = getConnection();
+        PreparedStatement ps = conexion.prepareStatement(INSERT_QUERY);
+        ps.setString(1, proveedor.getNombreProveedor());
+        ps.setString(2, proveedor.getRubroProveedor());
+        ps.setString(3, proveedor.getRutProveedor());
+        ps.setString(4, proveedor.getDireccionProveedor());
+        ps.executeUpdate();
+    	 }catch(SQLException e){
+             System.out.println(e);
+             r=1;
+         }finally{
+             if(conexion!=null)
+                 conexion.close();
+         }
+    	return r;
+    }
+    
+    public proveedorTO read(int id) {
+        proveedorTO result = null;
+        
+        try {
+            getConnection();
+            PreparedStatement ps = conexion.prepareStatement(READ_QUERY);
+            ps.setInt(1,id);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                result= new proveedorTO();
+                result.setIdProveedor(rs.getInt("idproveedor"));
+                result.setNombreProveedor(rs.getString("nombre"));
+                result.setRubroProveedor(rs.getString("rubro"));
+                result.setRutProveedor(rs.getString("rut"));
+                result.setDireccionProveedor(rs.getString("direccion"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(vacunoDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally{
+            //conexion.close();
+        }
+        return result;
+    }
+    
+    public int delete(proveedorTO proveedor) throws SQLException{
+    int resultado = 0;
+    try{
+      conexion = getConnection();
+      PreparedStatement ps = conexion.prepareStatement(DELETE_QUERY);
+      ps.setInt(1,proveedor.getIdProveedor());
+      ps.executeUpdate();
+    }catch(SQLException e){
+        System.out.println("Error: " + e.getMessage());
+        resultado = 1;
+        return resultado;
+    }finally{
+        if(conexion!=null)
+            conexion.close();
+    }
+   return resultado;
+   }
+    
+    public int update(proveedorTO proveedor) throws SQLException {
+    	int r=0;
+    	try {
+    	conexion= getConnection();
+        PreparedStatement ps = conexion.prepareStatement(UPDATE_QUERY);
+        ps.setString(1,proveedor.getNombreProveedor());
+        ps.setString(2,proveedor.getRubroProveedor());
+        ps.setString(3,proveedor.getRutProveedor());
+        ps.setString(4,proveedor.getDireccionProveedor());
+        ps.setInt(5, proveedor.getIdProveedor());
+        ps.executeUpdate();
+        
+    	 }catch(SQLException e){
+             System.out.println("Error: " + e.getMessage());
+         }finally{
+             if(conexion!=null)
+                 conexion.close();
+         }
+    	return r;
+    }
 	
 	private static Connection getConnection(){
         try{
