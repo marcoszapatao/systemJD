@@ -19,7 +19,10 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+//import java.sql.Date;
 import java.util.LinkedList;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -62,7 +65,7 @@ public class reporteController {
 	public ModelAndView descargaInforme(ModelAndView vista,  HttpSession sesion, HttpServletRequest request,HttpServletResponse response,
 			@RequestParam(value = "tipo") int tipo,
 			@RequestParam(value = "fechaI") String fechaI,
-			@RequestParam(value = "fechaT") String fechaT) throws ParseException, SQLException, BadElementException, MalformedURLException, IOException {
+			@RequestParam(value = "fechaT") String fechaT) throws ParseException, SQLException, MalformedURLException, IOException, DocumentException {
 		System.out.println(tipo+" "+fechaI+" "+fechaT);
 		
 		if((tipo != 1 && tipo != 2)||(fechaI=="")||(fechaT=="")) {
@@ -130,14 +133,16 @@ public class reporteController {
 		// Creamos un párrafo nuevo llamado "vacio1" para espaciar los elementos.
 		Paragraph vacio1 = new Paragraph();
 		vacio1.add("\n\n");
+		Paragraph vacio2 = new Paragraph();
+		vacio1.add("\n");
 
 		// Declaramos un texto como Paragraph. Le podemos dar formato alineado, tamaño,
 		// color, etc.
 		Paragraph titulo = new Paragraph();
 		Paragraph saltolinea = new Paragraph();
 		Paragraph mensaje = new Paragraph();
-		Paragraph fechaIn = new Paragraph();
-		Paragraph fechaTe = new Paragraph();
+		Paragraph fecha = new Paragraph();
+
 		Paragraph totalV = new Paragraph();
 		Paragraph tituloTipo = new Paragraph();
 		Paragraph tipoV = new Paragraph();
@@ -148,64 +153,78 @@ public class reporteController {
 		Paragraph estadoP = new Paragraph();
 		Paragraph estadoV = new Paragraph();
 		Paragraph footer = new Paragraph();
+		Paragraph linea = new Paragraph();
 
 		Image imagen = Image
 				.getInstance("C:\\Users\\Marcosz\\Desktop\\DOC_Tesis\\logoJD.jpg");
 		//http://www.carnesjd.cl/src/img/facebook/face_4.jpg
 		
-		imagen.scalePercent(15f);
-		imagen.setAlignment(Element.ALIGN_JUSTIFIED);
+		imagen.scalePercent(10f);
+		imagen.setAlignment(Element.ALIGN_LEFT);
 
-		titulo.setFont(FontFactory.getFont("Times New Roman", 14, Font.BOLD));
+		titulo.setFont(FontFactory.getFont("Times New Roman", 15, Font.BOLD));
 
 		titulo.add("Sistema de gestión de engorda de vacunos");
 
 		titulo.setAlignment(Element.ALIGN_CENTER);
         
-		mensaje.setFont(FontFactory.getFont("Times New Roman",12));
+		mensaje.setFont(FontFactory.getFont("Times New Roman",18,Font.BOLD));
 		mensaje.add("Reporte: Inventario de animales");
+		mensaje.setAlignment(Element.ALIGN_CENTER);
 		
-		fechaIn.setFont(FontFactory.getFont("Times New Roman",12));
-		fechaIn.add("Fecha Inicio: "+fechaI);
+		linea.add("-----------------------------------------------------------------------------"
+				+ "--------------------------------------------------------");
+		String[] parts = fechaI.split("-");
+		String part1 = parts[0]; 
+		String part2 = parts[1]; 
+		String part3 = parts[2];
+		String fi = part3+"/"+part2+"/"+part1;
 		
-		fechaTe.setFont(FontFactory.getFont("Times New Roman",12));
-		fechaTe.add("Fecha Término: "+fechaT);
+		String[] part = fechaT.split("-");
+		String par1 = part[0]; 
+		String par2 = part[1]; 
+		String par3 = part[2];
+		String fin = par3+"/"+par2+"/"+par1;
+		fecha.setFont(FontFactory.getFont("Times New Roman",12));
+		fecha.add("Datos considerados entre el período "+fi+" al "+fin+".");
 		
 		vacunoDAO vacuno = new vacunoDAO();
 		int nro = vacuno.totalVacunos();
-		totalV.setFont(FontFactory.getFont("Times Nwe Roman",12));
-		totalV.add("Total de vacunos: "+nro);
-		
-		tituloTipo.setFont(FontFactory.getFont("Times New Roman",12,Font.BOLD));
-		tituloTipo.add("Tipo");
 		
 		int nroV = vacuno.totalVacunosTipo("Vacuno");
-		tipoV.setFont(FontFactory.getFont("Times New Roman",12));
-		tipoV.add("Vacunos: "+nroV);
-		
 		int nroVa = vacuno.totalVacunosTipo("Vaquilla");
-		tipoVa.setFont(FontFactory.getFont("Times New Roman",12));
-		tipoVa.add("Vaquilla: "+nroVa);
-		
 		int nroT = vacuno.totalVacunosTipo("Toro");
-		tipoT.setFont(FontFactory.getFont("Times New Roman",12));
-		tipoT.add("Toro: "+nroT);
+		int totalTipo = nroV+nroVa+nroT;
 		
-		tituloEstado.setFont(FontFactory.getFont("Times New Roman",12,Font.BOLD));
-		tituloEstado.add("Estado");
 		
 		grupoDAO grupo = new grupoDAO();
 		int nroEs = grupo.totalVacunosEstado("Engorda");
-		estadoEn.setFont(FontFactory.getFont("Times New Roman",12));
-		estadoEn.add("Engorda: "+nroEs);
-		
 		int nroEsP = grupo.totalVacunosEstado("Pradera");
-		estadoP.setFont(FontFactory.getFont("Times New Roman",12));
-		estadoP.add("Pradera: "+nroEsP);
-		
 		int nroEsV = grupo.totalVacunosEstado("Pradera");
-		estadoV.setFont(FontFactory.getFont("Times New Roman",12));
-		estadoV.add("Vendido: "+nroEsV);
+		int totalnro=nroEs+nroEsP+nroEsV;
+
+		PdfPTable table = new PdfPTable(2);
+		table.setSpacingBefore(10);
+
+		table.addCell("Tipo de Animal            Cantidad\n\n"
+	             +"Vacuno                  :         "+nroV+"\n\n"
+	             +"Vaquilla                 :         "+nroVa+"\n\n"
+	             +"Toro                      :         "+nroT+"\n"
+	             +"-----------------------------------------------------\n"
+	             +"Total                     :         "+totalTipo+"\n");
+
+		table.addCell("N° de animales por estado   Cantidad\n\n"
+		             +"Engorda                         :        "+nroEs+"\n\n"
+		             +"Pradera                          :        "+nroEsP+"\n\n"
+		             +"Vendido                         :        "+nroEsV+"\n"
+		             +"-----------------------------------------------------\n"
+		             +"Total                              :        "+totalnro+"\n");
+ 
+
+	
+		
+
+
 		
 		// creamos la tabla con 3 columnas
 		PdfPTable tabla = new PdfPTable(4);
@@ -238,18 +257,19 @@ public class reporteController {
 		try {
 			// Agregamos el texto al documento.
 			documento.add(imagen);
+			//documento.add(vacio1);
 
-			documento.add(vacio1);
-
-			documento.add(saltolinea);
+			//documento.add(saltolinea);
+		    
+		    documento.add(mensaje);
+			documento.add(vacio2);
 			documento.add(titulo);
 			documento.add(saltolinea);
-			documento.add(mensaje);
+			documento.add(linea);
 			documento.add(saltolinea);
-			documento.add(fechaIn);
+			documento.add(fecha);
 			documento.add(saltolinea);
-			documento.add(fechaTe);
-			documento.add(saltolinea);
+			documento.add(table);
 			documento.add(totalV);
 			documento.add(saltolinea);
 			documento.add(saltolinea);

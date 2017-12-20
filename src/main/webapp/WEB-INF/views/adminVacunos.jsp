@@ -80,8 +80,15 @@
     
   <!-- Left side column. contains the logo and sidebar -->
   <aside class="main-sidebar">
-    <%@ include file="barraLateral.jsp"%>
-
+  <%
+ 	HttpSession sessionV = request.getSession();
+ 	String rol = (String) sessionV.getAttribute("rol");
+ 	if(rol.equalsIgnoreCase("usuario")){
+ %>
+    <%@ include file="barraLateralUsuario.jsp"%>
+<%}else{%>
+     <%@ include file="barraLateralAdministrador.jsp"%>
+<% }%>
   </aside>
 
   <!-- Content Wrapper. Contains page content -->

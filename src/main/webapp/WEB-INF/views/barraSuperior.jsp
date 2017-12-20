@@ -27,7 +27,11 @@
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <img src="assets/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
-              <span class="hidden-xs">Juan Perez</span>
+              <span class="hidden-xs"><%
+ 	HttpSession sesion = request.getSession();
+ 	String nombre = (String) sesion.getAttribute("nombre");
+ 	out.print(nombre);
+ %></span>
             </a>
             <ul class="dropdown-menu">
               <!-- User image -->
@@ -35,19 +39,23 @@
                 <img src="assets/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
 
                 <p>
-                  Juan Perez - Web AgrÃ³nomo
-                  <small>Miembro desde Nov. 2012</small>
+                  <%
+ 	HttpSession sesionn = request.getSession();
+ 	String cargo = (String) sesionn.getAttribute("cargo");
+ 	out.print(cargo);
+ %> - <%out.print(nombre); %>
+        
                 </p>
               </li>
               <!-- Menu Body -->
 
               <!-- Menu Footer-->
               <li class="user-footer">
-                <div class="pull-left">
+                <!-- div class="pull-left">
                   <a href="#" class="btn btn-default btn-flat">Perfil</a>
-                </div>
+                </div-->
                 <div class="pull-right">
-                  <a href="#" class="btn btn-default btn-flat">Salir</a>
+                  <a href="login.htm" class="btn btn-default btn-flat">Salir</a>
                 </div>
               </li>
             </ul>

@@ -125,13 +125,13 @@
 		   <c:if test="${not empty incorrecta}">
 								<script>
 									toastr
-											.error("Inserción incorrecta");
+											.error("Error: Inserción incorrecta");
 								</script>
 		   </c:if>
             		   <c:if test="${not empty elimino}">
 								<script>
 									toastr
-											.error("No se puedo eliminar, el proveedor está en uso");
+											.error("Error: No se puedo eliminar, el proveedor está en uso");
 								</script>
 		   </c:if>
 

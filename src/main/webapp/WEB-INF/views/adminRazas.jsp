@@ -121,13 +121,13 @@
 		   <c:if test="${not empty incorrecta}">
 								<script>
 									toastr
-											.error("Inserción incorrecta");
+											.error("Error: Inserción incorrecta");
 								</script>
 		   </c:if>
             		   <c:if test="${not empty elimino}">
 								<script>
 									toastr
-											.error("No se puedo eliminar, existe al menos un vacuno con esa raza");
+											.error("Error: No se puedo eliminar, existe al menos un vacuno con esa raza");
 								</script>
 		   </c:if>
 
