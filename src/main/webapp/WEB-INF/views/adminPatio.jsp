@@ -4,7 +4,7 @@
     Author     : Marcosz
 --%>
 <%@page import="java.util.LinkedList"%>
-<%@page import="com.proyecto.transferObject.razaTO"%>
+<%@page import="com.proyecto.transferObject.patioTO"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
@@ -14,26 +14,21 @@
   <%@ include file="cabecera.jsp"%>
     <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
     <script>
-    //$(document).ready(function(){
-    	//console.log( "document loaded" );
-   	    
-    	//$('#botonEdit').click(function(){
    	     function botonEdit(id){
-   		 //var id=$('#idvacuno').val();
    		 console.log("IDEEE "+id);
    		 $.ajax({
    			 type:'GET',
-   			 url:"/systemjd/editarRa.htm?id="+id,
+   			 url:"/systemjd/editarPa.htm?id="+id,
    		     dataType:'json',
    		     success:function(data){
    		    	 console.log(data);
-   		    	 var razaId = data.idRaza;
-   		    	 var razaNombre = data.nombreRaza;
-   		    	 var razaDescrip = data.descripcionRaza;
-   		    	 alert(razaId+razaNombre+" "+razaDescrip);
-   		    	 $("input[name*='id']" ).val(razaId);
-   		    	 $("input[name*='diioo']" ).val(razaNombre);
-   		    	 $("input[name*='descrip']" ).val(razaDescrip);
+   		    	 var paId = data.idPatio;
+   		    	 var paNombre = data.nombrePatio;
+   		    	 var paNro = data.nroNavesPatio;
+ 
+   		    	 $("input[name*='idP']" ).val(paId);
+   		    	 $("input[name*='nombreP']" ).val(paNombre);
+   		    	 $("input[name*='nroP']" ).val(paNro);
    		    	 $('#myModalEdit').modal('show');
    		     },
    		     error:function(jqXHR,errorThrown){
@@ -76,7 +71,7 @@
     
   <!-- Left side column. contains the logo and sidebar -->
   <aside class="main-sidebar">
-          <%
+         <%
  	HttpSession sessionV = request.getSession();
  	String rol = (String) sessionV.getAttribute("rol");
  	if(rol.equalsIgnoreCase("usuario")){
@@ -107,7 +102,7 @@
         <br></br>
             <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Administrar razas</h3>
+              <h3 class="box-title">Administrar Patio de Alimentación</h3>
               
             <div class="agre">
             <div class="col-sm-2">
@@ -135,7 +130,7 @@
             		   <c:if test="${not empty elimino}">
 								<script>
 									toastr
-											.error("Error: No se puedo eliminar, existe al menos un vacuno con esa raza");
+											.error("Error: No se puedo eliminar, el proveedor está en uso");
 								</script>
 		   </c:if>
 
@@ -146,7 +141,7 @@
                 <tr>
                   <th>ID</th>
                   <th>Nombre</th>
-                  <th>Descripción</th> 
+                  <th>Nro. de naves</th>
                   <th>Acciones</th>
                   
                 </tr>
@@ -154,17 +149,17 @@
                 <tbody>
 
                     <% 
-                    LinkedList<razaTO> list = (LinkedList<razaTO>) request.getAttribute("lista");
+                    LinkedList<patioTO> list = (LinkedList<patioTO>) request.getAttribute("lista");
                     if(list != null)
                         for (int i = 0; i < list.size(); i++) {
-                            razaTO task = list.get(i);
+                           patioTO task = list.get(i);
                     %>
-                    <tr> <td><%=task.getIdRaza()%></td> <td><%=task.getNombreRaza()%></td> <td><%=task.getDescripcionRaza()%></td> 
+                    <tr> <td><%=task.getIdPatio()%></td> <td><%=task.getNombrePatio()%></td><td><%=task.getNroNavesPatio()%></td>
                     <td>
-                     <!--input type="hidden" id="idvacuno" value="<%=task.getIdRaza()%>"/-->
-                     <button type="button" class="btn btn-success btn-xs"  onclick="botonEdit('<%=task.getIdRaza()%>');"><i class="fa fa-edit"></i> Editar</button>
+                 
+                     <button type="button" class="btn btn-success btn-xs"  onclick="botonEdit('<%=task.getIdPatio()%>');"><i class="fa fa-edit"></i> Editar</button>
                      &nbsp; &nbsp; &nbsp;
-                     <a href="deleteRaza.htm?id=<%=task.getIdRaza()%>" class="btn btn-danger btn-xs"  onclick="return confirm('¿Está seguro que desea eliminar la raza:  <%=task.getNombreRaza()%>?');"><i class="fa fa-close"></i>  Eliminar</a>
+                     <a href="deletePatio.htm?id=<%=task.getIdPatio()%>" class="btn btn-danger btn-xs"  onclick="return confirm('¿Está seguro que desea eliminar el patio:  <%=task.getNombrePatio()%>?');"><i class="fa fa-close"></i>  Eliminar</a>
                      </td></tr>
                     <%} else{%>
                         <h1>No hay datos</h1>
@@ -174,7 +169,7 @@
                 <tr>
                   <th>ID</th>
                   <th>Nombre</th>
-                  <th>Descripción</th>
+                  <th>Nro. de neves</th>
                   <th>Acciones</th>
             
                   
@@ -184,7 +179,7 @@
               
             </div>
             
-            <!--------- Comienzo modal Agregar Vacuno ------------->
+            <!--------- Comienzo modal Agregar Proveedor ------------->
             <div id="myModal" class="modal fade" role="dialog">
 			  <div class="modal-dialog modal-lg">
 			
@@ -192,29 +187,29 @@
 			    <div class="modal-content">
 			      <div class="modal-header">
 			        <button type="button" class="close" data-dismiss="modal">&times;</button>
-			        <h4 class="modal-title"><font color="white">Ingrese Nueva Raza</font></h4>
+			        <h4 class="modal-title"><font color="white">Ingrese Nuevo Patio de Alimentación</font></h4>
 			      </div>
 			      <div class="modal-body">
 			      
-			              <form class="form-horizontal" action="saveRaza.htm" method="POST">
+			              <form class="form-horizontal" action="savePatio.htm" method="POST">
 			              <div class="box-body">
 			                <div class="form-horizontal">
 			                  <label class="col-sm-3 control-label">Ingrese Nombre</label>
 			
 			                  <div class="col-sm-9">
-			                    <input type="text" class="form-control" id="nombreRaza" name="nombre" placeholder="Ej: Angus" required>
+			                    <input type="text" class="form-control" id="nombreP" name="nombre" placeholder="Ej: PatioUno" required>
 			                  </div>
 			                </div>
 			                <br></br>
 			                <div class="form-horizontal">
-			                  <label class="col-sm-3 control-label">Ingrese Descripción</label>
+			                  <label class="col-sm-3 control-label">Ingrese N° de Naves</label>
 			
 			                  <div class="col-sm-9">
-			                    <input type="text" class="form-control" id="descripcionRaza" name="descripcion" required>
+			                    <input type="number" class="form-control" id="rubro" name="nro" placeholder="Ej: 6" required>
 			                  </div>
 			                </div>
 			                <br></br>
-			                  
+ 
 			                  
 			              </div>
 			              <!-- /.box-body -->
@@ -242,30 +237,30 @@
 			    <div class="modal-content">
 			      <div class="modal-header">
 			        <button type="button" class="close" data-dismiss="modal">&times;</button>
-			        <h4 class="modal-title"><font color="white">Editar Vacuno</font></h4>
+			        <h4 class="modal-title"><font color="white">Editar Patio de Alimentación</font></h4>
 			      </div>
 			      <div class="modal-body">
 			      
-			              <form class="form-horizontal" action="actualizarRaza.htm" method="POST">
+			              <form class="form-horizontal" action="actualizarPatio.htm" method="POST">
 			              <div class="box-body">
-			               <input type="hidden" class="form-control" name="id"></input>
+			               <input type="hidden" class="form-control" name="idP"></input>
 			                <div class="form-horizontal">
 			                  <label class="col-sm-3 control-label">Ingrese Nombre</label>
 			
 			                  <div class="col-sm-9">
-			                    <input type="text" class="form-control" name="diioo"></input>
+			                    <input type="text" class="form-control" name="nombreP"></input>
 			                  </div>
 			                </div>
 			                <br></br>
 			                <div class="form-horizontal">
-			                  <label class="col-sm-3 control-label">Ingrese Descripción</label>
+			                  <label class="col-sm-3 control-label">Ingrese Rubro</label>
 			
 			                  <div class="col-sm-9">
-			                    <input type="text" class="form-control" name="descrip"></input>
+			                    <input type="number" class="form-control" name="nroP"></input>
 			                  </div>
 			                </div>
 			                <br></br>
-			                  
+
 			              </div>
 			              <!-- /.box-body -->
 			              <div class="box-footer">

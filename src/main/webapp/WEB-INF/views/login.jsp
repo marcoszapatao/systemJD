@@ -28,12 +28,26 @@
 
   <!-- Google Font -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+  <style type="text/css">
+    .login-page{
+    background: #82202B;
+    }
+    img.img-circle{
+    width: 100px; height: 100px;
+    display:block;
+    margin:auto;
+    }
+  </style>
 </head>
 <body class="hold-transition login-page">
+
 <div class="login-box">
-  <div class="login-logo">
-    <a href="#"><b>Sistema</b>JD</a>
-  </div>
+  		<div class="image">
+          <img src="assets/dist/img/logoJD.jpg" class="img-circle" alt="User Image">
+        </div> 
+		  <div class="login-logo">
+		   
+		  </div>
   
              <c:if test="${not empty errorUsuario}">
 								<script>
@@ -41,6 +55,12 @@
 											.error("Datos incorrectos");
 								</script>
 		   </c:if> 
+  
+	   <div class="box box-default">
+		   <div class="box-header with-default">
+		  <center> <h3 class="box-title">Sistema de Gestión de Engorda de Vacunos</h3><center>
+		   </div>
+	   </div>
   <!-- /.login-logo -->
   <div class="login-box-body">
     <p class="login-box-msg">Ingresa para iniciar sesión</p>

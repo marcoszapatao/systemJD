@@ -16,6 +16,7 @@ import java.nio.file.StandardCopyOption;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.text.DateFormat;
+import java.text.Format;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -41,11 +42,16 @@ import com.lowagie.text.DocumentException;
 import com.lowagie.text.Element;
 import com.lowagie.text.Font;
 import com.lowagie.text.FontFactory;
+import com.lowagie.text.HeaderFooter;
 import com.lowagie.text.Image;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
+import com.lowagie.text.Phrase;
+import com.lowagie.text.pdf.ColumnText;
+import com.lowagie.text.pdf.PdfContentByte;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
+import com.lowagie.text.pdf.PdfPageEventHelper;
 import com.lowagie.text.pdf.PdfWriter;
 import com.proyecto.persistence.grupoDAO;
 import com.proyecto.persistence.inventarioDAO;
@@ -104,11 +110,29 @@ public class reporteController {
 		}
 		
 		if(tipo ==1) {
+			
+			
 		/*AQUI COMIENZA GENERACION DE REPORTE*/
 		inventarioDAO inventario = new inventarioDAO();
 		LinkedList<inventarioTO> inven = new LinkedList<inventarioTO>();
 		inven = inventario.readAllInvenxFecha(fechaI, fechaT);
-		
+	    
+		class MyFooter extends PdfPageEventHelper {
+	        Font ffont = new Font(FontFactory.getFont("Times New Roman", 10, Font.ITALIC));
+	 
+	        public void onEndPage(PdfWriter writer, Document document) {
+	            PdfContentByte cb = writer.getDirectContent();
+	            Date fechaSistema2 = new Date();
+	            Format formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+	            String s = formatter.format(fechaSistema2);
+	            Phrase footer = new Phrase("Documento Emitido: "+ s, ffont);
+
+	            ColumnText.showTextAligned(cb, Element.ALIGN_CENTER,
+	                    footer,
+	                    (document.right() - document.left()) / 2 + document.leftMargin(),
+	                    document.bottom() - 10, 0);
+	        }
+	    }
 		
 		
 		// Escribir PDF
@@ -119,22 +143,28 @@ public class reporteController {
 		Document documento = new Document(PageSize.LETTER);
 		// writer es declarado como el método utilizado para escribir en el archivo.
 		PdfWriter pdfWriter = null;
-
+		
 		try {
+			
+			
 			// Obtenemos la instancia del archivo a utilizar.
 			pdfWriter = PdfWriter.getInstance(documento, new FileOutputStream(new File(FILE_NAME)));
+
 		} catch (FileNotFoundException | DocumentException ex) {
 			ex.getMessage();
 		}
-
+		MyFooter event = new MyFooter();
+        pdfWriter.setPageEvent(event);
 		// Abrimos el documento a editar.
 		documento.open();
+		
+        
 
 		// Creamos un párrafo nuevo llamado "vacio1" para espaciar los elementos.
 		Paragraph vacio1 = new Paragraph();
 		vacio1.add("\n\n");
 		Paragraph vacio2 = new Paragraph();
-		vacio1.add("\n");
+		vacio2.add("\n");
 
 		// Declaramos un texto como Paragraph. Le podemos dar formato alineado, tamaño,
 		// color, etc.
@@ -142,16 +172,6 @@ public class reporteController {
 		Paragraph saltolinea = new Paragraph();
 		Paragraph mensaje = new Paragraph();
 		Paragraph fecha = new Paragraph();
-
-		Paragraph totalV = new Paragraph();
-		Paragraph tituloTipo = new Paragraph();
-		Paragraph tipoV = new Paragraph();
-		Paragraph tipoVa = new Paragraph();
-		Paragraph tipoT= new Paragraph();
-		Paragraph tituloEstado = new Paragraph();
-		Paragraph estadoEn = new Paragraph();
-		Paragraph estadoP = new Paragraph();
-		Paragraph estadoV = new Paragraph();
 		Paragraph footer = new Paragraph();
 		Paragraph linea = new Paragraph();
 
@@ -164,12 +184,12 @@ public class reporteController {
 
 		titulo.setFont(FontFactory.getFont("Times New Roman", 15, Font.BOLD));
 
-		titulo.add("Sistema de gestión de engorda de vacunos");
+		titulo.add("Sistema de Gestión de Engorda de Vacunos");
 
 		titulo.setAlignment(Element.ALIGN_CENTER);
         
 		mensaje.setFont(FontFactory.getFont("Times New Roman",18,Font.BOLD));
-		mensaje.add("Reporte: Inventario de animales");
+		mensaje.add("Reporte: Inventario de Animales");
 		mensaje.setAlignment(Element.ALIGN_CENTER);
 		
 		linea.add("-----------------------------------------------------------------------------"
@@ -200,7 +220,7 @@ public class reporteController {
 		grupoDAO grupo = new grupoDAO();
 		int nroEs = grupo.totalVacunosEstado("Engorda");
 		int nroEsP = grupo.totalVacunosEstado("Pradera");
-		int nroEsV = grupo.totalVacunosEstado("Pradera");
+		int nroEsV = grupo.totalVacunosEstado("Vendido");
 		int totalnro=nroEs+nroEsP+nroEsV;
 
 		PdfPTable table = new PdfPTable(2);
@@ -221,10 +241,11 @@ public class reporteController {
 		             +"Total                              :        "+totalnro+"\n");
  
 
-	
-		
 
-
+        Paragraph invent = new Paragraph();
+        invent.setFont(FontFactory.getFont("Times New Roman",12));
+        invent.add("Inventario de Grupos");
+        
 		
 		// creamos la tabla con 3 columnas
 		PdfPTable tabla = new PdfPTable(4);
@@ -241,7 +262,14 @@ public class reporteController {
 		for (int i = 0; i < inven.size(); i++) {
 			tabla.addCell(new Paragraph(inven.get(i).getNombre()));
 			tabla.addCell(new Paragraph(inven.get(i).getEstado()));
-			tabla.addCell(new Paragraph(("" + inven.get(i).getFecha_ingreso())));
+			//Pasa fecha a formato local
+			String[] parte = inven.get(i).getFecha_ingreso().toString().split("-");
+			String parte1 = parte[0]; 
+			String parte2 = parte[1]; 
+			String parte3 = parte[2];
+			String finp = parte3+"/"+parte2+"/"+parte1;
+			
+			tabla.addCell(new Paragraph(("" + finp)));
 			tabla.addCell(new Paragraph("" + inven.get(i).getNroAnimales()));
 			int totalAnimales = inven.get(i).getNroAnimales();
 			total = total + totalAnimales ;
@@ -253,6 +281,8 @@ public class reporteController {
 		celdaFinal.setColspan(3);
 		tabla.addCell(celdaFinal);
 		tabla.addCell(new Paragraph("" + total));
+		
+
 
 		try {
 			// Agregamos el texto al documento.
@@ -270,26 +300,9 @@ public class reporteController {
 			documento.add(fecha);
 			documento.add(saltolinea);
 			documento.add(table);
-			documento.add(totalV);
-			documento.add(saltolinea);
-			documento.add(saltolinea);
-			documento.add(tituloTipo);
-			documento.add(saltolinea);
-			documento.add(tipoV);
-			documento.add(saltolinea);
-			documento.add(tipoVa);
-			documento.add(saltolinea);
-			documento.add(tipoT);
-			documento.add(saltolinea);
-			documento.add(tituloEstado);
-			documento.add(saltolinea);
-			documento.add(estadoEn);
-			documento.add(saltolinea);
-			documento.add(estadoP);
-			documento.add(saltolinea);
-			documento.add(estadoV);
-			
 			documento.add(vacio1);
+			documento.add(invent);
+			documento.add(vacio2);
 			documento.add(tabla);
 			documento.add(saltolinea);
 			documento.add(footer);

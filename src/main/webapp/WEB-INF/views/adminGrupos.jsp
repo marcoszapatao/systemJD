@@ -85,7 +85,7 @@
     	 /*INCLUIR DIIO DE VACUNOS SELECCIONADOS EN EL FORM EN UNA ARREGLO*/
     	 var checkedValue = ["Inicio"];
     	 for(var i=1; i<(cont+1); i++){
-        	 alert(i);
+        	 //alert(i);
     		 var message = "messageCheckbox";
     		 var letra = i;
     		 var res = message.concat(letra);

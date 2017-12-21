@@ -157,7 +157,7 @@
               <div class="box-footer">
                 <button href="#" type="submit" class="btn btn-default">Cancelar</button>
                 <!-- input type="hidden" name="action" value="saveVacuno.htm"-->
-                <button type="submit" class="btn btn-info pull-right"><i class="fa fa-file-pdf-o"> Generar</i></button>
+                <button type="submit" class="btn btn-info pull-right"><i class="fa fa-download"> Generar</i></button>
               </div>
               <!-- /.box-footer -->
             </form>
