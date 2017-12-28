@@ -1,8 +1,11 @@
 package com.proyecto.controller;
 
-import java.sql.Date;
+//import java.sql.Date;
 import java.sql.SQLException;
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,7 +44,26 @@ public class vacunoController {
 			@RequestParam(value = "tipo", required = false, defaultValue = "World") String tipo,
 			@RequestParam(value = "fecha_in", required = false, defaultValue = "World") String fecha_in,
 			ModelAndView vista) throws SQLException, ParseException {
-		 
+		    /*
+			// Validar fechas
+			DateFormat parser = new SimpleDateFormat("yyyy-MM-dd");
+			Date date1 = parser.parse(fecha_in);
+			Date fechaSistema = new Date();
+	
+			if (date1.getDate() > fechaSistema.getDate() || date1.getMonth() > fechaSistema.getMonth()
+					|| date1.getYear() > fechaSistema.getYear()) {
+				vista.addObject("validaF", "fecha ingresada posterior a la fecha actual");
+				
+				vacunoDAO daoo = new vacunoDAO();
+		        razaDAO razaV = new razaDAO();
+		        vista.addObject("raza",razaV.readAll());
+				vista.addObject("lista", daoo.readAllV());
+				vista.setViewName("adminVacunos");
+				return vista;
+				// hasta aqui se valida fecha
+	
+			}*/
+		
 			vacunoDAO dao = new vacunoDAO();
 			vacunoTO to = new vacunoTO();
 			java.sql.Date fecha = java.sql.Date.valueOf(fecha_in);

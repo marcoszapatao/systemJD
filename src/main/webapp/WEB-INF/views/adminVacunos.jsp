@@ -6,6 +6,8 @@
 <%@page import="java.util.LinkedList"%>
 <%@page import="com.proyecto.transferObject.vacunoTO"%>
 <%@page import="com.proyecto.transferObject.razaTO"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
@@ -15,12 +17,8 @@
   <%@ include file="cabecera.jsp"%>
     <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
     <script>
-    //$(document).ready(function(){
-    	//console.log( "document loaded" );
-   	    
-    	//$('#botonEdit').click(function(){
+	    
    	     function botonEdit(id){
-   		 //var id=$('#idvacuno').val();
    		 console.log("IDEEE "+id);
    		 $.ajax({
    			 type:'GET',
@@ -123,6 +121,13 @@
 	        </div>
 	        
             </div>  
+            
+            <c:if test="${not empty validaF}">
+								<script>
+									toastr
+											.error("ERROR: Fecha ingresada posterior a la actual");
+								</script>
+		   </c:if>
 
             <!-- /.box-header -->
             <div class="box-body">
@@ -189,7 +194,7 @@
 			                  <label class="col-sm-3 control-label">Ingrese DIIO</label>
 			
 			                  <div class="col-sm-9">
-			                    <input type="text" class="form-control" id="inputEmail3" name="diio" placeholder="Ej: 00 658 4484" required>
+			                    <input type="text" class="form-control" id="inputEmail3" name="diio" placeholder="Ej: 00 658 4484" required pattern="[0-9]{9,9}" title="Ej: 001112222">
 			                  </div>
 			                </div>
 			                <br></br>
@@ -208,8 +213,8 @@
 			              <div class="form-horizontal">
 			                  <label  class="col-sm-3 control-label">Raza</label>
 			                <div class="col-sm-9">
-			                  <select name="raza" class="form-control select2" style="width: 100%;">
-			                  <option selected="selected">Seleccione una opción</option>
+			                  <select required name="raza" class="form-control select2" style="width: 100%;">
+			                  <option value="" disabled selected>Seleccione una opción</option>
 			                  <%for(int j=0; j<arr.length;j++){ %>
 			                  <option><%=arr[j]%></option>
 			                   <%} %>
@@ -222,8 +227,8 @@
 			                
 			               <label  class="col-sm-3 control-label">Tipo</label>
 			                <div class="col-sm-9">
-			                  <select name="tipo" class="form-control select2" style="width: 100%;">
-			                  <option selected="selected">Seleccione una opción</option>
+			                  <select required name="tipo" class="form-control select2" style="width: 100%;">
+			                  <option value="" disabled selected>Seleccione una opción</option>
 			                  <option>Vacuno</option>
 			                  <option>Vaquilla</option>
 			                  <option>Toro</option>
@@ -236,7 +241,7 @@
 			            <div class="form-horizontal">
 			                <label  class="col-sm-3 control-label">Fecha  <i class="fa fa-calendar"></i></label>         
 			                <div class="col-sm-9">
-			                  <input type="date" name="fecha_in" class="form-control pull-right" id="datepicker">
+			                  <input type="date" name="fecha_in" class="form-control pull-right" id="datepicker" required>
 			                </div>
 			             </div>
 			                  
