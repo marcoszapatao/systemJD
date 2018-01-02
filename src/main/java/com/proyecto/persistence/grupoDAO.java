@@ -22,6 +22,7 @@ public class grupoDAO {
     private static final String DELETE_PINIOPESO="DELETE FROM peso WHERE Pinio_idPinio=?";
     private static final String DELETE_PINIO="DELETE FROM pinio WHERE idPinio=?";
     private static final String UPDATE_GRUPO="UPDATE pinio SET nombrePinio = ?,estado = ?,fechaIngreso = ? WHERE idPinio=?";
+    private static final String UPDATE_GRUPOS="UPDATE pinio SET nombrePinio = ?,estado = ?,fechaIngreso = ?,fechaSalida=? WHERE idPinio=?";
     private static final String UPDATE_PESO_GRUPO="update peso set pesoPinio = ? where Pinio_idPinio = ?";
     private static final String READ_QUERY="select nombrePinio,estado,fechaIngreso,fechaSalida,pesoPinio from pinio join peso on(pinio.idPinio = peso.Pinio_idPinio) where idPinio=?";
     private static final String READ_ALL ="select * from pinio";
@@ -171,13 +172,26 @@ public class grupoDAO {
     }
     
     public void updateGrupo(grupoTO grupo) throws SQLException {
-    	conexion = getConnection();
-        PreparedStatement ps = conexion.prepareStatement(UPDATE_GRUPO);
-        ps.setString(1,grupo.getNombre());
-        ps.setString(2,grupo.getEstado());
-        ps.setDate(3,grupo.getFecha_ingreso());
-        ps.setInt(4, grupo.getId_grupo());
-        ps.executeUpdate();
+    	
+    	if(grupo.getFecha_Salida()==null) {
+        	conexion = getConnection();
+            PreparedStatement ps = conexion.prepareStatement(UPDATE_GRUPO);
+            ps.setString(1,grupo.getNombre());
+            ps.setString(2,grupo.getEstado());
+            ps.setDate(3,grupo.getFecha_ingreso());
+            ps.setInt(4, grupo.getId_grupo());
+            ps.executeUpdate();
+    	}else {
+        	conexion = getConnection();
+            PreparedStatement ps = conexion.prepareStatement(UPDATE_GRUPOS);
+            ps.setString(1,grupo.getNombre());
+            ps.setString(2,grupo.getEstado());
+            ps.setDate(3,grupo.getFecha_ingreso());
+            ps.setDate(4,grupo.getFecha_Salida());
+            ps.setInt(5, grupo.getId_grupo());
+            ps.executeUpdate();
+    	}
+
         
         conexion = getConnection();
         PreparedStatement ps1 = conexion.prepareStatement(UPDATE_PESO_GRUPO);

@@ -111,16 +111,25 @@ public class grupoController {
 			@RequestParam(value = "estado", required = false, defaultValue = "World") String estado,
 			@RequestParam(value = "fecha", required = false, defaultValue = "World") String fecha,
 			@RequestParam(value = "peso", required = false, defaultValue = "World") int peso,
+			@RequestParam(value = "fechaS", required = false, defaultValue = "World") String fechaS,
 			ModelAndView vista
 			) throws SQLException  {
-		System.out.println(id+" "+name+" "+estado+" "+fecha+" "+peso+"**************************************");
+		System.out.println(id+" "+name+" "+estado+" "+fecha+" "+peso+" "+fechaS+"**************************************");
+
 		grupoDAO dao = new grupoDAO();
 		grupoTO to = new grupoTO();
 		java.sql.Date fechaI = java.sql.Date.valueOf(fecha);
+			
+		if(fechaS=="") {
+			System.out.println("No hay nada");
+		}else {
+			java.sql.Date fechaSa = java.sql.Date.valueOf(fechaS);
+			to.setFecha_Salida(fechaSa);
+		}
 		to.setId_grupo(id);
 		to.setNombre(name);
 		to.setEstado(estado);
-		to.setFecha_ingreso(fechaI);
+		to.setFecha_ingreso(fechaI);	
 		to.setPeso(peso);
 		dao.updateGrupo(to);
 		

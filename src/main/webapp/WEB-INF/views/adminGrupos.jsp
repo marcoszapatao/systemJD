@@ -41,7 +41,6 @@
 		 $.ajax({
 			 type:'GET',
 			 url:"/systemjd/crearGrupo.htm",
-		     //dataType:'json',
 		     success:function(data){
                   
 		    	  var result = "<thead><tr><th>Marcar todos   <input type=checkbox id=marcaTodo></input></th><th>Diio</th></tr></thead>";
@@ -242,8 +241,9 @@
         var name = jQuery("#nameGrupoE").val();
         var estado = jQuery("#estadoGrupoE").val();
         var fecha = jQuery("#fechaInE").val();
+        var fechaS = jQuery("#fechaSaE").val();
         var peso = jQuery("#pesajeGrupoE").val();
-        var object = {id:id,name:name,estado:estado,fecha:fecha,peso:peso};
+        var object = {id:id,name:name,estado:estado,fecha:fecha,peso:peso,fechaS:fechaS};
         jQuery.ajax("/systemjd/actualizaG.htm",
         	    {
         	        type:"POST",
@@ -252,6 +252,7 @@
         window.location.reload(true);
      }
   </script>
+  <script type="text/javascript" src="assets/comprueba.js"></script>
   
 </head>
 <body class="hold-transition skin-red sidebar-mini">
@@ -373,7 +374,7 @@
 		                  <label for="inputEmail3" class="col-sm-3 control-label">Ingrese Nombre</label>
 		
 		                  <div class="col-sm-9">
-		                    <input type="text" class="form-control" id="nombreGrupo" name="name" placeholder="Ej: GrupoUno">
+		                    <input type="text" class="form-control" id="nombreGrupo" name="name" placeholder="Ej: GrupoUno" required>
 		                  </div>
 		                </div> 
 		                
@@ -383,8 +384,8 @@
 		                
 		                  <label  class="col-sm-3 control-label">Estado</label>
 		                <div class="col-sm-9">
-		                  <select name="estado" id="estadoGrupo" class="form-control select2" style="width: 100%;">
-		                  <option selected="selected">Seleccione una opción</option>
+		                  <select required name="estado" id="estadoGrupo" class="form-control select2" style="width: 100%;">
+		                  <option value="" disabled selected>Seleccione una opción</option>
 		                  <option>Engorda</option>
 		                  <option>Pradera</option>
 		                  <option>Vendido</option>
@@ -399,24 +400,17 @@
 		                  <label for="inputEmail3" class="col-sm-3 control-label">Peso Total(Kg)</label>
 		
 		                  <div class="col-sm-9">
-		                    <input type="text" class="form-control" id="pesoGrupo" name="peso" placeholder="Ej: 1000">
+		                    <input type="number" class="form-control" id="pesoGrupo" name="peso" placeholder="Ej: 1000" required>
 		                  </div>
 		                </div> 
 		                
 		                <br></br>
 		              
 		            <div class="form-horizontal">
-		                <label  class="col-sm-3 control-label">Fecha de ingreso  <i class="fa fa-calendar"></i></label>
-		                
+		                <label  class="col-sm-3 control-label">Fecha de ingreso  <i class="fa fa-calendar"></i></label>		              
 		                <div class="col-sm-9">
-		                <!--div class="input-group date"-->
-		                  <!--div class="input-group-addon"-->
-		                    
-		                  <!--/div-->
-		                  <input type="date" name="fecha_in" class="form-control pull-right" id="datepicker">
+		                  <input type="date" name="fecha_in" class="form-control pull-right" id="datepicker" onchange="comprobarGrupo()" required>
 		                </div>
-		                <!--/div>
-		                <!-- /.input group -->
 		              </div>
 		              <br></br>
 		           
@@ -479,7 +473,7 @@
 		                  <label for="inputEmail3" class="col-sm-3 control-label">Ingrese Nombre</label>
 		
 		                  <div class="col-sm-9">
-		                    <input type="text" class="form-control" id="nameGrupoE" name="nombreE" placeholder="Ej: GrupoUno">
+		                    <input type="text" class="form-control" id="nameGrupoE" name="nombreE" placeholder="Ej: GrupoUno" required>
 		                  </div>
 		                </div> 
 		                
@@ -505,7 +499,7 @@
 		                  <label for="inputEmail3" class="col-sm-3 control-label">Peso Total(Kg)</label>
 		
 		                  <div class="col-sm-9">
-		                    <input type="text" class="form-control" id="pesajeGrupoE" name="pesajeE" placeholder="Ej: 1000">
+		                    <input type="number" class="form-control" id="pesajeGrupoE" name="pesajeE" placeholder="Ej: 1000" required>
 		                  </div>
 		                </div> 
 		                
@@ -515,7 +509,7 @@
 		                <label  class="col-sm-3 control-label">Fecha de ingreso  <i class="fa fa-calendar"></i></label>
 		                
 		                <div class="col-sm-9">
-		                  <input type="date" id="fechaInE" name="fecha_inE" class="form-control pull-right">
+		                  <input type="date" id="fechaInE" name="fecha_inE" class="form-control pull-right" onchange="comprobarGrupoEditar()" required>
 		                </div>
 		              </div>
 		              <br></br>
@@ -524,25 +518,11 @@
 		                <label  class="col-sm-3 control-label">Fecha de salida  <i class="fa fa-calendar"></i></label>
 		                
 		                <div class="col-sm-9">
-		                  <input type="date" id="fechaSaE" name="fecha_saE" class="form-control pull-right" id="datepicker">
+		                  <input type="date" id="fechaSaE" name="fecha_saE" class="form-control pull-right" onchange="comprobarGrupoSalida()">
 		                </div>
 		              </div>
 		              <br></br>
-		           
-		              <!-- label  class="col-sm-3 control-label">Seleccione vacunos</label-->
-		              <!--------------------------- Aqui comienza la tabla------------------- -->
-		              <!--div class="col-sm-9">
-		              <table id="tablaresultado" class="table table-bordered table-hover">
-			             <thead>
-			                <tr>
-			                   <th>Seleccione</th>
-			                   <th>Diio</th>
-			                </tr>
-			             </thead>
-			             <tbody>
-			             </tbody>
-			          </table>
-		              </div-->    
+		             
 		              </div>
 		              <!-- /.box-body -->
 		              <div class="box-footer">

@@ -43,8 +43,11 @@
    		     }
    		 });
    	 }
+   	     
+
    //});
     </script>
+    <script type="text/javascript" src="assets/comprueba.js"></script>
   
   <style type="text/css">
     .text { font-family: arial; font-size:11pt;  }
@@ -194,7 +197,7 @@
 			                  <label class="col-sm-3 control-label">Ingrese DIIO</label>
 			
 			                  <div class="col-sm-9">
-			                    <input type="text" class="form-control" id="inputEmail3" name="diio" placeholder="Ej: 00 658 4484" required pattern="[0-9]{9,9}" title="Ej: 001112222">
+			                    <input type="text" class="form-control" id="dioV" name="diio" placeholder="Ej: 00 658 4484" required pattern="[0-9]{9,9}" title="Ej: 001112222">
 			                  </div>
 			                </div>
 			                <br></br>
@@ -241,7 +244,7 @@
 			            <div class="form-horizontal">
 			                <label  class="col-sm-3 control-label">Fecha  <i class="fa fa-calendar"></i></label>         
 			                <div class="col-sm-9">
-			                  <input type="date" name="fecha_in" class="form-control pull-right" id="datepicker" required>
+			                  <input type="date" name="fecha_in" class="form-control pull-right" id="dateIn" onchange="comprobar()" required>
 			                </div>
 			             </div>
 			                  
@@ -281,7 +284,7 @@
 			                  <label class="col-sm-3 control-label">Ingrese DIIO</label>
 			
 			                  <div class="col-sm-9">
-			                    <input type="text" class="form-control" name="diioo"></input>
+			                    <input type="text" class="form-control" name="diioo" required pattern="[0-9]{9,9}" title="Ej: 001112222"></input>
 			                  </div>
 			                </div>
 			                <br></br>
@@ -331,7 +334,7 @@
 			            <div class="form-horizontal">
 			                <label  class="col-sm-3 control-label">Fecha  <i class="fa fa-calendar"></i></label>
 			                <div class="col-sm-9">
-			                  <input id="fecha_ing" type="date" name="fecha_in" class="form-control pull-right">
+			                  <input id="fecha_ing" type="date" name="fecha_in" class="form-control pull-right" onchange="comprobarEditar()">
 			                </div>
 			            </div>
 			                  
@@ -411,6 +414,7 @@ $(function () {
       }
     })
   })
+
 </script>
 
 </body>
