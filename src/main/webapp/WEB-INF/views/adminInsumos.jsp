@@ -16,12 +16,8 @@
   <%@ include file="cabecera.jsp"%>
     <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
     <script>
-    //$(document).ready(function(){
-    	//console.log( "document loaded" );
-   	    
-    	//$('#botonEdit').click(function(){
+
    	     function botonEdit(id){
-   		 //var id=$('#idvacuno').val();
    		 console.log("IDEEE "+id);
    		 $.ajax({
    			 type:'GET',
@@ -209,8 +205,8 @@
 			                
 			                <label  class="col-sm-3 control-label">Seleccione Tipo</label>
 			                <div class="col-sm-9">
-			                  <select name="tipo" class="form-control select2" style="width: 100%;">
-			                  <option selected="selected">Seleccione una opción</option>
+			                  <select name="tipo" class="form-control select2" style="width: 100%;" required>
+			                  <option value="" disabled selected>Seleccione una opción</option>
 			                  <option>Alimento</option>
 			                  <option>Suplemento</option>
 			                  </select>

@@ -183,8 +183,8 @@
               <div class="form-horizontal">
                   <label  class="col-sm-2 control-label">Grupo</label>
                 <div class="col-sm-10">
-                  <select name="grupo" id="grupo" class="form-control select2" style="width: 100%;">
-                  <option selected="selected">Seleccione una opción</option>
+                  <select name="grupo" id="grupo" class="form-control select2" style="width: 100%;" required>
+                  <option value="" disabled selected>Seleccione una opción</option>
                   <%for(int j=0; j<arr.length;j++){ %>
                   <option value="<%=arrID[j]%>"><%=arr[j]%></option>
                    <%} %>
@@ -197,8 +197,8 @@
 			                
 			                <label  class="col-sm-2 control-label">Semana</label>
 			                <div class="col-sm-10">
-			                  <select name="raza" id="semana" class="form-control select2" style="width: 100%;">
-			                  <option selected="selected"></option>
+			                  <select name="raza" id="semana" class="form-control select2" style="width: 100%;" required>
+			                  <option value="" disabled selected>Seleccione una opción</option>
 			                  <option value="1">1</option>
 			                  <option value="2">2</option>
 			                  <option value="3">3</option>

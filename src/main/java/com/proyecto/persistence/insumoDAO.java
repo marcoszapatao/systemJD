@@ -226,8 +226,8 @@ public class insumoDAO {
     }
     
 
-    public void ingresaCompra(String insumo, String proveedor,Date fecha,String documento, int cantidad, int precio) throws SQLException {
-    	
+    public int ingresaCompra(String insumo, String proveedor,Date fecha,String documento, int cantidad, int precio) throws SQLException {
+    	int j = 0;
     	try {
     	conexion = getConnection();
         PreparedStatement ps1=conexion.prepareStatement(READ_INSUMO);
@@ -275,7 +275,10 @@ public class insumoDAO {
         ps5.executeUpdate();
     	}catch(SQLException e) {
             System.out.println("ERROR: "+e);
+            j=1;
+            return j;
     	}
+    	return j;
     	
     }
 	

@@ -227,8 +227,13 @@ public class insumoController {
 			ModelAndView vista) throws SQLException {
 		    insumoDAO dao = new insumoDAO();
 		    java.sql.Date fechaC = java.sql.Date.valueOf(fecha);
-		    dao.ingresaCompra(insumo,proveedor,fechaC,documento,cantidad,precio);
-
+		    int j = dao.ingresaCompra(insumo,proveedor,fechaC,documento,cantidad,precio);
+            
+		    if(j==0) {
+		    	vista.addObject("exito",insumo);
+		    }else {
+		    	vista.addObject("fracaso",insumo);
+		    }
 			insumoDAO daoi = new insumoDAO();
 			vista.addObject("lista", daoi.readAllI());
 			
