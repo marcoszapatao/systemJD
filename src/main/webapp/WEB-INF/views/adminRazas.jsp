@@ -14,23 +14,18 @@
   <%@ include file="cabecera.jsp"%>
     <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
     <script>
-    //$(document).ready(function(){
-    	//console.log( "document loaded" );
-   	    
-    	//$('#botonEdit').click(function(){
    	     function botonEdit(id){
-   		 //var id=$('#idvacuno').val();
-   		 console.log("IDEEE "+id);
+   
    		 $.ajax({
    			 type:'GET',
    			 url:"/systemjd/editarRa.htm?id="+id,
    		     dataType:'json',
    		     success:function(data){
-   		    	 console.log(data);
+   		 
    		    	 var razaId = data.idRaza;
    		    	 var razaNombre = data.nombreRaza;
    		    	 var razaDescrip = data.descripcionRaza;
-   		    	 alert(razaId+razaNombre+" "+razaDescrip);
+   		    
    		    	 $("input[name*='id']" ).val(razaId);
    		    	 $("input[name*='diioo']" ).val(razaNombre);
    		    	 $("input[name*='descrip']" ).val(razaDescrip);
@@ -253,7 +248,7 @@
 			                  <label class="col-sm-3 control-label">Ingrese Nombre</label>
 			
 			                  <div class="col-sm-9">
-			                    <input type="text" class="form-control" name="diioo"></input>
+			                    <input type="text" class="form-control" name="diioo" required></input>
 			                  </div>
 			                </div>
 			                <br></br>
@@ -261,7 +256,7 @@
 			                  <label class="col-sm-3 control-label">Ingrese Descripción</label>
 			
 			                  <div class="col-sm-9">
-			                    <input type="text" class="form-control" name="descrip"></input>
+			                    <input type="text" class="form-control" name="descrip" required></input>
 			                  </div>
 			                </div>
 			                <br></br>

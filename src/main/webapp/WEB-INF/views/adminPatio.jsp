@@ -248,7 +248,7 @@
 			                  <label class="col-sm-3 control-label">Ingrese Nombre</label>
 			
 			                  <div class="col-sm-9">
-			                    <input type="text" class="form-control" name="nombreP"></input>
+			                    <input type="text" class="form-control" name="nombreP" required></input>
 			                  </div>
 			                </div>
 			                <br></br>
@@ -256,7 +256,7 @@
 			                  <label class="col-sm-3 control-label">Ingrese Rubro</label>
 			
 			                  <div class="col-sm-9">
-			                    <input type="number" class="form-control" name="nroP"></input>
+			                    <input type="number" class="form-control" name="nroP" required></input>
 			                  </div>
 			                </div>
 			                <br></br>

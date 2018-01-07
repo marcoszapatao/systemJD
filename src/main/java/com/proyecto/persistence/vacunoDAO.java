@@ -60,9 +60,10 @@ public class vacunoDAO {
         ps.setDate(3, fe);
         ps.setInt(4, idraza);
         ps.executeUpdate();
-        result = 1;
+        
         }catch(SQLException e){
             System.out.println(e);
+            result=1;
         }finally{
             if(conexion!=null)
                 conexion.close();

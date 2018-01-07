@@ -73,14 +73,24 @@ public class vacunoController {
 			to.setTipo(tipo);
 			// to.setFecha(dateMenu);
 	
-			dao.createVacuno(to);
-	
-	        vacunoDAO daoo = new vacunoDAO();
-	        razaDAO razaV = new razaDAO();
-	        vista.addObject("raza",razaV.readAll());
-			vista.addObject("lista", daoo.readAllV());
-			vista.setViewName("adminVacunos");
-			return vista;
+			int j = dao.createVacuno(to);
+	        if(j==0) {
+		        vacunoDAO daoo = new vacunoDAO();
+		        razaDAO razaV = new razaDAO();
+		        vista.addObject("correcto","insercion correcta");
+		        vista.addObject("raza",razaV.readAll());
+				vista.addObject("lista", daoo.readAllV());
+				vista.setViewName("adminVacunos");
+				return vista;
+	        }else {
+		        vacunoDAO daoo = new vacunoDAO();
+		        razaDAO razaV = new razaDAO();
+		        vista.addObject("incorrecto","insercion incorrecta");
+		        vista.addObject("raza",razaV.readAll());
+				vista.addObject("lista", daoo.readAllV());
+				vista.setViewName("adminVacunos");
+				return vista;
+	        }
 	}
 	
 	@RequestMapping(value = "/deleteVacuno", method = RequestMethod.GET)

@@ -249,7 +249,7 @@
         	        type:"POST",
         	        data: object
         	    }); 
-        window.location.reload(true);
+
      }
   </script>
   <script type="text/javascript" src="assets/comprueba.js"></script>

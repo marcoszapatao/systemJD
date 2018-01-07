@@ -14,12 +14,7 @@
   <%@ include file="cabecera.jsp"%>
     <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
     <script>
-    //$(document).ready(function(){
-    	//console.log( "document loaded" );
-   	    
-    	//$('#botonEdit').click(function(){
    	     function botonEdit(id){
-   		 //var id=$('#idvacuno').val();
    		 console.log("IDEEE "+id);
    		 $.ajax({
    			 type:'GET',
@@ -76,6 +71,7 @@
 
   <header class="main-header">
     <%@ include file="barraSuperior.jsp"%>
+    <script type="text/javascript" src="assets/comprueba.js"></script>
   </header>
     
   <!-- Left side column. contains the logo and sidebar -->
@@ -226,7 +222,7 @@
 			                  <label class="col-sm-3 control-label">Ingrese RUT</label>
 			
 			                  <div class="col-sm-9">
-			                    <input type="text" class="form-control" id="rut" name="rut" placeholder="Ej: 8.321.435-4" required>
+			                    <input type="text" class="form-control" id="rut" name="rut" placeholder="Ej: 8.321.435-4" oninput="checkRut(this)" required>
 			                  </div>
 			                </div>
 			                <br></br>
@@ -276,7 +272,7 @@
 			                  <label class="col-sm-3 control-label">Ingrese Nombre</label>
 			
 			                  <div class="col-sm-9">
-			                    <input type="text" class="form-control" name="nombre"></input>
+			                    <input type="text" class="form-control" name="nombre" required></input>
 			                  </div>
 			                </div>
 			                <br></br>
@@ -284,7 +280,7 @@
 			                  <label class="col-sm-3 control-label">Ingrese Rubro</label>
 			
 			                  <div class="col-sm-9">
-			                    <input type="text" class="form-control" name="rubro"></input>
+			                    <input type="text" class="form-control" name="rubro" required></input>
 			                  </div>
 			                </div>
 			                <br></br>
@@ -292,7 +288,7 @@
 			                  <label class="col-sm-3 control-label">Ingrese Rut</label>
 			
 			                  <div class="col-sm-9">
-			                    <input type="text" class="form-control" name="rut"></input>
+			                    <input type="text" class="form-control" name="rut" oninput="checkRut(this)" required></input>
 			                  </div>
 			                </div>
 			                <br></br>
@@ -300,7 +296,7 @@
 			                  <label class="col-sm-3 control-label">Ingrese Dirección</label>
 			
 			                  <div class="col-sm-9">
-			                    <input type="text" class="form-control" name="direccion"></input>
+			                    <input type="text" class="form-control" name="direccion" required></input>
 			                  </div>
 			                </div>
 			                <br></br>
@@ -347,6 +343,50 @@
 
 <%@ include file="scripts.jsp"%>
 <script>
+function checkRut(rut) {
+	// Despejar Puntos
+	var valor = rut.value.replace('.', '');
+	// Despejar Guión
+	valor = valor.replace('-', '');
+	// Aislar Cuerpo y Dígito Verificador
+	cuerpo = valor.slice(0, -1);
+	dv = valor.slice(-1).toUpperCase();
+	// Formatear RUN
+	rut.value = cuerpo + '-' + dv
+	// Si no cumple con el mínimo ej. (n.nnn.nnn)
+	if (cuerpo.length < 7) {
+		rut.setCustomValidity("RUT Incompleto");
+		return false;
+	}
+	// Calcular Dígito Verificador
+	suma = 0;
+	multiplo = 2;
+	// Para cada dígito del Cuerpo
+	for (i = 1; i <= cuerpo.length; i++) {
+		// Obtener su Producto con el Múltiplo Correspondiente
+		index = multiplo * valor.charAt(cuerpo.length - i);
+		// Sumar al Contador General
+		suma = suma + index;
+		// Consolidar Múltiplo dentro del rango [2,7]
+		if (multiplo < 7) {
+			multiplo = multiplo + 1;
+		} else {
+			multiplo = 2;
+		}
+	}
+	// Calcular Dígito Verificador en base al Módulo 11
+	dvEsperado = 11 - (suma % 11);
+	// Casos Especiales (0 y K)
+	dv = (dv == 'K') ? 10 : dv;
+	dv = (dv == 0) ? 11 : dv;
+	// Validar que el Cuerpo coincide con su Dígito Verificador
+	if (dvEsperado != dv) {
+		rut.setCustomValidity("RUT Inválido");
+		return false;
+	}
+	// Si todo sale bien, eliminar errores (decretar que es válido)
+	rut.setCustomValidity('');
+}
 $(function () {
     $('#example').DataTable({
       'paging'      : true,

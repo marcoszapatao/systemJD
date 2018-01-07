@@ -6,7 +6,10 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,7 +33,7 @@ public class insumoDAO {
 	private static final String UPDATE_QUERY="UPDATE insumo SET nombreInsumo = ?,descripcion = ?,tipoInsumo_idtipoInsumo = ? WHERE idinsumo=?";
     private static final String READ_QUERY="select idinsumo,insumo.nombreInsumo as nombre,insumo.descripcion,tipoinsumo.nombreInsumo as tipo from insumo join tipoinsumo on(insumo.tipoInsumo_idtipoInsumo = tipoinsumo.idtipoInsumo) and idinsumo=?";
 	private static final String DELETE_QUERY="DELETE FROM insumo WHERE idinsumo=?";
-	private static final String READ_GASTOS="SELECT sum(precio) FROM `insumo_has_proveedor` WHERE `insumo_has_proveedor`.`fechaCompra` BETWEEN '2017-12-01' and '2017-12-31'";
+	private static final String READ_GASTOS="SELECT sum(precio) FROM `insumo_has_proveedor` WHERE `insumo_has_proveedor`.`fechaCompra` BETWEEN ? and ?";
 	private static final String READ_NOMBRETIPO="select idtipoInsumo from tipoinsumo where nombreInsumo=?";
     private static final String READ_CANDIST="select * from cantidad_disponible";
     private static final String DELETE_STOCK="delete from cantidad_disponible where insumo_idinsumo=?";
@@ -285,7 +288,28 @@ public class insumoDAO {
     public String obtieneGastos() throws SQLException{
     	conexion = getConnection();
         PreparedStatement ps=conexion.prepareStatement(READ_GASTOS);
-        //ps.setInt(1,idinsumo);
+        /*************************/
+        java.util.Date fechaActual = new java.util.Date();
+        System.out.println(fechaActual);
+        System.out.println("---------------------------------------------");
+        
+        //Formateando la fecha:
+        DateFormat formatoHora = new SimpleDateFormat("HH:mm:ss");
+        DateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+        System.out.println("Son las: "+formatoHora.format(fechaActual)+" de fecha: "+formatoFecha.format(fechaActual));
+        
+        //Fecha actual desglosada:
+        Calendar fecha = Calendar.getInstance();
+        int año = fecha.get(Calendar.YEAR);
+        int mes = fecha.get(Calendar.MONTH) + 1;
+        int dia = fecha.get(Calendar.DAY_OF_MONTH);
+
+        String inicio = año+"-"+mes+"-01";
+        String fin = año+"-"+mes+"-30";
+
+        /*************************/
+        ps.setString(1,inicio);
+        ps.setString(2,fin);
         ResultSet rs = ps.executeQuery();
         int gastos=0;
         if(rs.next()) {

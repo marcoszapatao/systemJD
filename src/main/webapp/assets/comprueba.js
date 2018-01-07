@@ -110,8 +110,12 @@
        console.log(fechaIngresoV);
        console.log(fechaPuesta);
        
-		if(fechaPuesta <= fechaIngresoV){
+       fechaActual = new Date();
+       
+		if((fechaPuesta <= fechaIngresoV)||(fechaPuesta>=fechaActual)){
 			toastr["error"]("ERROR: La fecha de salida es anterior a la fecha de ingreso");
 			document.getElementById('fechaSal').value = '';
 		}   
 }
+  
+  

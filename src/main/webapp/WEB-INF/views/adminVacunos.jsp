@@ -131,6 +131,18 @@
 											.error("ERROR: Fecha ingresada posterior a la actual");
 								</script>
 		   </c:if>
+		   <c:if test="${not empty correcto}">
+								<script>
+									toastr
+											.success("EXITO: Inserción correcta");
+								</script>
+		   </c:if>
+		               <c:if test="${not empty incorrecta}">
+								<script>
+									toastr
+											.error("ERROR: Inserción incorrecta");
+								</script>
+		   </c:if>
 
             <!-- /.box-header -->
             <div class="box-body">
