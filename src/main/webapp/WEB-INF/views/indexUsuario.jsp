@@ -2,8 +2,11 @@
 <html>
 <head>
  <%@ include file="cabecera.jsp"%>
+  <%@page import="java.util.LinkedList"%>
  <%@page import="com.proyecto.persistence.vacunoDAO"%>
   <%@page import="com.proyecto.persistence.insumoDAO"%>
+  <%@page import="com.proyecto.persistence.grupoDAO"%>
+   <%@page import="com.proyecto.transferObject.insumoTO"%>
 </head>
 <body class="hold-transition skin-red sidebar-mini">
 <div class="wrapper">
@@ -68,6 +71,17 @@
         <!-- ./col -->
         <div class="row">
 
+
+             <%grupoDAO grupo=new grupoDAO();
+            int engorda = grupo.totalVacunosEstado("Engorda");
+            int pradera = grupo.totalVacunosEstado("Pradera");
+            int vendido = grupo.totalVacunosEstado("Vendido");
+            int total = engorda+pradera+vendido;
+            
+            int porcentajeE = (engorda*100)/total;
+            int porcentajeP = (pradera*100)/total;
+            int porcentajeV = (vendido*100)/total;
+            %>
         <!-- /.col -->
         <div class="col-md-6">
           <div class="box">
@@ -90,30 +104,30 @@
                   <td>Engorda</td>
                   <td>
                     <div class="progress progress-xs">
-                      <div class="progress-bar progress-bar-danger" style="width: 70%"></div>
+                      <div class="progress-bar progress-bar-danger" style="width: <%=porcentajeE%>%"></div>
                     </div>
                   </td>
-                  <td><span class="badge bg-red">55%</span></td>
+                  <td><span class="badge bg-red"><%=porcentajeE%>%</span></td>
                 </tr>
                 <tr>
                   <td>2.</td>
                   <td>Pradera</td>
                   <td>
                     <div class="progress progress-xs">
-                      <div class="progress-bar progress-bar-yellow" style="width: 25%"></div>
+                      <div class="progress-bar progress-bar-yellow" style="width: <%=porcentajeP%>%"></div>
                     </div>
                   </td>
-                  <td><span class="badge bg-yellow">70%</span></td>
+                  <td><span class="badge bg-yellow"><%=porcentajeP%>%</span></td>
                 </tr>
                 <tr>
                   <td>3.</td>
                   <td>Vendido</td>
                   <td>
                     <div class="progress progress-xs progress-striped active">
-                      <div class="progress-bar progress-bar-primary" style="width: 5%"></div>
+                      <div class="progress-bar progress-bar-primary" style="width: <%=porcentajeV%>%"></div>
                     </div>
                   </td>
-                  <td><span class="badge bg-light-blue">30%</span></td>
+                  <td><span class="badge bg-light-blue"><%=porcentajeV%>%</span></td>
                 </tr>
 
               </table>
@@ -131,13 +145,6 @@
             <div class="box-header">
               <h3 class="box-title">Detalle por insumos</h3>
               <div class="box-tools">
-                <ul class="pagination pagination-sm no-margin pull-right">
-                  <li><a href="#">&laquo;</a></li>
-                  <li><a href="#">1</a></li>
-                  <li><a href="#">2</a></li>
-                  <li><a href="#">3</a></li>
-                  <li><a href="#">&raquo;</a></li>
-                </ul>
               </div>
             </div>
             <!-- /.box-header -->
@@ -149,46 +156,23 @@
                   <th>Progreso</th>
                   <th style="width: 40px">%</th>
                 </tr>
+                 <% 
+                    insumoDAO insum = new insumoDAO();
+                    LinkedList<insumoTO> list = insum.stockIndex();
+                        for (int i = 0; i < list.size(); i++) {
+                            insumoTO task = list.get(i);                          
+                    %>
                 <tr>
-                  <td>1.</td>
-                  <td>Liposal</td>
+                  <td><%=(i+1) %></td>
+                  <td><%=task.getNombre_insumo()%></td>
                   <td>
                     <div class="progress progress-xs">
-                      <div class="progress-bar progress-bar-danger" style="width: 100%"></div>
+                      <div class="progress-bar progress-bar-primary" style="width: <%=task.getId_insumo()%>%"></div>
                     </div>
                   </td>
-                  <td><span class="badge bg-red">55%</span></td>
+                  <td><span class="badge bg-red"><%=task.getId_insumo()%>%</span></td>
                 </tr>
-                <tr>
-                  <td>2.</td>
-                  <td>Algodón</td>
-                  <td>
-                    <div class="progress progress-xs">
-                      <div class="progress-bar progress-bar-success" style="width: 70%"></div>
-                    </div>
-                  </td>
-                  <td><span class="badge bg-yellow">70%</span></td>
-                </tr>
-                <tr>
-                  <td>3.</td>
-                  <td>Melaza</td>
-                  <td>
-                    <div class="progress progress-xs progress-striped active">
-                      <div class="progress-bar progress-bar-primary" style="width: 30%"></div>
-                    </div>
-                  </td>
-                  <td><span class="badge bg-light-blue">30%</span></td>
-                </tr>
-                <tr>
-                  <td>4.</td>
-                  <td>Urea</td>
-                  <td>
-                    <div class="progress progress-xs progress-striped active">
-                      <div class="progress-bar progress-bar-success" style="width: 90%"></div>
-                    </div>
-                  </td>
-                  <td><span class="badge bg-green">90%</span></td>
-                </tr>
+                <%} %>
               </table>
             </div>
             <!-- /.box-body -->

@@ -4,6 +4,7 @@
  <%@ include file="cabecera.jsp"%>
  <%@page import="com.proyecto.persistence.vacunoDAO"%>
   <%@page import="com.proyecto.persistence.insumoDAO"%>
+    <%@page import="com.proyecto.persistence.grupoDAO"%>
 </head>
 <body class="hold-transition skin-red sidebar-mini">
 <div class="wrapper">
@@ -76,12 +77,25 @@
 
 
             </div>
+            
+            <%grupoDAO grupo=new grupoDAO();
+            int engorda = grupo.totalVacunosEstado("Engorda");
+            int pradera = grupo.totalVacunosEstado("Pradera");
+            int vendido = grupo.totalVacunosEstado("Vendido");
+            int total = engorda+pradera+vendido;
+            
+            int porcentajeE = (engorda*100)/total;
+            int porcentajeP = (pradera*100)/total;
+            int porcentajeV = (vendido*100)/total;
+            System.out.println(porcentajeE+porcentajeP+porcentajeV);
+            %>
+            
             <!-- /.box-header -->
             <div class="box-body no-padding">
               <table class="table">
                 <tr>
                   <th style="width: 10px">#</th>
-                  <th>Etapa</th>
+                  <th>Etapas</th>
                   <th>Progreso</th>
                   <th style="width: 40px">%</th>
                 </tr>
@@ -90,10 +104,10 @@
                   <td>Engorda</td>
                   <td>
                     <div class="progress progress-xs">
-                      <div class="progress-bar progress-bar-danger" style="width: 70%"></div>
+                      <div class="progress-bar progress-bar-danger" style="width: <%=porcentajeE%>"></div>
                     </div>
                   </td>
-                  <td><span class="badge bg-red">55%</span></td>
+                  <td><span class="badge bg-red"><%=porcentajeE%>%</span></td>
                 </tr>
                 <tr>
                   <td>2.</td>

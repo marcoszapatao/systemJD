@@ -138,13 +138,13 @@
 
                     <% 
                     LinkedList<insumoTO> list = (LinkedList<insumoTO>) request.getAttribute("lista");
-                    LinkedList<cantidadDisponibleTO> list2 = (LinkedList<cantidadDisponibleTO>) request.getAttribute("cantidad");
+                    LinkedList<Float> list2 = (LinkedList<Float>) request.getAttribute("cantidad");
                     if(list != null && list2 != null)
                         for (int i = 0; i < list.size(); i++) {
                             insumoTO task = list.get(i);
-                            cantidadDisponibleTO cantidad = list2.get(i);
+                            float cantidad = list2.get(i);
                     %>
-                    <tr> <td><%=task.getId_insumo()%></td> <td><%=task.getNombre_insumo()%></td> <td><%=task.getDescripcion_insumo()%></td> <td><%=task.getTipoInsumo()%></td> <td><%=cantidad.getCantidadActual()%></td>
+                    <tr> <td><%=task.getId_insumo()%></td> <td><%=task.getNombre_insumo()%></td> <td><%=task.getDescripcion_insumo()%></td> <td><%=task.getTipoInsumo()%></td> <%if(!task.getTipoInsumo().equals("Suplemento")){%><td><%=cantidad%></td><% }else{%><td> - </td><% }%></td> 
                     <td>
                      <!--input type="hidden" id="idvacuno" value="<%=task.getId_insumo()%>"/-->
                      <button type="button" class="btn btn-success btn-xs"  onclick="botonEdit('<%=task.getId_insumo()%>');"><i class="fa fa-edit"></i> Editar</button>

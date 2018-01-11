@@ -118,6 +118,11 @@
 	       			 url:"/systemjd/descontar.htm?valores="+valor,
 	       		     success:function(data){
 	       		    	 
+	       		    	 if(data==0){
+	       		    		toastr["success"]("EXITO: Se descontó con exito desde el stock de insumos.");
+	       		    	 }else{
+	       		    		toastr["error"]("ERROR: Ocurrió un problema al registrar el cálculo."); 
+	       		    	 }
 	       		     }
 	           	  });
           }

@@ -14,6 +14,7 @@ import com.proyecto.persistence.trabajadorDAO;
 import com.proyecto.persistence.usuarioDAO;
 import com.proyecto.transferObject.trabajadorTO;
 import com.proyecto.transferObject.usuarioTO;
+import org.apache.commons.codec.digest.DigestUtils;
 
 @Controller
 public class InicioController {
@@ -35,7 +36,10 @@ public class InicioController {
 		usuarioTO usuarioTO = new usuarioTO();
 
 		usuarioTO.setEmailUsuario(email);
-		usuarioTO.setPasswordUsuario(pass);
+		/*Encriptación*/
+	    String encriptMD5=DigestUtils.md5Hex(pass);
+		/*------hola123------*/
+		usuarioTO.setPasswordUsuario(encriptMD5);
 
 		if (usuarioDAO.verificar(usuarioTO) != null) {
 			//String nombre = usuarioDAO.verificar(usuarioTO).getNombre();

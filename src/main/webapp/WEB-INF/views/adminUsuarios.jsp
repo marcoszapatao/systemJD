@@ -233,13 +233,7 @@
 			                </div>
 			              </div>
 			                  <br></br>
-			               <div class="form-horizontal">
-			                  <label class="col-sm-3 control-label">Ingrese Contraseña</label>
-			                  <div class="col-sm-9">
-			                    <input type="password" class="form-control" id="descrip" name="contrasena"  required>
-			                  </div>
-			                </div>
-			                <br></br>
+
 
 			                  
 			              </div>

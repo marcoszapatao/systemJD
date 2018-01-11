@@ -23,25 +23,16 @@ import com.proyecto.transferObject.insumoTO;
 public class insumoController {
 	@RequestMapping(value = "adminInsumo")
 	public ModelAndView admin(ModelAndView vista) throws SQLException, ParseException {
-		/*insumoDAO dao = new insumoDAO();
-		
-		vista.addObject("lista", dao.readAllI());
-		vista.addObject("cantidad",dao.readCantidadDisponible());
-		vista.setViewName("adminInsumos");
-		
-	
-		return vista;*/
+		/*
 		insumoDAO insumoDAO = new insumoDAO();
 		LinkedList<insumoTO> lista = new LinkedList<>();
-		//MenuDAO menuDAO = new MenuDAO();
 		cantidadDisponibleTO cantidadTO = new cantidadDisponibleTO();
 		LinkedList<cantidadDisponibleTO> listaMenu = new LinkedList<>();
 		if (!insumoDAO.verCantidadDisponible().isEmpty()) {
 			listaMenu = insumoDAO.verCantidadDisponible();
-			// paso a la vista el promedio de las valoraciones de los menús
+	
 			vista.addObject("cantidad", listaMenu);
 
-			// ahora buscar la info del menu para mostrarla
 			for (int i = 0; i < listaMenu.size(); i++) {
 				int idInsumo=listaMenu.get(i).getIdInsumo();
 				lista.add(insumoDAO.read(idInsumo));
@@ -49,6 +40,31 @@ public class insumoController {
 			}
 
 			vista.addObject("lista", lista);
+			vista.setViewName("adminInsumos");
+			
+		} else {
+			vista.setViewName("login");
+			
+		}
+
+		return vista;
+		*/
+		insumoDAO insumoDAO = new insumoDAO();
+		LinkedList<insumoTO> lista = new LinkedList<>();
+		cantidadDisponibleTO cantidadTO = new cantidadDisponibleTO();
+		LinkedList<Float> listaMenu = new LinkedList<>();
+		if (!insumoDAO.readAllI().isEmpty()) {
+			lista = insumoDAO.readAllI();
+	
+			vista.addObject("lista", lista);
+
+			for (int i = 0; i < lista.size(); i++) {
+				int idInsumo=lista.get(i).getId_insumo();
+				listaMenu.add(insumoDAO.readStock(idInsumo));
+
+			}
+
+			vista.addObject("cantidad", listaMenu);
 			vista.setViewName("adminInsumos");
 			
 		} else {

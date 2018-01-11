@@ -44,7 +44,6 @@
    		 $.ajax({
    			 type:'GET',
    			 url:"/systemjd/verInventa.htm?id="+id,
-   		     //dataType:'json',
    		     success:function(data){
                 var result = "<thead><tr><th>Diio</th><th>Tipo</th><th>Raza</th><th>Fecha</th><th>Nro. de dias</th></tr></thead>";
                 result += "<tbody>";

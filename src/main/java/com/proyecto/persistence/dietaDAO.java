@@ -76,7 +76,9 @@ public class dietaDAO {
 	   
     }
    
-   public void descuentaInsumos(String [] lista) throws SQLException {
+   public int descuentaInsumos(String [] lista) throws SQLException {
+	   int retorna=0;
+	   try {
 	   int j=0;
 	   String nombre = "";
 	   int semana =0;
@@ -130,6 +132,14 @@ public class dietaDAO {
                         
           }
 	   }
+	   }catch(SQLException e){
+	       System.out.println("Error: " + e.getMessage());
+	       retorna=1;
+	   }finally{
+	       if(conexion!=null)
+	           conexion.close();
+	   }
+	   return retorna;
    }
     
     

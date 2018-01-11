@@ -45,10 +45,10 @@ public class dietaController {
 	}
 	@RequestMapping(value="descontar", method = RequestMethod.POST)
 	public @ResponseBody int descuenta(@RequestParam(value = "valores", required = false, defaultValue = "World")String valores) throws SQLException{
-		int devolver = 1;
+		
 		String[] parts = valores.split("iii");
 		dietaDAO dao = new dietaDAO();
-		dao.descuentaInsumos(parts);
+		int devolver = dao.descuentaInsumos(parts);
 		return devolver;
 	}
 	

@@ -3,7 +3,16 @@ package com.proyecto.controller;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.LinkedList;
+import java.util.Random;
 
+
+/*
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+*/
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -11,12 +20,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.proyecto.persistence.insumoDAO;
 import com.proyecto.persistence.trabajadorDAO;
 import com.proyecto.persistence.usuarioDAO;
-import com.proyecto.transferObject.insumoTO;
 import com.proyecto.transferObject.trabajadorTO;
 import com.proyecto.transferObject.usuarioTO;
+
+import org.apache.commons.codec.digest.DigestUtils;
+
+
 
 @Controller
 public class usuarioController {
@@ -56,7 +67,7 @@ public class usuarioController {
 			@RequestParam(value = "cargo", required = false, defaultValue = "World") String cargo,
 			@RequestParam(value = "email", required = false, defaultValue = "World") String email,
 			@RequestParam(value = "rol", required = false, defaultValue = "World") String rol,
-			@RequestParam(value = "contrasena", required = false, defaultValue = "World") String contrasena,
+			//@RequestParam(value = "contrasena", required = false, defaultValue = "World") String contrasena,
 			ModelAndView vista) throws SQLException, ParseException {
 		
 		
@@ -66,7 +77,29 @@ public class usuarioController {
 		
 		usuario.setEmailUsuario(email);
 		usuario.setRolUsuario(rol);
-		usuario.setPasswordUsuario(contrasena);
+		
+		/*Generar contraseña aleatoria*/
+        char[] caracteres;
+        caracteres = new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
+		String pass = "";
+        for (int i = 0; i < 8; i++) {
+            pass += caracteres[new Random().nextInt(62)];
+        }
+        System.out.println("La contraseña generada es: "+pass);
+		/*----------------------------*/
+        /*Generar email al usuario
+        String destinatario =  "marcos.zapataota"; //A quien le quieres escribir.
+        String asunto = "Correo de prueba enviado desde Java";
+        String cuerpo = "Esta es una prueba de correo...";
+
+        enviarConGMail(destinatario, asunto, cuerpo);
+        /**/
+		/*Aqui hay que aplicar hash*/
+	    String encriptMD5=DigestUtils.md5Hex(pass);
+	    System.out.println("md5:"+encriptMD5);
+		/*------------9450476b384b32d8ad8b758e76c98a69-------------*/
+	    
+		usuario.setPasswordUsuario(encriptMD5);
 		
 		trabajador.setNombreTrabajador(nombre);
 		trabajador.setCargoTrabajador(cargo);
@@ -211,5 +244,11 @@ public class usuarioController {
 		}
 		return vista;
 	}
+	
+
+	/*
+	private static void enviarConGMail(String destinatario, String asunto, String cuerpo) {
+
+	}*/
 	
 }

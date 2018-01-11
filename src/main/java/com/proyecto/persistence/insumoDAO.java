@@ -36,8 +36,11 @@ public class insumoDAO {
 	private static final String READ_GASTOS="SELECT sum(precio) FROM `insumo_has_proveedor` WHERE `insumo_has_proveedor`.`fechaCompra` BETWEEN ? and ?";
 	private static final String READ_NOMBRETIPO="select idtipoInsumo from tipoinsumo where nombreInsumo=?";
     private static final String READ_CANDIST="select * from cantidad_disponible";
+    private static final String READ_S="SELECT * FROM cantidad_disponible join insumo on(cantidad_disponible.insumo_idinsumo=insumo.idinsumo)";
     private static final String DELETE_STOCK="delete from cantidad_disponible where insumo_idinsumo=?";
     private static final String DELETE_INSUMOPROVEEDOR ="delete from insumo_has_proveedor where insumo_idinsumo=?";
+	private static final String READ_STOCK="select cantidad_actual from cantidad_disponible where insumo_idinsumo=?";
+    private static final String TOTAL_STOCK ="SELECT sum(cantidad_actual) FROM cantidad_disponible";
 	
     private static final String DB_NAME="bddjd_nueva";
     private static final String PORT="3306";
@@ -344,6 +347,62 @@ public class insumoDAO {
         return lista;
     }
     
+    public float readStock(int idInsumo) throws SQLException {
+     float result=0;
+        
+       try {
+           getConnection();
+           PreparedStatement ps = conexion.prepareStatement(READ_STOCK);
+           ps.setInt(1,idInsumo);
+           ResultSet rs = ps.executeQuery();
+           while(rs.next()){
+               result=rs.getFloat("cantidad_actual");
+           }
+       } catch (SQLException ex) {
+           Logger.getLogger(vacunoDAO.class.getName()).log(Level.SEVERE, null, ex);
+       } finally{
+           conexion.close();
+       }
+       return result;
+    }
+    
+    public LinkedList<insumoTO> stockIndex() throws SQLException{
+    	
+    	LinkedList<insumoTO> lista = new LinkedList<>();
+        insumoTO result = null;
+        Connection conn = null;
+        try {
+        	conexion = getConnection();
+            PreparedStatement ps1=conexion.prepareStatement(TOTAL_STOCK);
+            
+            ResultSet rs = ps1.executeQuery();
+            int total=0;
+            if(rs.next()) {
+                total =rs.getInt(1);               
+            }
+        	
+            conn = getConnection();
+            PreparedStatement ps = conn.prepareStatement(READ_S);
+            ResultSet rs1 = ps.executeQuery();
+           
+            while(rs1.next()){
+            	
+                result= new insumoTO();
+                int cantidadA = rs1.getInt("cantidad_actual");                
+                String nombre = rs1.getString("nombreInsumo");               
+                int porcentaje = (cantidadA*100)/total;
+ 
+                result.setId_insumo(porcentaje);
+                result.setNombre_insumo(nombre);
+                lista.add(result);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(vacunoDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally{
+            conn.close();
+        }
+        return lista;
+    }
     
     private static Connection getConnection(){
         try{
