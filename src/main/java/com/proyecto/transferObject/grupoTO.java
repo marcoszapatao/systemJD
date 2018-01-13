@@ -4,12 +4,17 @@ public class grupoTO {
     private int id_grupo;
     private String nombre;
     private String estado;
+    private String patio;
     private Date fecha_ingreso;
     private Date fecha_Salida;
     private int peso;
     
     public void setPeso(int peso) {
         this.peso = peso;
+    }
+    
+    public void setPatio(String patio) {
+        this.patio = patio;
     }
 
     public void setId_grupo(int id_grupo) {
@@ -37,6 +42,10 @@ public class grupoTO {
     }
     public int getPeso() {
         return peso;
+    }
+    
+    public String getPatio() {
+        return patio;
     }
     
     public String getNombre() {

@@ -13,14 +13,14 @@ import java.util.logging.Logger;
 import com.proyecto.transferObject.vacunoTO;
 
 public class vacunoDAO {
-    private static final String INSERT_QUERY ="insert into vacuno(diio,tipo,fechaIngreso,raza_idraza) values(?,?,?,?)";
+    private static final String INSERT_QUERY ="insert into vacuno(diio,tipo,fechaIngreso,raza_idraza,sexo) values(?,?,?,?,?)";
     private static final String DELETE_QUERY="DELETE FROM vacuno WHERE diio=?";
     private static final String TOTAL_QUERY="SELECT count(*) as numeroV FROM `vacuno`";
     private static final String TOTAL_QUERYTIPO="SELECT count(*) as numeroV FROM `vacuno` where tipo=?";
-    private static final String UPDATE_QUERY="UPDATE vacuno SET diio = ?,tipo = ?,raza_idraza = ?,fechaIngreso = ? WHERE diio=?";
-    private static final String READ_QUERY="select diio,tipo,fechaIngreso,nombre from vacuno join raza on(vacuno.raza_idraza = raza.idraza) and diio=?";
+    private static final String UPDATE_QUERY="UPDATE vacuno SET diio = ?,tipo = ?,raza_idraza = ?,fechaIngreso = ?, sexo= ? WHERE diio=?";
+    private static final String READ_QUERY="select diio,tipo,fechaIngreso,nombre,sexo from vacuno join raza on(vacuno.raza_idraza = raza.idraza) and diio=?";
     private static final String READ_RAZA="select idraza from raza where nombre=?";
-    private static final String READ_ALL ="select diio,tipo,fechaIngreso,nombre from vacuno join raza on(vacuno.raza_idraza = raza.idraza)";
+    private static final String READ_ALL ="select diio,tipo,fechaIngreso,nombre,sexo from vacuno join raza on(vacuno.raza_idraza = raza.idraza)";
     private static final String READ_VSINGRUPO =
     		"SELECT diio,tipo,fechaIngreso,nombre FROM vacuno join raza on(vacuno.raza_idraza=raza.idraza) WHERE not vacuno.idvacuno in(select pinio_has_vacuno.vacuno_idvacuno from pinio_has_vacuno)";
     private static final String READ_VSINGRUPOYENGRUPO=
@@ -59,6 +59,7 @@ public class vacunoDAO {
         Date fe =vacuno.getFechaIngreso();
         ps.setDate(3, fe);
         ps.setInt(4, idraza);
+        ps.setString(5,vacuno.getSexo());
         ps.executeUpdate();
         
         }catch(SQLException e){
@@ -85,7 +86,7 @@ public class vacunoDAO {
                 result.setTipo(rs.getString("tipo"));
                 result.setRaza(rs.getString("nombre"));
                 result.setFechaIngreso(rs.getDate("fechaIngreso"));
-                System.out.println("paso aqui");
+                result.setSexo(rs.getString("sexo"));
                 lista.add(result);
             }
         } catch (SQLException ex) {
@@ -163,7 +164,8 @@ public class vacunoDAO {
                 result.setTipo(rs.getString("tipo"));
                 result.setRaza(rs.getString("nombre"));
                 result.setFechaIngreso(rs.getDate("fechaIngreso"));
-                System.out.println("Entro al read"+result.getDiio());
+                result.setSexo(rs.getString("sexo"));
+                
             }
         } catch (SQLException ex) {
             Logger.getLogger(vacunoDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -194,7 +196,9 @@ public class vacunoDAO {
           ps.setString(2,vacuno.getTipo());
           ps.setInt(3,idraza);
           ps.setDate(4, vacuno.getFechaIngreso());
-          ps.setString(5,vacuno.getDiio());
+          ps.setString(5, vacuno.getSexo());
+          ps.setString(6, vacuno.getDiio());
+          
           ps.executeUpdate();
           resultado = true;
         }catch(SQLException e){

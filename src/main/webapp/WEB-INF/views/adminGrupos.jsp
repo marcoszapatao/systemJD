@@ -5,6 +5,7 @@
 --%>
 <%@page import="java.util.LinkedList"%>
 <%@page import="com.proyecto.transferObject.grupoTO"%>
+<%@page import="com.proyecto.transferObject.patioTO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -125,16 +126,16 @@
         /*----------------OTRAS PRUEBAS------------*/
         var name = jQuery("#nombreGrupo").val();
         var estado = jQuery("#estadoGrupo").val();
+        var patio = jQuery("#patioGrupo").val();
         var fecha = jQuery("#datepicker").val();
         var peso = jQuery("#pesoGrupo").val();
-        var object = {name:name,estado:estado,fecha:fecha,peso:peso};
+        var object = {name:name,estado:estado,fecha:fecha,peso:peso,patio:patio};
         jQuery.ajax("/systemjd/newG.htm?diio="+checkedValue,
         	    {
         	        type:"POST",
         	        data: object
         	    }); 
-        //window.location.reload(true);
-        /*------------------FIN PRUEBAS-------------*/
+        //window.location.reload(true);        /*------------------FIN PRUEBAS-------------*/
         
         /*Usando ajax*/
         //$.ajax({
@@ -148,6 +149,7 @@
 		   //  }
         // });
          /*FIN usando ajax*/
+
      }
      var contador = 0;
      function botonEditG(id){
@@ -159,12 +161,15 @@
    		    	var grupoNombre = data.nombre;
    		    	var grupoPeso = data.peso;
    		    	var grupoEstado = data.estado;
+   		    	var grupoPatio = data.patio;
+   		    	alert(grupoPatio);
    		    	var grupoFechaI = data.fecha_ingreso;
    		    	var grupoFechaS = data.fecha_Salida;
    		    	$("input[name*='idGrupoE']" ).val(id);
    		    	$("input[name*='nombreE']" ).val(grupoNombre);
    		    	$("input[name*='pesajeE']" ).val(grupoPeso);
    		    	$("#estadoGE").html(grupoEstado);
+   		    	$("#patioGru").html(grupoPatio);
    		    	$("#fechaInE" ).val(grupoFechaI);
    		    	$("#fechaSaE" ).val(grupoFechaS);
    		    	
@@ -240,10 +245,11 @@
         var id = $('input[type=hidden]').val();
         var name = jQuery("#nameGrupoE").val();
         var estado = jQuery("#estadoGrupoE").val();
+        var patio = jQuery("select[name='patioAG']").val();
         var fecha = jQuery("#fechaInE").val();
         var fechaS = jQuery("#fechaSaE").val();
         var peso = jQuery("#pesajeGrupoE").val();
-        var object = {id:id,name:name,estado:estado,fecha:fecha,peso:peso,fechaS:fechaS};
+        var object = {id:id,name:name,estado:estado,fecha:fecha,peso:peso,fechaS:fechaS,patio:patio};
         jQuery.ajax("/systemjd/actualizaG.htm",
         	    {
         	        type:"POST",
@@ -316,6 +322,7 @@
                   <th>ID</th>
                   <th>Nombre</th>
                   <th>Estado</th>
+                  <th>Patio</th>
                   <th>Fecha Ingreso</th> 
                   <th>Fecha Salida</th>
                   
@@ -331,7 +338,7 @@
                         for (int i = 0; i < list.size(); i++) {
                             grupoTO task = list.get(i);
                     %>
-                    <tr> <td><%=task.getId_grupo()%></td> <td><%=task.getNombre()%></td> <td><%=task.getEstado()%></td> <td><%=task.getFecha_ingreso()%></td> <%if(task.getFecha_Salida()!=null){%><td><%=task.getFecha_Salida()%></td><% }else{%><td> - </td><% }%></td> 
+                    <tr> <td><%=task.getId_grupo()%></td> <td><%=task.getNombre()%></td> <td><%=task.getEstado()%></td> <td><%=task.getPatio()%></td> <td><%=task.getFecha_ingreso()%></td> <%if(task.getFecha_Salida()!=null){%><td><%=task.getFecha_Salida()%></td><% }else{%><td> - </td><% }%></td> 
                     <td>
                     <button type="button" class="btn btn-success btn-xs"  onclick="botonEditG('<%=task.getId_grupo()%>');"><i class="fa fa-edit"></i> Editar</button> &nbsp; &nbsp; &nbsp;
                     <a href="deleteGrupo.htm?id=<%=task.getId_grupo()%>" class="btn btn-danger btn-xs"  onclick="return confirm('¿Está seguro que desea eliminar el grupo con ID:  <%=task.getId_grupo()%>?');"><i class="fa fa-close"></i>  Eliminar</a></td>  </tr>
@@ -344,6 +351,7 @@
                   <th>ID</th>
                   <th>Nombre</th>
                   <th>Estado</th>
+                  <th>Patio</th>
                   <th>Fecha Ingreso</th>
                   <th>Fecha Salida</th>
                   <th>Acciones</th>
@@ -393,6 +401,32 @@
 		                </div>
 		              </div>
 		                  <br></br>
+		                  
+		                  			              			                   <% 
+			                    LinkedList<patioTO> listRa = (LinkedList<patioTO>) request.getAttribute("patios");
+			                    String arr1[]=new String[listRa.size()];
+			                    int arr2[]=new int[listRa.size()];
+			                    if(listRa != null){
+			                        
+			                    	for (int i = 0; i < listRa.size(); i++) {
+			                            patioTO patio = listRa.get(i);
+			                            arr1[i]=patio.getNombrePatio();
+			                            arr2[i]=patio.getIdPatio();
+			                        }
+			                    }
+			                    %>
+			              <div class="form-horizontal">
+			                  <label  class="col-sm-3 control-label">Patio</label>
+			                <div class="col-sm-9">
+			                  <select required name="patio" id="patioGrupo" class="form-control select2" style="width: 100%;">
+			                  <option value="" disabled selected>Seleccione una opción</option>
+			                  <%for(int j=0; j<arr1.length;j++){ %>
+			                  <option value=<%=arr2[j]%>><%=arr1[j]%></option>
+			                   <%} %>
+			                  </select>
+			                </div>
+			              </div>
+			                  <br></br>
 		                  
 		            
 		             
@@ -493,7 +527,31 @@
 		              </div>
 		                  <br></br>
 		                  
-		            
+		            		                  			              			                   <% 
+			                    LinkedList<patioTO> listRa1 = (LinkedList<patioTO>) request.getAttribute("patios");
+			                    String arr3[]=new String[listRa1.size()];
+			                    int arr4[]=new int[listRa1.size()];
+			                    if(listRa1 != null){
+			                        
+			                    	for (int i = 0; i < listRa1.size(); i++) {
+			                            patioTO patio = listRa1.get(i);
+			                            arr3[i]=patio.getNombrePatio();
+			                            arr4[i]=patio.getIdPatio();
+			                        }
+			                    }
+			                    %>
+			              <div class="form-horizontal">
+			                  <label  class="col-sm-3 control-label">Patio</label>
+			                <div class="col-sm-9">
+			                  <select required name="patioAG"  class="form-control select2" style="width: 100%;">
+			                  <option id="patioGru" selected="selected"></option>
+			                  <%for(int j=0; j<arr1.length;j++){ %>
+			                  <option><%=arr1[j]%></option>
+			                   <%} %>
+			                  </select>
+			                </div>
+			              </div>
+			                  <br></br>
 		             
 		                <div class="form-horizontal">
 		                  <label for="inputEmail3" class="col-sm-3 control-label">Peso Total(Kg)</label>

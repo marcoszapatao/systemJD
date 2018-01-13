@@ -6,12 +6,16 @@ public class vacunoTO {
 	    private String tipo;
 	    private Date fechaI;
 	    private String raza;
+	    private String sexo;
 
 	    public void setId_vacuno(int id_vacuno) {
 	    	this.id_vacuno=id_vacuno;
 	    }
 	    public void setDiio(String diio) {
 	        this.diio = diio;
+	    }
+	    public void setSexo(String sexo) {
+	        this.sexo = sexo;
 	    }
 
 	    public void setTipo(String tipo) {
@@ -33,6 +37,9 @@ public class vacunoTO {
 	    
 	    public String getDiio() {
 	        return diio;
+	    }
+	    public String getSexo() {
+	        return sexo;
 	    }
 
 	    public String getTipo() {

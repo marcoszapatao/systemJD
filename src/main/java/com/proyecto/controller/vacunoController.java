@@ -42,6 +42,7 @@ public class vacunoController {
 			@RequestParam(value = "diio", required = false, defaultValue = "World") String diio,
 			@RequestParam(value = "raza", required = false, defaultValue = "World") String raza,
 			@RequestParam(value = "tipo", required = false, defaultValue = "World") String tipo,
+			@RequestParam(value = "sexo", required = false, defaultValue = "World") String sexo,
 			@RequestParam(value = "fecha_in", required = false, defaultValue = "World") String fecha_in,
 			ModelAndView vista) throws SQLException, ParseException {
 		    /*
@@ -71,6 +72,7 @@ public class vacunoController {
 			to.setDiio(diio);
 			to.setRaza(raza);
 			to.setTipo(tipo);
+			to.setSexo(sexo);
 			// to.setFecha(dateMenu);
 	
 			int j = dao.createVacuno(to);
@@ -127,31 +129,26 @@ public class vacunoController {
 
 		vacunoDAO dao = new vacunoDAO();
         vacunoTO vacuno = dao.read(diio);
-		System.out.println("En ediat : "+vacuno.getDiio());
-		//vista.addObject("update", task);
-		//vista.setViewName("editarVacuno");
 		return vacuno;
 	}
 	
-	@RequestMapping(value = "/actualizarVacuno", method = RequestMethod.GET)
+	@RequestMapping(value = "/actualizarVacuno", method = RequestMethod.POST)
 	public ModelAndView actualizarV(
 			@RequestParam(value = "diioo", required = false, defaultValue = "World") String diio, 
 			@RequestParam(value = "raza", required = false, defaultValue = "World") String raza,
 			@RequestParam(value = "tipo", required = false, defaultValue = "World") String tipo,
+			@RequestParam(value = "sexoV", required = false, defaultValue = "World") String sexo,
 			@RequestParam(value = "fecha_in", required = false, defaultValue = "World") String fecha_in,
 			ModelAndView vista) throws SQLException {
 	        
 	        vacunoDAO dao = new vacunoDAO();
 	        vacunoTO to = new vacunoTO();
 			java.sql.Date fecha = java.sql.Date.valueOf(fecha_in);
-			System.out.println(diio);
-			System.out.println(raza);
-			System.out.println(tipo);
-			System.out.println(fecha);
 			to.setFechaIngreso(fecha);
 			to.setDiio(diio);
 			to.setRaza(raza);
 			to.setTipo(tipo);
+			to.setSexo(sexo);
 			dao.update(to);
 			
 	        vacunoDAO daoo = new vacunoDAO();

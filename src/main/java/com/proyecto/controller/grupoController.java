@@ -15,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.proyecto.persistence.grupoDAO;
 import com.proyecto.persistence.inventarioDAO;
+import com.proyecto.persistence.patioDAO;
 import com.proyecto.persistence.vacunoDAO;
 import com.proyecto.transferObject.grupoTO;
 import com.proyecto.transferObject.vacunoTO;
@@ -24,6 +25,8 @@ public class grupoController {
 	@RequestMapping(value = "adminGrupo")
 	public ModelAndView ingresar(ModelAndView vista) throws SQLException, ParseException {
 		grupoDAO dao = new grupoDAO();
+		patioDAO patio = new patioDAO();
+		vista.addObject("patios", patio.readAllP());
 		vista.addObject("lista", dao.readAllG());
 		vista.setViewName("adminGrupos");
 		return vista;
@@ -69,6 +72,7 @@ public class grupoController {
 			@RequestParam(value = "estado", required = false, defaultValue = "World") String estado,
 			@RequestParam(value = "fecha", required = false, defaultValue = "World") String fecha,
 			@RequestParam(value = "peso", required = false, defaultValue = "World") int peso,
+			@RequestParam(value = "patio", required = false, defaultValue = "World") int patio,
 			@RequestParam(value = "diio", required = false, defaultValue = "World") String [] diio,
 			ModelAndView vista
 			) throws SQLException  {
@@ -83,10 +87,11 @@ public class grupoController {
 		java.sql.Date fechaI = java.sql.Date.valueOf(fecha);
 		to.setNombre(name);
 		to.setEstado(estado);
+		
 		to.setFecha_ingreso(fechaI);
 		to.setPeso(peso);
 		
-		dao.createGrupo(to,diio);
+		dao.createGrupo(to,diio,patio);
 		
         grupoDAO daoo = new grupoDAO();
 		vista.addObject("lista", daoo.readAllG());
@@ -100,7 +105,6 @@ public class grupoController {
 			@RequestParam(value = "id", required = false, defaultValue = "World") int id, ModelAndView vista) throws SQLException {
 		grupoDAO dao = new grupoDAO();
         grupoTO grupo = dao.readG(id);
-		//System.out.println("En ediat : "+grupo.getDiio());
 		return grupo;
 	}
 	
@@ -109,12 +113,13 @@ public class grupoController {
 	public ModelAndView actualizaG(@RequestParam(value = "name", required = false, defaultValue = "World") String name,
 			@RequestParam(value = "id", required = false, defaultValue = "World") int id,
 			@RequestParam(value = "estado", required = false, defaultValue = "World") String estado,
+			@RequestParam(value = "patio", required = false, defaultValue = "World") String patio,
 			@RequestParam(value = "fecha", required = false, defaultValue = "World") String fecha,
 			@RequestParam(value = "peso", required = false, defaultValue = "World") int peso,
 			@RequestParam(value = "fechaS", required = false, defaultValue = "World") String fechaS,
 			ModelAndView vista
 			) throws SQLException  {
-		System.out.println(id+" "+name+" "+estado+" "+fecha+" "+peso+" "+fechaS+"**************************************");
+		System.out.println(id+" "+name+" "+estado+" "+fecha+" "+peso+" "+fechaS+" "+patio+"**************************************");
 
 		grupoDAO dao = new grupoDAO();
 		grupoTO to = new grupoTO();
@@ -129,6 +134,7 @@ public class grupoController {
 		to.setId_grupo(id);
 		to.setNombre(name);
 		to.setEstado(estado);
+		to.setPatio(patio);
 		to.setFecha_ingreso(fechaI);	
 		to.setPeso(peso);
 		dao.updateGrupo(to);
@@ -145,6 +151,8 @@ public class grupoController {
 		
         
 		grupoDAO vacuno= new grupoDAO();
+		patioDAO patio = new patioDAO();
+		vista.addObject("patios", patio.readAllP());
 		vista.addObject("lista", vacuno.readAllG());
 		vista.setViewName("adminGrupos");
 		return vista;

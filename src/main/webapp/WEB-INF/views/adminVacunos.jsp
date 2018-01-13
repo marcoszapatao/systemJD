@@ -30,9 +30,10 @@
    		    	 var vacunoTipo = data.tipo;
    		    	 var vacunoRaza = data.raza;
    		    	 var vacunoFIn = data.fechaIngreso;
-   		    	 console.log("FECHA....."+vacunoFIn);
+   		    	 var vacunoSexo = data.sexo;
    		    	 $("input[name*='diioo']" ).val(vacunoDiio);
    		    	 $("#tipoV").html(vacunoTipo);
+   		    	 $("#sexoV").html(vacunoSexo);
    		    	 $("#razaV").html(vacunoRaza);
    		    	 $("#fecha_ing" ).val(vacunoFIn);
    		    	 //"input[name*='fecha_ing']"
@@ -151,7 +152,8 @@
                 <tr>
                   <th>DIIO</th>
                   <th>Tipo</th>
-                  <th>Raza</th> 
+                  <th>Raza</th>
+                  <th>Sexo</th> 
                   <th>Fecha Ingreso</th>
                   <th>Acciones</th>
                   
@@ -165,7 +167,7 @@
                         for (int i = 0; i < list.size(); i++) {
                             vacunoTO task = list.get(i);
                     %>
-                    <tr> <td><%=task.getDiio()%></td> <td><%=task.getTipo()%></td> <td><%=task.getRaza()%></td> <td><%=task.getFechaIngreso()%></td> 
+                    <tr> <td><%=task.getDiio()%></td> <td><%=task.getTipo()%></td> <td><%=task.getRaza()%></td> <td><%=task.getSexo()%></td><td><%=task.getFechaIngreso()%></td> 
                     <td>
                      <!--input type="hidden" id="idvacuno" value="<%=task.getDiio()%>"/-->
                      <button type="button" class="btn btn-success btn-xs"  onclick="botonEdit('<%=task.getDiio()%>');"><i class="fa fa-edit"></i> Editar</button>
@@ -181,6 +183,7 @@
                   <th>DIIO</th>
                   <th>Tipo</th>
                   <th>Raza</th>
+                  <th>Sexo</th>
                   <th>Fecha Ingreso</th>
                   <th>Acciones</th>
             
@@ -252,6 +255,19 @@
 			                </div>
 			            </div>
 			                <br></br>
+			            <div class="form-horizontal">
+			                
+			               <label  class="col-sm-3 control-label">Sexo</label>
+			                <div class="col-sm-9">
+			                  <select required name="sexo" class="form-control select2" style="width: 100%;">
+			                  <option value="" disabled selected>Seleccione una opción</option>
+			                  <option>Macho</option>
+			                  <option>Hembra</option>
+			                  
+			                  </select>
+			                </div>
+			            </div>
+			                <br></br>
 			                
 			            <div class="form-horizontal">
 			                <label  class="col-sm-3 control-label">Fecha  <i class="fa fa-calendar"></i></label>         
@@ -290,7 +306,7 @@
 			      </div>
 			      <div class="modal-body">
 			      
-			              <form class="form-horizontal" action="actualizarVacuno.htm" method="GET">
+			              <form class="form-horizontal" action="actualizarVacuno.htm" method="POST">
 			              <div class="box-body">
 			                <div class="form-horizontal">
 			                  <label class="col-sm-3 control-label">Ingrese DIIO</label>
@@ -337,6 +353,21 @@
 			                  <option>Vacuno</option>
 			                  <option>Vaquilla</option>
 			                  <option>Toro</option>
+			                  
+			                  </select>
+			                </div>
+			            </div>
+			                <br></br>
+			                
+			            <div class="form-horizontal">
+			                
+			               <label  class="col-sm-3 control-label">Sexo</label>
+			                <div class="col-sm-9">
+			                  <select name="sexoV" class="form-control select2" style="width: 100%;">
+			                  <option id="sexoV" selected="selected"></option>
+			                  <option>Macho</option>
+			                  <option>Hembra</option>
+			                
 			                  
 			                  </select>
 			                </div>
