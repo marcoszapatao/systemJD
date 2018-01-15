@@ -140,7 +140,7 @@ public class vacunoController {
 			@RequestParam(value = "sexoV", required = false, defaultValue = "World") String sexo,
 			@RequestParam(value = "fecha_in", required = false, defaultValue = "World") String fecha_in,
 			ModelAndView vista) throws SQLException {
-	        
+	        System.out.println("diio en actualizar " +diio);
 	        vacunoDAO dao = new vacunoDAO();
 	        vacunoTO to = new vacunoTO();
 			java.sql.Date fecha = java.sql.Date.valueOf(fecha_in);

@@ -129,7 +129,8 @@
         var patio = jQuery("#patioGrupo").val();
         var fecha = jQuery("#datepicker").val();
         var peso = jQuery("#pesoGrupo").val();
-        var object = {name:name,estado:estado,fecha:fecha,peso:peso,patio:patio};
+        var idusuario = jQuery("#idusuario").val();
+        var object = {name:name,estado:estado,fecha:fecha,peso:peso,patio:patio,idusuario:idusuario};
         jQuery.ajax("/systemjd/newG.htm?diio="+checkedValue,
         	    {
         	        type:"POST",
@@ -162,7 +163,6 @@
    		    	var grupoPeso = data.peso;
    		    	var grupoEstado = data.estado;
    		    	var grupoPatio = data.patio;
-   		    	alert(grupoPatio);
    		    	var grupoFechaI = data.fecha_ingreso;
    		    	var grupoFechaS = data.fecha_Salida;
    		    	$("input[name*='idGrupoE']" ).val(id);
@@ -378,6 +378,12 @@
                       <!-- action="saveGrupo.htm" method="GET" esto va abajo -->
 		           <form class="form-horizontal" id="form_crearG">
 		              <div class="box-body">
+		              <% HttpSession sessionq = request.getSession();
+	                    int idusuario = (int) sessionq.getAttribute("idtrabajador");
+	                    %>
+
+		              <input type="hidden" id ="idusuario" name="idusuario" value=<%=idusuario%>>
+		              
 		                <div class="form-horizontal">
 		                  <label for="inputEmail3" class="col-sm-3 control-label">Ingrese Nombre</label>
 		

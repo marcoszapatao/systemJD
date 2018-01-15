@@ -17,7 +17,7 @@ public class vacunoDAO {
     private static final String DELETE_QUERY="DELETE FROM vacuno WHERE diio=?";
     private static final String TOTAL_QUERY="SELECT count(*) as numeroV FROM `vacuno`";
     private static final String TOTAL_QUERYTIPO="SELECT count(*) as numeroV FROM `vacuno` where tipo=?";
-    private static final String UPDATE_QUERY="UPDATE vacuno SET diio = ?,tipo = ?,raza_idraza = ?,fechaIngreso = ?, sexo= ? WHERE diio=?";
+    private static final String UPDATE_QUERY="UPDATE vacuno SET tipo=?,diio=?,raza_idraza=?,fechaIngreso=?, sexo=? WHERE diio=?";
     private static final String READ_QUERY="select diio,tipo,fechaIngreso,nombre,sexo from vacuno join raza on(vacuno.raza_idraza = raza.idraza) and diio=?";
     private static final String READ_RAZA="select idraza from raza where nombre=?";
     private static final String READ_ALL ="select diio,tipo,fechaIngreso,nombre,sexo from vacuno join raza on(vacuno.raza_idraza = raza.idraza)";
@@ -192,8 +192,9 @@ public class vacunoDAO {
           
           
           PreparedStatement ps = conexion.prepareStatement(UPDATE_QUERY);
-          ps.setString(1,vacuno.getDiio());
-          ps.setString(2,vacuno.getTipo());
+          System.out.println("diio en dao "+vacuno.getDiio());
+          ps.setString(1,vacuno.getTipo());
+          ps.setString(2,vacuno.getDiio());
           ps.setInt(3,idraza);
           ps.setDate(4, vacuno.getFechaIngreso());
           ps.setString(5, vacuno.getSexo());

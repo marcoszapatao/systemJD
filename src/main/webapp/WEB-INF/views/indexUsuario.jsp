@@ -32,6 +32,18 @@
 
     <!-- Main content -->
     <section class="content">
+                <c:if test="${not empty cambio}">
+								<script>
+									toastr
+											.success("EXITO: La contraseña se actualizo correctamente.");
+								</script>
+		        </c:if>
+		        <c:if test="${not empty nocambio}">
+								<script>
+									toastr
+											.error("ERROR: La contraseña no se actualizo.");
+								</script>
+		        </c:if>
       <!-- Small boxes (Stat box) -->
       <div class="row">
         <%vacunoDAO vacunito=new vacunoDAO();%>

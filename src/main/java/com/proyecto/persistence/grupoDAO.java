@@ -75,7 +75,7 @@ public class grupoDAO {
         return list;
     }
     
-    public void createGrupo(grupoTO grupo,String[]vacunos, int patio) throws SQLException {
+    public void createGrupo(grupoTO grupo,String[]vacunos, int patio, int idusuario) throws SQLException {
     	try{ 
     	 /*Inserta datos en tabla pinio*/
     	 conexion = getConnection();
@@ -131,7 +131,7 @@ public class grupoDAO {
              ps3.executeUpdate();   
          }
          System.out.println("ANTES");
-         insertapeso(grupo,sqlDate,idpinio);
+         insertapeso(grupo,sqlDate,idpinio,idusuario);
     	System.out.println("DESPUES");
          /*Inserta el peso del grupo en la tabla peso
          conexion = getConnection();
@@ -151,14 +151,13 @@ public class grupoDAO {
         }
     }
     
-    public void insertapeso(grupoTO grupo,Date fecha,int id) throws SQLException {
+    public void insertapeso(grupoTO grupo,Date fecha,int id, int idusuario) throws SQLException {
     	System.out.println("DENTRO");
     	conexion = getConnection();
         PreparedStatement ps4 = conexion.prepareStatement(INSERT_PESO);
         ps4.setInt(1,grupo.getPeso());
         ps4.setDate(2,fecha);
-        int tra = 1;
-        ps4.setInt(3,tra);
+        ps4.setInt(3,idusuario);
         ps4.setInt(4,id);
         ps4.executeUpdate();
     }

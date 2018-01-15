@@ -20,6 +20,7 @@ public class usuarioDAO {
 	private static final String DELETE_TRABAJADOR ="delete from trabajador where idtrabajador=?";
 	private static final String DELETE_USUARIO = "delete from usuario where idusuario=?";
 	private static final String UPDATE_QUERY = "update usuario set email=?,rol=? where idusuario=?";
+	private static final String UPDATE_PASS ="update usuario set password=? where idusuario=?";
     
    private static final String DB_NAME="bddjd_nueva";
    private static final String PORT="3306";
@@ -148,6 +149,24 @@ public class usuarioDAO {
 	            }
 	            return resultado;
 	   }
+	    
+	    public int cambiarPass(String pass, int iduser) throws SQLException {
+	       int result =0; 
+	    	try{
+	            conexion = getConnection();
+	            PreparedStatement ps = conexion.prepareStatement(UPDATE_PASS);
+	            ps.setString(1,pass);
+	            ps.setInt(2,iduser);
+	            ps.executeUpdate();
+	        	}catch(SQLException e){
+	        		result=1;
+	                System.out.println("Error: " + e.getMessage());
+	            }finally{
+	                if(conexion!=null)
+	                    conexion.close();
+	            }
+	    	return result;
+	    }
 	   
    private static Connection getConnection(){
        try{

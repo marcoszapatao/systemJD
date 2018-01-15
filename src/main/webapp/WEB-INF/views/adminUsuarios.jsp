@@ -140,8 +140,7 @@
                   <th>Nombre</th>
                   <th>Cargo</th> 
                   <th>Email</th>
-                  <th>Rol</th>
-                  <th>Password</th>
+                  <th>Rol</th>                 
                   <th>Acciones</th>
                   
                 </tr>
@@ -156,7 +155,7 @@
                             trabajadorTO tra = list.get(i);
                             usuarioTO user = list2.get(i);
                     %>
-                    <tr> <td><%=tra.getNombreTrabajador()%></td> <td><%=tra.getCargoTrabajador()%></td> <td><%=user.getEmailUsuario()%></td> <td><%=user.getRolUsuario()%></td> <td><%=user.getPasswordUsuario()%></td>
+                    <tr> <td><%=tra.getNombreTrabajador()%></td> <td><%=tra.getCargoTrabajador()%></td> <td><%=user.getEmailUsuario()%></td> <td><%=user.getRolUsuario()%></td>
                     <td>
                      <!--input type="hidden" id="idvacuno" value="<%=tra.getIdTrabajador()%>"/-->
                      <button type="button" class="btn btn-success btn-xs"  onclick="botonEdit('<%=tra.getIdTrabajador()%>');"><i class="fa fa-edit"></i> Editar</button>
@@ -174,7 +173,7 @@
                   <th>Cargo</th>
                   <th>Email</th>
                   <th>Rol</th>
-                  <th>Password</th>
+                 
                   <th>Acciones</th>
             
                   

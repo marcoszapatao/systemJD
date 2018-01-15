@@ -78,14 +78,18 @@ public class usuarioController {
 		usuario.setEmailUsuario(email);
 		usuario.setRolUsuario(rol);
 		
-		/*Generar contraseña aleatoria*/
+		String[] parts = email.split("@");
+		String pass = parts[0]; // 123
+		
+		
+		/*Generar contraseña aleatoria
         char[] caracteres;
         caracteres = new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
 		String pass = "";
         for (int i = 0; i < 8; i++) {
             pass += caracteres[new Random().nextInt(62)];
         }
-        System.out.println("La contraseña generada es: "+pass);
+        System.out.println("La contraseña generada es: "+pass);*/
 		/*----------------------------*/
         /*Generar email al usuario
         String destinatario =  "marcos.zapataota"; //A quien le quieres escribir.
@@ -245,10 +249,30 @@ public class usuarioController {
 		return vista;
 	}
 	
-
-	/*
-	private static void enviarConGMail(String destinatario, String asunto, String cuerpo) {
-
-	}*/
+	@RequestMapping(value = "/cambiarPass", method = RequestMethod.POST)
+	public ModelAndView cambio(
+			@RequestParam(value = "pass", required = false, defaultValue = "World") String pass,
+			@RequestParam(value = "pass1", required = false, defaultValue = "World") String pass1,
+			@RequestParam(value = "iduser", required = false, defaultValue = "World")int iduser,
+			@RequestParam(value = "roluser", required = false, defaultValue = "World") String roluser,
+			ModelAndView vista) throws SQLException {
+		
+        usuarioDAO usuario = new usuarioDAO();
+        String encriptMD5=DigestUtils.md5Hex(pass);
+        int j = usuario.cambiarPass(encriptMD5,iduser);
+        if(j==0) {
+        	vista.addObject("cambio","exito");
+        }else {
+        	vista.addObject("nocambio","no exito");
+        }
+		if(roluser.equalsIgnoreCase("usuario")) {			
+			vista.setViewName("indexUsuario");
+		}else {
+			if (roluser.equalsIgnoreCase("Administrador")) {
+				vista.setViewName("indexAdministrador");
+			}
+		}
+        return vista;
+	}
 	
 }

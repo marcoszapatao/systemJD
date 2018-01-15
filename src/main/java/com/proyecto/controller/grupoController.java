@@ -5,12 +5,16 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.LinkedList;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.proyecto.persistence.grupoDAO;
@@ -67,15 +71,16 @@ public class grupoController {
 	}
 	
 	/*Crear grupo con otro metodo*/
+	
 	@RequestMapping(value="/newG", method = RequestMethod.POST)
 	public ModelAndView newG(@RequestParam(value = "name", required = false, defaultValue = "World") String name,
 			@RequestParam(value = "estado", required = false, defaultValue = "World") String estado,
 			@RequestParam(value = "fecha", required = false, defaultValue = "World") String fecha,
 			@RequestParam(value = "peso", required = false, defaultValue = "World") int peso,
+			@RequestParam(value = "idusuario", required = false, defaultValue = "World") int idusuario,
 			@RequestParam(value = "patio", required = false, defaultValue = "World") int patio,
 			@RequestParam(value = "diio", required = false, defaultValue = "World") String [] diio,
-			ModelAndView vista
-			) throws SQLException  {
+			ModelAndView vista			) throws SQLException  {
 		/*
 	    for(int i=0;i<=5;i++) {
 	    	System.out.println(diio[i]);
@@ -90,8 +95,11 @@ public class grupoController {
 		
 		to.setFecha_ingreso(fechaI);
 		to.setPeso(peso);
-		
-		dao.createGrupo(to,diio,patio);
+		/**********************************/
+		/**********************************/
+		/************************************/
+	 	System.out.println("id trabajador" + idusuario);
+		dao.createGrupo(to,diio,patio,idusuario);
 		
         grupoDAO daoo = new grupoDAO();
 		vista.addObject("lista", daoo.readAllG());

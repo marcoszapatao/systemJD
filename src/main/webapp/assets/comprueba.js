@@ -9,6 +9,7 @@
    		fechaActual = new Date();
    		if(fechaPuesta>=fechaActual){
    			toastr["error"]("ERROR: La fecha ingresada es posterior a la actual");
+   			document.getElementById('dateIn').value = '';
    		}
    		
    	    
@@ -22,6 +23,7 @@
   		fechaActual = new Date();
   		if(fechaPuesta>=fechaActual){
   			toastr["error"]("ERROR: La fecha editada es posterior a la actual");
+  			document.getElementById('fecha_ing').value = '';
   		}   
   }
    
@@ -115,7 +117,9 @@
 		if((fechaPuesta <= fechaIngresoV)||(fechaPuesta>=fechaActual)){
 			toastr["error"]("ERROR: La fecha de salida es anterior a la fecha de ingreso");
 			document.getElementById('fechaSal').value = '';
-		}   
+		}
+		
+		
 }
   
   

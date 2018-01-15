@@ -58,12 +58,13 @@ public class InicioController {
 			}
             trabajadorDAO trabajadordao = new trabajadorDAO();
             trabajadorTO to = trabajadordao.obtieneTrabajador(idUsuario);
-            
+            System.out.println("id trabajador en inicio"+ to.getIdTrabajador());
 			HttpSession session = request.getSession(true);
+			session.setAttribute("idtrabajador", to.getIdTrabajador());
+			session.setAttribute("idusuario", idUsuario);
 			session.setAttribute("nombre", to.getNombreTrabajador());
 			session.setAttribute("cargo",to.getCargoTrabajador());
 			session.setAttribute("rol", rol);
-			//session.setAttribute("id", usuarioDAO.getUser(rut, pass));
 
 			return vista;
 		} else {
