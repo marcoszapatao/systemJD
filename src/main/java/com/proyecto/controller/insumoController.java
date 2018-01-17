@@ -109,19 +109,19 @@ public class insumoController {
 			insumoDAO insumoDAO = new insumoDAO();
 			LinkedList<insumoTO> lista = new LinkedList<>();
 			cantidadDisponibleTO cantidadTO = new cantidadDisponibleTO();
-			LinkedList<cantidadDisponibleTO> listaMenu = new LinkedList<>();
-			if (!insumoDAO.verCantidadDisponible().isEmpty()) {
-				listaMenu = insumoDAO.verCantidadDisponible();
+			LinkedList<Float> listaMenu = new LinkedList<>();
+			if (!insumoDAO.readAllI().isEmpty()) {
+				lista = insumoDAO.readAllI();
 		
-				vista.addObject("cantidad", listaMenu);
+				vista.addObject("lista", lista);
 
-				for (int i = 0; i < listaMenu.size(); i++) {
-					int idInsumo=listaMenu.get(i).getIdInsumo();
-					lista.add(insumoDAO.read(idInsumo));
+				for (int i = 0; i < lista.size(); i++) {
+					int idInsumo=lista.get(i).getId_insumo();
+					listaMenu.add(insumoDAO.readStock(idInsumo));
 
 				}
 
-				vista.addObject("lista", lista);
+				vista.addObject("cantidad", listaMenu);
 				vista.setViewName("adminInsumos");
 				
 			} else {
@@ -144,23 +144,22 @@ public class insumoController {
 		vista.setViewName("adminInsumos");
 		return vista;*/
         
-        insumoDAO insumoDAO = new insumoDAO();
+		insumoDAO insumoDAO = new insumoDAO();
 		LinkedList<insumoTO> lista = new LinkedList<>();
 		cantidadDisponibleTO cantidadTO = new cantidadDisponibleTO();
-		LinkedList<cantidadDisponibleTO> listaMenu = new LinkedList<>();
-		if (!insumoDAO.verCantidadDisponible().isEmpty()) {
-			listaMenu = insumoDAO.verCantidadDisponible();
-			// paso a la vista el promedio de las valoraciones de los menús
-			vista.addObject("cantidad", listaMenu);
+		LinkedList<Float> listaMenu = new LinkedList<>();
+		if (!insumoDAO.readAllI().isEmpty()) {
+			lista = insumoDAO.readAllI();
+	
+			vista.addObject("lista", lista);
 
-			// ahora buscar la info del menu para mostrarla
-			for (int i = 0; i < listaMenu.size(); i++) {
-				int idInsumo=listaMenu.get(i).getIdInsumo();
-				lista.add(insumoDAO.read(idInsumo));
+			for (int i = 0; i < lista.size(); i++) {
+				int idInsumo=lista.get(i).getId_insumo();
+				listaMenu.add(insumoDAO.readStock(idInsumo));
 
 			}
 
-			vista.addObject("lista", lista);
+			vista.addObject("cantidad", listaMenu);
 			vista.setViewName("adminInsumos");
 			
 		} else {
@@ -204,23 +203,22 @@ public class insumoController {
 			vista.addObject("lista", daoo.readAllI());
 			vista.setViewName("adminInsumos");
 			return vista;*/
-	        insumoDAO insumoDAO = new insumoDAO();
+			insumoDAO insumoDAO = new insumoDAO();
 			LinkedList<insumoTO> lista = new LinkedList<>();
 			cantidadDisponibleTO cantidadTO = new cantidadDisponibleTO();
-			LinkedList<cantidadDisponibleTO> listaMenu = new LinkedList<>();
-			if (!insumoDAO.verCantidadDisponible().isEmpty()) {
-				listaMenu = insumoDAO.verCantidadDisponible();
-				// paso a la vista el promedio de las valoraciones de los menús
-				vista.addObject("cantidad", listaMenu);
+			LinkedList<Float> listaMenu = new LinkedList<>();
+			if (!insumoDAO.readAllI().isEmpty()) {
+				lista = insumoDAO.readAllI();
+		
+				vista.addObject("lista", lista);
 
-				// ahora buscar la info del menu para mostrarla
-				for (int i = 0; i < listaMenu.size(); i++) {
-					int idInsumo=listaMenu.get(i).getIdInsumo();
-					lista.add(insumoDAO.read(idInsumo));
+				for (int i = 0; i < lista.size(); i++) {
+					int idInsumo=lista.get(i).getId_insumo();
+					listaMenu.add(insumoDAO.readStock(idInsumo));
 
 				}
 
-				vista.addObject("lista", lista);
+				vista.addObject("cantidad", listaMenu);
 				vista.setViewName("adminInsumos");
 				
 			} else {

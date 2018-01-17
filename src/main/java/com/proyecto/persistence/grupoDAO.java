@@ -191,6 +191,7 @@ public class grupoDAO {
     public void updateGrupo(grupoTO grupo) throws SQLException {
     	
     	if(grupo.getFecha_Salida()==null) {
+    		
         	conexion = getConnection();
             PreparedStatement ps = conexion.prepareStatement(UPDATE_GRUPO);
             ps.setString(1,grupo.getNombre());
@@ -199,6 +200,7 @@ public class grupoDAO {
             ps.setInt(4, grupo.getId_grupo());
             ps.executeUpdate();
     	}else {
+    		
         	conexion = getConnection();
             PreparedStatement ps = conexion.prepareStatement(UPDATE_GRUPOS);
             ps.setString(1,grupo.getNombre());
@@ -223,7 +225,7 @@ public class grupoDAO {
         int idpatio=0;
         if(rs3.next()) {
             idpatio =rs3.getInt(1);
-            System.out.println("idpatio "+idpatio);
+     
         }
         
         conexion = getConnection();
@@ -232,39 +234,7 @@ public class grupoDAO {
         ps6.setInt(2, grupo.getId_grupo());
         ps6.executeUpdate();
         
-        
-        /*Obtiene fecha del sistema
-        java.util.Date utilDate = new java.util.Date();
-        java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
-        System.out.println("fecha "+sqlDate);
-        
-        
-        conexion = getConnection();
-        PreparedStatement ps2 = conexion.prepareStatement(READ_VACUNOSGRUPO);
-        ps2.setInt(1,grupo.getId_grupo());
-        ResultSet rs = ps2.executeQuery();*/
-       /*
-        while(rs.next()){
-        	int idvacuno=rs.getInt("idvacuno");
-        	System.out.println(idvacuno);
-        	String diioV = rs.getString("diio");
-        	System.out.println(diioV);
-        	for(int i=1;i<diio.length;i++) {
-        		System.out.println("en el for"+diio[i]);
-        		/*if(diio[i].equalsIgnoreCase(diioV)) {
-        		System.out.println("Ambos diios son iguales"+diio[i]+" "+diioV);
-        		}else {
-        		System.out.println("Diios distintos insertas!!!"+diio[i]+" "+diioV);
-        		conexion = getConnection();
-        		/*Inserta una tupla por cada diio en la tabla pinio_has_vacuno
-        		PreparedStatement ps3 = conexion.prepareStatement(INSERT_PINIOVACUNO);
-        		ps3.setInt(1,grupo.getId_grupo());
-        		ps3.setInt(2, idvacuno);
-        		ps3.setDate(3, sqlDate);
-        		ps3.executeUpdate();   
-        		}
-        	}
-        }*/
+ 
     }
     
     public void eliminarGrupo(int idGrupo) throws SQLException {

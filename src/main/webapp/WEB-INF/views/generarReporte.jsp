@@ -90,7 +90,6 @@
                   <select name="tipo" class="form-control select2" style="width: 100%;" required>
                   <option value="" disabled selected>Seleccione una opción</option>
                   <option value="1">Inventario Animales</option>
-                  <option value="2">Inventario Insumos</option>
                   </select>
                 </div>
               </div>
@@ -116,7 +115,7 @@
               </div>
               <!-- /.box-body -->
               <div class="box-footer">
-                <button href="#" type="submit" class="btn btn-default">Cancelar</button>
+                
                 <!-- input type="hidden" name="action" value="saveVacuno.htm"-->
                 <button type="submit" class="btn btn-info pull-right"><i class="fa fa-download"> Generar</i></button>
               </div>

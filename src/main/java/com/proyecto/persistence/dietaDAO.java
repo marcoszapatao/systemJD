@@ -6,8 +6,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import com.proyecto.transferObject.dietaTO;
 import com.proyecto.transferObject.grupoTO;
+import com.proyecto.transferObject.insumoTO;
 import com.proyecto.transferObject.resultadoDietaTO;
 
 public class dietaDAO {
@@ -17,6 +21,11 @@ public class dietaDAO {
 	private static final String READ_INSUMOXNOMBRE ="select idinsumo from insumo where nombreInsumo=?";
 	private static final String READ_DISPONIBLE="select cantidad_actual from cantidad_disponible where insumo_idinsumo=?";
 	private static final String UPDATE_DISPO="update cantidad_disponible set cantidad_actual=? where insumo_idinsumo=?";
+	private static final String READ_ALL ="select * from dieta";
+	private static final String INSERT_QUERY="insert into dieta(proporcion,semana,insumo_idinsumo) values(?,?,?)";
+	private static final String DELETE_QUERY="delete from dieta where iddieta=?";
+	private static final String READ_QUERY="select * from dieta where iddieta=?";
+	private static final String UPDATE_QUERY="update dieta set proporcion=?,semana=? where iddieta=?";
 	
     private static final String DB_NAME="bddjd_nueva";
     private static final String PORT="3306";
@@ -141,6 +150,104 @@ public class dietaDAO {
 	   }
 	   return retorna;
    }
+   
+	public LinkedList<dietaTO> readAllD() throws SQLException{
+	    LinkedList<dietaTO> lista = new LinkedList<>();
+	    dietaTO result = null;
+	    Connection conn = null;
+	    try {
+	        conn = getConnection();
+	        PreparedStatement ps = conn.prepareStatement(READ_ALL);
+	        ResultSet rs = ps.executeQuery();
+	        while(rs.next()){
+	            result= new dietaTO();
+	            result.setIdDieta(rs.getInt("iddieta"));
+	            result.setProporcionDieta(rs.getFloat("proporcion"));
+	            result.setSemanaDieta(rs.getInt("semana"));
+	            result.setIdInsumo(rs.getInt("insumo_idinsumo"));
+	            lista.add(result);
+	        }
+	    } catch (SQLException ex) {
+	        Logger.getLogger(vacunoDAO.class.getName()).log(Level.SEVERE, null, ex);
+	    } finally{
+	        conn.close();
+	    }
+	    return lista;
+	}
+	
+	public int saveDieta(dietaTO to) throws SQLException {
+		int j=0;
+		Connection conn;
+		try {
+			
+        conn=getConnection();
+		PreparedStatement ps = conn.prepareStatement(INSERT_QUERY);
+        ps.setFloat(1,to.getProporcionDieta());
+        ps.setInt(2,to.getSemanaDieta());
+        ps.setInt(3,to.getIdInsumo() );
+        ps.executeUpdate();
+		
+		}catch(SQLException e){
+	        System.out.println(e);
+	        j=1;
+	    }finally{
+	            conexion.close();
+	    }
+		return j;
+	}
+	
+	   public int deleteDieta(int id) throws SQLException{
+	       int resultado = 0;
+	        try{
+	        	/*Elimina tupla en cantidad_disponible*/
+	            conexion = getConnection();
+	            PreparedStatement ps1 = conexion.prepareStatement(DELETE_QUERY);
+	            ps1.setInt(1,id);
+	            ps1.executeUpdate();
+	        }catch(SQLException e){
+	        	resultado=1;
+	            System.out.println("Error: " + e.getMessage());
+	        }finally{
+	            if(conexion!=null)
+	                conexion.close();
+	        }
+	       return resultado;
+	    }
+	   
+	   public dietaTO read(int id) {
+	       dietaTO result = null;
+	       
+	       try {
+	           getConnection();
+	           PreparedStatement ps = conexion.prepareStatement(READ_QUERY);
+	           ps.setInt(1,id);
+	           ResultSet rs = ps.executeQuery();
+	           while(rs.next()){
+	               result= new dietaTO();
+	               result.setIdDieta(rs.getInt("iddieta"));
+	               result.setProporcionDieta(rs.getFloat("proporcion"));
+	               result.setSemanaDieta(rs.getInt("semana"));
+	               result.setIdInsumo(rs.getInt("insumo_idinsumo"));
+	           }
+	       } catch (SQLException ex) {
+	           Logger.getLogger(vacunoDAO.class.getName()).log(Level.SEVERE, null, ex);
+	       } finally{
+	           //conexion.close();
+	       }
+	       return result;
+	   }
+	   
+	    public boolean update(dietaTO dieta) throws SQLException{
+	        boolean resultado = false;
+	          conexion = getConnection();
+	          PreparedStatement ps = conexion.prepareStatement(UPDATE_QUERY);
+	          ps.setFloat(1,dieta.getProporcionDieta());
+	          ps.setInt(2,dieta.getSemanaDieta());
+	          ps.setInt(3,dieta.getIdDieta());
+	          ps.executeUpdate();
+
+	        return resultado;
+	    }
     
     
     private static Connection getConnection(){

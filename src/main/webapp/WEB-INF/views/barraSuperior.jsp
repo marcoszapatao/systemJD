@@ -44,9 +44,12 @@ function verif(formu){
 }
 </script>
 </head>
-  
+     <%
+ 	HttpSession ses = request.getSession();
+ 	String rolU = (String) ses.getAttribute("rol");
+ 	%>
     <!-- Logo -->
-    <a  href="login.htm" class="logo">
+    <a  href="pagPrincipal.htm?rol=<%=rolU%>" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><b></b>JD</span>
       <!-- logo for regular state and mobile devices -->

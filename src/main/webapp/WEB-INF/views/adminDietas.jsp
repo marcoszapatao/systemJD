@@ -4,8 +4,10 @@
     Author     : Marcosz
 --%>
 <%@page import="java.util.LinkedList"%>
-<%@page import="com.proyecto.transferObject.proveedorTO"%>
+<%@page import="com.proyecto.transferObject.insumoTO"%>
+<%@page import="com.proyecto.transferObject.dietaTO"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>  
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>
@@ -14,26 +16,23 @@
   <%@ include file="cabecera.jsp"%>
     <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
     <script>
+
    	     function botonEdit(id){
    		 console.log("IDEEE "+id);
    		 $.ajax({
-   			 type:'GET',
-   			 url:"/systemjd/editarP.htm?id="+id,
+   			 type:'POST',
+   			 url:"/systemjd/editarD.htm?id="+id,
    		     dataType:'json',
    		     success:function(data){
    		    	 console.log(data);
-   		    	 var proId = data.idProveedor;
-   		    	 var proNombre = data.nombreProveedor;
-   		    	 var proRubro = data.rubroProveedor;
-   		    	 var proRut = data.rutProveedor;
-   		    	 var proDireccion = data.direccionProveedor;
- 
-   		    	 $("input[name*='id']" ).val(proId);
-   		    	 $("input[name*='nombre']" ).val(proNombre);
-   		    	 $("input[name*='rubro']" ).val(proRubro);
-   		    	 $("input[name*='rut']" ).val(proRut);
-   		    	 $("input[name*='direccion']" ).val(proDireccion);
-   		    	 $('#myModalEdit').modal('show');
+   		    	 var dietaId = data.idDieta;
+   		    	 var dietaPro = data.proporcionDieta;
+   		    	 var dietaSemana = data.semanaDieta;
+   
+   		    	$("input[name*='idDieta']" ).val(dietaId);
+   		    	 $("input[name*='proporcion']" ).val(dietaPro);
+   		    	 $("#semana").html(dietaSemana);
+   		    	 $('#myModalEditI').modal('show');
    		     },
    		     error:function(jqXHR,errorThrown){
    		    	 alert("Alerta "+errorThrown);
@@ -71,12 +70,11 @@
 
   <header class="main-header">
     <%@ include file="barraSuperior.jsp"%>
-    <script type="text/javascript" src="assets/comprueba.js"></script>
   </header>
     
   <!-- Left side column. contains the logo and sidebar -->
   <aside class="main-sidebar">
-          <%
+      <%
  	HttpSession sessionV = request.getSession();
  	String rol = (String) sessionV.getAttribute("rol");
  	if(rol.equalsIgnoreCase("usuario")){
@@ -107,7 +105,7 @@
         <br></br>
             <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Administrar proveedores</h3>
+              <h3 class="box-title">Administrar Dietas</h3>
               
             <div class="agre">
             <div class="col-sm-2">
@@ -119,36 +117,16 @@
 	        </div>
 	        </div>
 	        
-            </div> 
-           <c:if test="${not empty correcto}">
-								<script>
-									toastr
-											.success("Inserción correcta");
-								</script>
-		   </c:if> 
-		   <c:if test="${not empty incorrecta}">
-								<script>
-									toastr
-											.error("Error: Inserción incorrecta");
-								</script>
-		   </c:if>
-            		   <c:if test="${not empty elimino}">
-								<script>
-									toastr
-											.error("Error: No se puedo eliminar, el proveedor está en uso");
-								</script>
-		   </c:if>
+            </div>  
 
             <!-- /.box-header -->
             <div class="box-body">
               <table id="example" class="table table-bordered table-hover">
                 <thead>
                 <tr>
-                  
-                  <th>Nombre</th>
-                  <th>Rubro</th>
-                  <th>RUT</th>
-                  <th>Dirección</th> 
+                  <th>Insumo</th>
+                  <th>Semana</th>
+                  <th>Proporción (Kg)</th> 
                   <th>Acciones</th>
                   
                 </tr>
@@ -156,17 +134,19 @@
                 <tbody>
 
                     <% 
-                    LinkedList<proveedorTO> list = (LinkedList<proveedorTO>) request.getAttribute("lista");
-                    if(list != null)
+                    LinkedList<dietaTO> list = (LinkedList<dietaTO>) request.getAttribute("lista");
+                    LinkedList<insumoTO> list2 = (LinkedList<insumoTO>) request.getAttribute("cantidad");
+                    if(list != null && list2 != null)
                         for (int i = 0; i < list.size(); i++) {
-                           proveedorTO task = list.get(i);
+                            dietaTO task = list.get(i);
+                            insumoTO cantidad = list2.get(i);
                     %>
-                    <tr> <td><%=task.getNombreProveedor()%></td><td><%=task.getRubroProveedor()%></td> <td><%=task.getRutProveedor()%></td> <td><%=task.getDireccionProveedor()%></td>
+                    <tr> <td><%=cantidad.getNombre_insumo()%></td> <td><%=task.getSemanaDieta()%></td> <td><%=task.getProporcionDieta()%></td> 
                     <td>
-                 
-                     <button type="button" class="btn btn-success btn-xs"  onclick="botonEdit('<%=task.getIdProveedor()%>');"><i class="fa fa-edit"></i> Editar</button>
+                     <!--input type="hidden" id="idvacuno" value="<%=task.getIdDieta()%>"/-->
+                     <button type="button" class="btn btn-success btn-xs"  onclick="botonEdit('<%=task.getIdDieta()%>');"><i class="fa fa-edit"></i> Editar</button>
                      &nbsp; &nbsp; &nbsp;
-                     <a href="deleteProveedor.htm?id=<%=task.getIdProveedor()%>" class="btn btn-danger btn-xs"  onclick="return confirm('¿Está seguro que desea eliminar el proveedor:  <%=task.getNombreProveedor()%>?');"><i class="fa fa-close"></i>  Eliminar</a>
+                     <a href="deleteDieta.htm?id=<%=task.getIdDieta()%>" class="btn btn-danger btn-xs"  onclick="return confirm('¿Está seguro que desea eliminar el insumo:  <%=task.getIdDieta()%>?');"><i class="fa fa-close"></i>  Eliminar</a>
                      </td></tr>
                     <%} else{%>
                         <h1>No hay datos</h1>
@@ -174,11 +154,9 @@
                 </tbody>
                 <tfoot>
                 <tr>
-                  
-                  <th>Nombre</th>
-                  <th>Rubro</th>
-                  <th>Rut</th>
-                  <th>Dirección</th>
+                  <th>Insumo</th>
+                  <th>Semana</th>
+                  <th>Proporción (Kg)</th>
                   <th>Acciones</th>
             
                   
@@ -188,7 +166,7 @@
               
             </div>
             
-            <!--------- Comienzo modal Agregar Proveedor ------------->
+            <!--------- Comienzo modal Agregar Vacuno ------------->
             <div id="myModal" class="modal fade" role="dialog">
 			  <div class="modal-dialog modal-lg">
 			
@@ -196,44 +174,62 @@
 			    <div class="modal-content">
 			      <div class="modal-header">
 			        <button type="button" class="close" data-dismiss="modal">&times;</button>
-			        <h4 class="modal-title"><font color="white">Ingrese Nuevo Proveedor</font></h4>
+			        <h4 class="modal-title"><font color="white">Ingrese Nueva Dieta</font></h4>
 			      </div>
 			      <div class="modal-body">
 			      
-			              <form class="form-horizontal" action="saveProveedor.htm" method="POST">
+			              <form class="form-horizontal" action="saveDieta.htm" method="POST">
 			              <div class="box-body">
-			                <div class="form-horizontal">
-			                  <label class="col-sm-3 control-label">Ingrese Nombre</label>
-			
+			                                 <% 
+                    LinkedList<insumoTO> li = (LinkedList<insumoTO>) request.getAttribute("li");
+                    String arr[]=new String[li.size()];
+                    int a[]=new int[li.size()];
+                    if(li != null){
+                        
+                    	for (int i = 0; i < li.size(); i++) {
+                            insumoTO insumo = li.get(i);
+                            arr[i]=insumo.getNombre_insumo();
+                            a[i]=insumo.getId_insumo();
+                        }
+                    }
+                    %>
+		              <div class="form-horizontal">
+		                  <label  class="col-sm-3 control-label">Insumo</label>
+		                <div class="col-sm-9">
+		                  <select name="insumo" class="form-control select2" style="width: 100%;" required>
+		                  <option value="" disabled selected>Seleccione una opción</option>
+		                  <%for(int j=0; j<arr.length;j++){ %>
+		                  <option value=<%=a[j]%>><%=arr[j]%></option>
+		                   <%} %>
+		                  </select>
+		                </div>
+		              </div>
+		                  <br></br>
+			                
+
+			                
+			              <div class="form-horizontal">
+			                
+			                <label  class="col-sm-3 control-label">Semana</label>
+			                <div class="col-sm-9">
+			                  <select name="semana" class="form-control select2" style="width: 100%;" required>
+			                  <option value="" disabled selected>Seleccione una opción</option>
+			                  <option>1</option>
+			                  <option>2</option>
+			                  <option>3</option>
+			                  <option>4</option>
+			                  </select>
+			                </div>
+			              </div>
+			                  <br></br>
+			               <div class="form-horizontal">
+			                  <label class="col-sm-3 control-label">Proporción (Kg)</label>
 			                  <div class="col-sm-9">
-			                    <input type="text" class="form-control" id="nombreP" name="nombre" placeholder="Ej: Beneo" required>
+			                    
+			                    <input type="number" class="form-control" required name="proporcion" min="0" value="0" step=".01" placeholder="Ej: 0.01">
 			                  </div>
 			                </div>
 			                <br></br>
-			                <div class="form-horizontal">
-			                  <label class="col-sm-3 control-label">Ingrese Rubro</label>
-			
-			                  <div class="col-sm-9">
-			                    <input type="text" class="form-control" id="rubro" name="rubro" placeholder="Ej: Agrícola" required>
-			                  </div>
-			                </div>
-			                <br></br>
-			                <div class="form-horizontal">
-			                  <label class="col-sm-3 control-label">Ingrese RUT</label>
-			
-			                  <div class="col-sm-9">
-			                    <input type="text" class="form-control" id="rut" name="rut" placeholder="Ej: 8.321.435-4" oninput="checkRut(this)" required>
-			                  </div>
-			                </div>
-			                <br></br>
-			                <div class="form-horizontal">
-			                  <label class="col-sm-3 control-label">Ingrese Dirección</label>
-			
-			                  <div class="col-sm-9">
-			                    <input type="text" class="form-control" id="direccion" name="direccion" placeholder="Ej: Libertad 323, Chillán" required>
-			                  </div>
-			                </div>
-			                <br></br> 
 			                  
 			              </div>
 			              <!-- /.box-body -->
@@ -254,52 +250,47 @@
           <!--------- FIN modal Agregar Vacuno ------------->
           
           <!-- Molda editar vacuno -->
-          <div id="myModalEdit" class="modal fade" role="dialog">
+          <div id="myModalEditI" class="modal fade" role="dialog">
 			  <div class="modal-dialog modal-lg">
 			
 			    <!-- Modal content-->
 			    <div class="modal-content">
 			      <div class="modal-header">
 			        <button type="button" class="close" data-dismiss="modal">&times;</button>
-			        <h4 class="modal-title"><font color="white">Editar Proveedor</font></h4>
+			        <h4 class="modal-title"><font color="white">Editar Dieta</font></h4>
 			      </div>
 			      <div class="modal-body">
 			      
-			              <form class="form-horizontal" action="actualizarProveedor.htm" method="POST">
+			              <form class="form-horizontal" action="actualizarDieta.htm" method="GET">
 			              <div class="box-body">
-			               <input type="hidden" class="form-control" name="id"></input>
+			              <input type="hidden" id ="idDieta" name="idDieta">
+			                			                  
+			           <div class="form-horizontal">
+			                
+			               <label  class="col-sm-3 control-label">Semana</label>
+			                <div class="col-sm-9">
+			                  <select name="semana" class="form-control select2" style="width: 100%;">
+			                  <option id="semana" selected="selected"></option>
+			                  <option>1</option>
+			                  <option>2</option>
+			                  <option>3</option>
+			                  <option>4</option>
+			                  </select>
+			                </div>
+			            </div>
+			                <br></br>
+			                
 			                <div class="form-horizontal">
-			                  <label class="col-sm-3 control-label">Ingrese Nombre</label>
+			                  <label class="col-sm-3 control-label">Proporción</label>
 			
 			                  <div class="col-sm-9">
-			                    <input type="text" class="form-control" name="nombre" required></input>
+			                    <input type="text" class="form-control" name="proporcion"></input>
 			                  </div>
 			                </div>
 			                <br></br>
-			                <div class="form-horizontal">
-			                  <label class="col-sm-3 control-label">Ingrese Rubro</label>
-			
-			                  <div class="col-sm-9">
-			                    <input type="text" class="form-control" name="rubro" required></input>
-			                  </div>
-			                </div>
-			                <br></br>
-			                <div class="form-horizontal">
-			                  <label class="col-sm-3 control-label">Ingrese Rut</label>
-			
-			                  <div class="col-sm-9">
-			                    <input type="text" class="form-control" name="rut" oninput="checkRut(this)" required></input>
-			                  </div>
-			                </div>
-			                <br></br>
-			                <div class="form-horizontal">
-			                  <label class="col-sm-3 control-label">Ingrese Dirección</label>
-			
-			                  <div class="col-sm-9">
-			                    <input type="text" class="form-control" name="direccion" required></input>
-			                  </div>
-			                </div>
-			                <br></br>
+			            
+
+			               
 			                  
 			              </div>
 			              <!-- /.box-body -->
@@ -343,50 +334,6 @@
 
 <%@ include file="scripts.jsp"%>
 <script>
-function checkRut(rut) {
-	// Despejar Puntos
-	var valor = rut.value.replace('.', '');
-	// Despejar Guión
-	valor = valor.replace('-', '');
-	// Aislar Cuerpo y Dígito Verificador
-	cuerpo = valor.slice(0, -1);
-	dv = valor.slice(-1).toUpperCase();
-	// Formatear RUN
-	rut.value = cuerpo + '-' + dv
-	// Si no cumple con el mínimo ej. (n.nnn.nnn)
-	if (cuerpo.length < 7) {
-		rut.setCustomValidity("RUT Incompleto");
-		return false;
-	}
-	// Calcular Dígito Verificador
-	suma = 0;
-	multiplo = 2;
-	// Para cada dígito del Cuerpo
-	for (i = 1; i <= cuerpo.length; i++) {
-		// Obtener su Producto con el Múltiplo Correspondiente
-		index = multiplo * valor.charAt(cuerpo.length - i);
-		// Sumar al Contador General
-		suma = suma + index;
-		// Consolidar Múltiplo dentro del rango [2,7]
-		if (multiplo < 7) {
-			multiplo = multiplo + 1;
-		} else {
-			multiplo = 2;
-		}
-	}
-	// Calcular Dígito Verificador en base al Módulo 11
-	dvEsperado = 11 - (suma % 11);
-	// Casos Especiales (0 y K)
-	dv = (dv == 'K') ? 10 : dv;
-	dv = (dv == 0) ? 11 : dv;
-	// Validar que el Cuerpo coincide con su Dígito Verificador
-	if (dvEsperado != dv) {
-		rut.setCustomValidity("RUT Inválido");
-		return false;
-	}
-	// Si todo sale bien, eliminar errores (decretar que es válido)
-	rut.setCustomValidity('');
-}
 $(function () {
     $('#example').DataTable({
       'paging'      : true,

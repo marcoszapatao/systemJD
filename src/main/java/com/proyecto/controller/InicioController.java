@@ -73,4 +73,19 @@ public class InicioController {
 			return vista;
 		}
 	}
+	@RequestMapping(value = "pagPrincipal", method = RequestMethod.GET)
+	public ModelAndView pagPrincipal(@RequestParam(value = "rol", required = true) String rol,
+			ModelAndView vista) {
+		if (rol.equalsIgnoreCase("usuario")) {
+
+			vista.setViewName("indexUsuario");
+		} else {
+
+			// Vista adm
+			if (rol.equalsIgnoreCase("Administrador")) {
+				vista.setViewName("indexAdministrador");
+			}
+		}
+		return vista;
+	}
 }

@@ -257,7 +257,7 @@
               </div>
               <!-- /.box-body -->
               <div class="box-footer">
-                <button type="button" class="btn btn-default">Cancelar</button>
+                
                 <button type="button" onclick="botonCalcula('<%=tamano%>');" class="btn btn-info pull-right" ><i class="fa fa-floppy-o"> Calcular</i></button>
                 
               </div>

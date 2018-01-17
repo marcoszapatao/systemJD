@@ -242,7 +242,8 @@
     	 };
     	 alert("Paso el for");*/
         /*----------------OTRAS PRUEBAS------------*/
-        var id = $('input[type=hidden]').val();
+        //var id = $('input[type=hidden]').val();
+    	var id = jQuery("#idGrupoE").val();
         var name = jQuery("#nameGrupoE").val();
         var estado = jQuery("#estadoGrupoE").val();
         var patio = jQuery("select[name='patioAG']").val();
@@ -319,7 +320,7 @@
               <table id="example" class="table table-bordered table-hover">
                 <thead>
                 <tr>
-                  <th>ID</th>
+                  
                   <th>Nombre</th>
                   <th>Estado</th>
                   <th>Patio</th>
@@ -338,7 +339,7 @@
                         for (int i = 0; i < list.size(); i++) {
                             grupoTO task = list.get(i);
                     %>
-                    <tr> <td><%=task.getId_grupo()%></td> <td><%=task.getNombre()%></td> <td><%=task.getEstado()%></td> <td><%=task.getPatio()%></td> <td><%=task.getFecha_ingreso()%></td> <%if(task.getFecha_Salida()!=null){%><td><%=task.getFecha_Salida()%></td><% }else{%><td> - </td><% }%></td> 
+                    <tr> <td><%=task.getNombre()%></td> <td><%=task.getEstado()%></td> <td><%=task.getPatio()%></td> <td><%=task.getFecha_ingreso()%></td> <%if(task.getFecha_Salida()!=null){%><td><%=task.getFecha_Salida()%></td><% }else{%><td> - </td><% }%></td> 
                     <td>
                     <button type="button" class="btn btn-success btn-xs"  onclick="botonEditG('<%=task.getId_grupo()%>');"><i class="fa fa-edit"></i> Editar</button> &nbsp; &nbsp; &nbsp;
                     <a href="deleteGrupo.htm?id=<%=task.getId_grupo()%>" class="btn btn-danger btn-xs"  onclick="return confirm('¿Está seguro que desea eliminar el grupo con ID:  <%=task.getId_grupo()%>?');"><i class="fa fa-close"></i>  Eliminar</a></td>  </tr>
@@ -348,7 +349,7 @@
                 </tbody>
                 <tfoot>
                 <tr>
-                  <th>ID</th>
+                  
                   <th>Nombre</th>
                   <th>Estado</th>
                   <th>Patio</th>

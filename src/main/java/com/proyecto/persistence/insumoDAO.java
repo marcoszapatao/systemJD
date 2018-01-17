@@ -41,6 +41,8 @@ public class insumoDAO {
     private static final String DELETE_INSUMOPROVEEDOR ="delete from insumo_has_proveedor where insumo_idinsumo=?";
 	private static final String READ_STOCK="select cantidad_actual from cantidad_disponible where insumo_idinsumo=?";
     private static final String TOTAL_STOCK ="SELECT sum(cantidad_actual) FROM cantidad_disponible";
+	private static final String READ_INSUDIETA="SELECT *,count(insumo.idinsumo) as nro FROM insumo join dieta on(insumo.idinsumo=dieta.insumo_idinsumo) group by insumo.idinsumo";
+   
 	
     private static final String DB_NAME="bddjd_nueva";
     private static final String PORT="3306";
@@ -72,6 +74,7 @@ public class insumoDAO {
     }
     return lista;
 }
+	
 	
 	public LinkedList<insumoTO> readAllAlimento() throws SQLException{
 	    LinkedList<insumoTO> lista = new LinkedList<>();
@@ -174,7 +177,7 @@ public class insumoDAO {
     }
     
     
-    public insumoTO read(int id) throws SQLException{
+    public static insumoTO read(int id) throws SQLException{
         insumoTO result = null;
        
        try {
@@ -403,6 +406,7 @@ public class insumoDAO {
         }
         return lista;
     }
+    
     
     private static Connection getConnection(){
         try{
