@@ -42,7 +42,7 @@ public class insumoDAO {
 	private static final String READ_STOCK="select cantidad_actual from cantidad_disponible where insumo_idinsumo=?";
     private static final String TOTAL_STOCK ="SELECT sum(cantidad_actual) FROM cantidad_disponible";
 	private static final String READ_INSUDIETA="SELECT *,count(insumo.idinsumo) as nro FROM insumo join dieta on(insumo.idinsumo=dieta.insumo_idinsumo) group by insumo.idinsumo";
-   
+    private static final String DELETE_DIETA="delete from dieta where insumo_idinsumo=?";
 	
     private static final String DB_NAME="bddjd_nueva";
     private static final String PORT="3306";
@@ -75,7 +75,7 @@ public class insumoDAO {
     return lista;
 }
 	
-	
+	/*Devuelve todos los insumos tipo alimento*/
 	public LinkedList<insumoTO> readAllAlimento() throws SQLException{
 	    LinkedList<insumoTO> lista = new LinkedList<>();
 	    insumoTO result = null;
@@ -100,7 +100,7 @@ public class insumoDAO {
 	    return lista;
 	}
 	
-	
+	/*Registra un nuevo insumo en el sistema*/
 	public int createInsumo(insumoTO insumo) throws SQLException{
         int result =0;
         try{
@@ -111,7 +111,7 @@ public class insumoDAO {
         int idtipo=0;
         if(rs.next()) {
             idtipo =rs.getInt(1);
-            System.out.println(idtipo);
+            
         }
         
         PreparedStatement ps = conexion.prepareStatement(INSERT_QUERY);
@@ -144,7 +144,7 @@ public class insumoDAO {
         return result;
     }
 	
-	
+	/*Elimina insumo registrado*/
     public boolean deleteInsumo(int id) throws SQLException{
         boolean resultado = false;
         try{
@@ -160,6 +160,10 @@ public class insumoDAO {
             ps2.setInt(1,id);
             ps2.executeUpdate();
             
+            conexion = getConnection();
+            PreparedStatement ps5 = conexion.prepareStatement(DELETE_DIETA);
+            ps5.setInt(1,id);
+            ps5.executeUpdate();
             
           /*Elimina desde tabla insumos*/  
           conexion = getConnection();
@@ -176,7 +180,7 @@ public class insumoDAO {
        return resultado;
     }
     
-    
+    /*Devuelve insumo segun id*/
     public static insumoTO read(int id) throws SQLException{
         insumoTO result = null;
        
@@ -200,7 +204,7 @@ public class insumoDAO {
        return result;
    }
     
-    
+    /*Actualiza insumo*/
     public boolean update(insumoTO insumo) throws SQLException{
         boolean resultado = false;
         
@@ -212,7 +216,7 @@ public class insumoDAO {
           int idtipo=0;
           if(rs.next()) {
               idtipo =rs.getInt(1);
-              System.out.println("id insumo------------"+idtipo);
+              
           }
         	
           
@@ -234,7 +238,7 @@ public class insumoDAO {
     
     }
     
-
+    /*Registra compra de insumo y actualiza stock disponible*/
     public int ingresaCompra(String insumo, String proveedor,Date fecha,String documento, int cantidad, int precio) throws SQLException {
     	int j = 0;
     	try {
@@ -369,6 +373,7 @@ public class insumoDAO {
        return result;
     }
     
+    /*Calcula porcentaje de stock que se muestra en pantalla principal*/
     public LinkedList<insumoTO> stockIndex() throws SQLException{
     	
     	LinkedList<insumoTO> lista = new LinkedList<>();

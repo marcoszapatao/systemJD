@@ -46,7 +46,7 @@
         	  var size = (parseInt(tamano) + parseInt(uno));
         	  var checkedValue = ["Inicio"];
         	 for(var i=1; i<size; i++){
-            	 //alert(i);
+            	 
         		 var message = "messageCheckbox";
         		 var letra = i;
         		 var res = message.concat(letra);
@@ -58,14 +58,14 @@
                  }
         	 }
         	  var grupo = jQuery("#grupo").val();
-        	  //alert("ID:" + grupo);
+        	  
         	  var semana = jQuery("#semana").val();
         	  var object = {grupo:grupo,semana:semana};
         		 $.ajax({
            			 type:'POST',
            			 url:"/systemjd/calculando.htm?insumos="+checkedValue,
            			 data: object,
-           		     //dataType:'json',
+           		     
            		     success:function(data){
                          var result = "<thead><tr><th>Insumo</th><th>Semana</th><th>Resultado</th></tr></thead>";
                          result += "<tbody>";
@@ -105,13 +105,13 @@
                 });
                 
                 valores = valores + "\n";
-                //alert(valores);
+              
                 peticion(valores);
               });
           }); 
           
           function peticion(valor){
-        	     //alert(valor);
+        	     
         	     confirm("¿Está seguro que desea registrar dieta?");
 	           	 $.ajax({
 	       			 type:'POST',

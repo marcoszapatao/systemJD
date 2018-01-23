@@ -116,7 +116,7 @@
               <!-- /.box-body -->
               <div class="box-footer">
                 
-                <!-- input type="hidden" name="action" value="saveVacuno.htm"-->
+                
                 <button type="submit" class="btn btn-info pull-right"><i class="fa fa-download"> Generar</i></button>
               </div>
               <!-- /.box-footer -->

@@ -19,7 +19,6 @@
     <script>
 	    
    	     function botonEdit(id){
-   		 console.log("IDEEE "+id);
    		 $.ajax({
    			 type:'GET',
    			 url:"/systemjd/editarVa.htm?id="+id,
@@ -36,7 +35,7 @@
    		    	 $("#sexoV").html(vacunoSexo);
    		    	 $("#razaV").html(vacunoRaza);
    		    	 $("#fecha_ing" ).val(vacunoFIn);
-   		    	 //"input[name*='fecha_ing']"
+
    		    	 $('#myModalEdit').modal('show');
    		     },
    		     error:function(jqXHR,errorThrown){
@@ -212,7 +211,7 @@
 			                  <label class="col-sm-3 control-label">Ingrese DIIO</label>
 			
 			                  <div class="col-sm-9">
-			                    <input type="text" class="form-control" id="dioV" name="diio" placeholder="Ej: 00 658 4484" required pattern="[0-9]{9,9}" title="Ej: 001112222">
+			                    <input type="text" class="form-control" id="dioV" name="diio" placeholder="Ej: 006584484" required pattern="[0-9]{9,9}" title="Ej: 001112222">
 			                  </div>
 			                </div>
 			                <br></br>

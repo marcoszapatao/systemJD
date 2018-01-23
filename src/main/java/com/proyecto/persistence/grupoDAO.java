@@ -48,6 +48,7 @@ public class grupoDAO {
     private static final String PASSWORD="KrN5EfGXoBA3";*/
     private static Connection conexion = null;
     
+    /*Lista todos los grupos*/
     public LinkedList<grupoTO> readAllG() throws SQLException{
         LinkedList<grupoTO> list = new LinkedList<>();
         grupoTO result = null;
@@ -92,12 +93,12 @@ public class grupoDAO {
          int idpinio=0;
          if(rs2.next()) {
              idpinio =rs2.getInt(1);
-             System.out.println("id piño"+idpinio);
+             
          }
          /*Obtiene fecha del sistema*/
          java.util.Date utilDate = new java.util.Date();
          java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
-         System.out.println("fecha "+sqlDate);
+         
          
          
        	 conexion = getConnection();
@@ -110,17 +111,17 @@ public class grupoDAO {
          
          /*Obtiene el idvacuno segun su diio */
          conexion = getConnection();
-         System.out.println("tamaño arr "+vacunos.length);
+         
          int tamano = vacunos.length;
          for(int i=1;i<tamano;i++) {
         	 PreparedStatement ps1 = conexion.prepareStatement(READ_IDVACUNO);
-             System.out.println("iiii"+i);
+             
         	 ps1.setString(1,vacunos[i]);
              ResultSet rs = ps1.executeQuery();
              int idvacuno=0;
              if(rs.next()) {
                  idvacuno =rs.getInt(1);
-                 System.out.println("id vacuno "+idvacuno);
+                 
              }
              conexion = getConnection();
              /*Inserta una tupla por cada diio en la tabla pinio_has_vacuno*/
@@ -130,19 +131,9 @@ public class grupoDAO {
              ps3.setDate(3, sqlDate);
              ps3.executeUpdate();   
          }
-         System.out.println("ANTES");
-         insertapeso(grupo,sqlDate,idpinio,idusuario);
-    	System.out.println("DESPUES");
-         /*Inserta el peso del grupo en la tabla peso
-         conexion = getConnection();
-         PreparedStatement ps4 = conexion.prepareStatement(INSERT_PESO);
-         ps4.setInt(1,grupo.getPeso());
-         ps4.setDate(2,sqlDate);
-         int tra = 1;
-         ps4.setInt(3,tra);
-         ps4.setInt(4,idpinio);
-         ps4.executeUpdate();
-         */
+         
+         insertapeso(grupo,sqlDate,idpinio,idusuario);   	
+
     	}catch(SQLException e){
             System.out.println(e);
         }finally{
@@ -152,7 +143,7 @@ public class grupoDAO {
     }
     
     public void insertapeso(grupoTO grupo,Date fecha,int id, int idusuario) throws SQLException {
-    	System.out.println("DENTRO");
+    	
     	conexion = getConnection();
         PreparedStatement ps4 = conexion.prepareStatement(INSERT_PESO);
         ps4.setInt(1,grupo.getPeso());
@@ -161,7 +152,7 @@ public class grupoDAO {
         ps4.setInt(4,id);
         ps4.executeUpdate();
     }
-    
+    /*Obtiene informacion del grupo segun su ID*/
     public grupoTO readG(int id) throws SQLException{
         grupoTO result = null;
         
@@ -174,8 +165,7 @@ public class grupoDAO {
                result= new grupoTO();
                result.setNombre(rs.getString("nombrePinio"));
                result.setEstado(rs.getString("estado"));
-               result.setPeso(rs.getInt("pesoPinio"));
-               System.out.println(rs.getString("nombrePatio"));
+               result.setPeso(rs.getInt("pesoPinio"));               
                result.setPatio(rs.getString("nombrePatio"));
                result.setFecha_ingreso(rs.getDate("fechaIngreso"));
                result.setFecha_Salida(rs.getDate("fechaSalida"));
@@ -187,7 +177,7 @@ public class grupoDAO {
        }
        return result;
     }
-    
+    /*Actuliza la informacion de un grupo*/
     public void updateGrupo(grupoTO grupo) throws SQLException {
     	
     	if(grupo.getFecha_Salida()==null) {
@@ -237,6 +227,7 @@ public class grupoDAO {
  
     }
     
+    /*Elimina toda la informacion de un grupo*/
     public void eliminarGrupo(int idGrupo) throws SQLException {
     	conexion = getConnection();
         PreparedStatement ps = conexion.prepareStatement(DELETE_PINIOVACUNO);
@@ -260,7 +251,7 @@ public class grupoDAO {
         ps2.executeUpdate();
         
     }
-    
+    /*Calcula total de vacunos segun estado(engorda, pradera, vendido)*/
     public int totalVacunosEstado(String estado) throws SQLException {
     	conexion = getConnection();
         PreparedStatement ps1=conexion.prepareStatement(TOTAL_QUERYESTADO);
@@ -268,8 +259,7 @@ public class grupoDAO {
         ResultSet rs = ps1.executeQuery();
         int nro=0;
         if(rs.next()) {
-            nro =rs.getInt(1);
-            System.out.println(nro);
+            nro =rs.getInt(1);            
         }
         return nro;
     }

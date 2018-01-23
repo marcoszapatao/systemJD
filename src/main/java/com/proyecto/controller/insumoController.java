@@ -23,35 +23,8 @@ import com.proyecto.transferObject.insumoTO;
 public class insumoController {
 	@RequestMapping(value = "adminInsumo")
 	public ModelAndView admin(ModelAndView vista) throws SQLException, ParseException {
-		/*
 		insumoDAO insumoDAO = new insumoDAO();
 		LinkedList<insumoTO> lista = new LinkedList<>();
-		cantidadDisponibleTO cantidadTO = new cantidadDisponibleTO();
-		LinkedList<cantidadDisponibleTO> listaMenu = new LinkedList<>();
-		if (!insumoDAO.verCantidadDisponible().isEmpty()) {
-			listaMenu = insumoDAO.verCantidadDisponible();
-	
-			vista.addObject("cantidad", listaMenu);
-
-			for (int i = 0; i < listaMenu.size(); i++) {
-				int idInsumo=listaMenu.get(i).getIdInsumo();
-				lista.add(insumoDAO.read(idInsumo));
-
-			}
-
-			vista.addObject("lista", lista);
-			vista.setViewName("adminInsumos");
-			
-		} else {
-			vista.setViewName("login");
-			
-		}
-
-		return vista;
-		*/
-		insumoDAO insumoDAO = new insumoDAO();
-		LinkedList<insumoTO> lista = new LinkedList<>();
-		cantidadDisponibleTO cantidadTO = new cantidadDisponibleTO();
 		LinkedList<Float> listaMenu = new LinkedList<>();
 		if (!insumoDAO.readAllI().isEmpty()) {
 			lista = insumoDAO.readAllI();
@@ -101,14 +74,10 @@ public class insumoController {
             to.setDescripcion_insumo(descripcion);
             to.setTipoInsumo(tipo);
 			dao.createInsumo(to);
-	        /*
-	        insumoDAO daoo = new insumoDAO();
-			vista.addObject("lista", daoo.readAllI());
-			vista.setViewName("adminInsumos");
-			return vista;*/
+			
 			insumoDAO insumoDAO = new insumoDAO();
 			LinkedList<insumoTO> lista = new LinkedList<>();
-			cantidadDisponibleTO cantidadTO = new cantidadDisponibleTO();
+			
 			LinkedList<Float> listaMenu = new LinkedList<>();
 			if (!insumoDAO.readAllI().isEmpty()) {
 				lista = insumoDAO.readAllI();
@@ -138,15 +107,10 @@ public class insumoController {
 		insumoDAO dao = new insumoDAO();
         dao.deleteInsumo(id);
 		
-        /*
-        insumoDAO daoo = new insumoDAO();
-		vista.addObject("lista", daoo.readAllI());
-		vista.setViewName("adminInsumos");
-		return vista;*/
         
 		insumoDAO insumoDAO = new insumoDAO();
 		LinkedList<insumoTO> lista = new LinkedList<>();
-		cantidadDisponibleTO cantidadTO = new cantidadDisponibleTO();
+		
 		LinkedList<Float> listaMenu = new LinkedList<>();
 		if (!insumoDAO.readAllI().isEmpty()) {
 			lista = insumoDAO.readAllI();
@@ -177,8 +141,7 @@ public class insumoController {
 
 		insumoDAO dao = new insumoDAO();
         insumoTO insumo = dao.read(id);
-		//vista.addObject("update", task);
-		//vista.setViewName("editarVacuno");
+
 		return insumo;
 	}
 	
@@ -190,7 +153,7 @@ public class insumoController {
 			@RequestParam(value = "descripcion", required = false, defaultValue = "World") String descripcion,
 			@RequestParam(value = "tipo", required = false, defaultValue = "World") String tipo,
 			ModelAndView vista) throws SQLException {
-	        System.out.println("Nombre -------"+tipo);
+	        
 	       insumoDAO dao = new insumoDAO();
 	        insumoTO to = new insumoTO();
 			to.setId_insumo(id);
@@ -198,11 +161,7 @@ public class insumoController {
 	        to.setDescripcion_insumo(descripcion);
 	        to.setTipoInsumo(tipo);
 	        dao.update(to);
-			/*
-	        insumoDAO daoo = new insumoDAO();
-			vista.addObject("lista", daoo.readAllI());
-			vista.setViewName("adminInsumos");
-			return vista;*/
+
 			insumoDAO insumoDAO = new insumoDAO();
 			LinkedList<insumoTO> lista = new LinkedList<>();
 			cantidadDisponibleTO cantidadTO = new cantidadDisponibleTO();

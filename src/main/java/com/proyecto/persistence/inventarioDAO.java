@@ -34,7 +34,7 @@ public class inventarioDAO {
     private static final String USER="mezapata";
     private static final String PASSWORD="KrN5EfGXoBA3";*/
     private static Connection conexion = null;
-    
+    /*Obtiene informacion de grupos e inventario*/
     public LinkedList<inventarioTO> readAllInven() throws SQLException{
         LinkedList<inventarioTO> list = new LinkedList<>();
         inventarioTO result = null;
@@ -90,7 +90,7 @@ public class inventarioDAO {
         }
         return list;
     }
-    
+    /*Obtiene vacunos de un grupo especifico*/
     public LinkedList<vacunoTO> leeVacunos(int id) throws SQLException{
         LinkedList<vacunoTO> list = new LinkedList<>();
         vacunoTO result = null;

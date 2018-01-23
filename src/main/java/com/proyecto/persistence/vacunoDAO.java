@@ -39,6 +39,7 @@ public class vacunoDAO {
     private static final String PASSWORD="KrN5EfGXoBA3";*/
     private static Connection conexion = null;
     
+    /*Ingresa nuevo vacuno al sistema*/
     public int createVacuno(vacunoTO vacuno) throws SQLException{
         int result =0;
         try{
@@ -71,7 +72,7 @@ public class vacunoDAO {
         }
         return result;
     }
-    
+        /*Lista todos los vacunos registrados*/
         public LinkedList<vacunoTO> readAllV() throws SQLException{
         LinkedList<vacunoTO> lista = new LinkedList<>();
         vacunoTO result = null;
@@ -96,7 +97,7 @@ public class vacunoDAO {
         }
         return lista;
     }
-        
+        /*Lista todos los vacunos que no estan ingresados en ningun grupo*/
         public LinkedList<vacunoTO> readVsinG() throws SQLException{
         LinkedList<vacunoTO> lista = new LinkedList<>();
         vacunoTO result = null;
@@ -122,34 +123,9 @@ public class vacunoDAO {
         return lista;
     }
         
-        public LinkedList<vacunoTO> readVsinGyenGrupo(int idgrupo) throws SQLException{
-        LinkedList<vacunoTO> lista = new LinkedList<>();
-        vacunoTO result = null;
-        Connection conn = null;
-        try {
-            conn = getConnection();
-            PreparedStatement ps = conn.prepareStatement(READ_VSINGRUPOYENGRUPO);
-            ps.setInt(1,idgrupo);
-            ResultSet rs = ps.executeQuery();
-            while(rs.next()){
-                result= new vacunoTO();
-                result.setDiio(rs.getString("diio"));
-                result.setTipo(rs.getString("tipo"));
-                result.setRaza(rs.getString("nombre"));
-                result.setFechaIngreso(rs.getDate("fechaIngreso"));
-                System.out.println("paso aqui");
-                lista.add(result);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(vacunoDAO.class.getName()).log(Level.SEVERE, null, ex);
-        } finally{
-            conn.close();
-        }
-        return lista;
-    }
         
         
-        
+        /*Devuelve objeto vacuno segun ID*/
         public vacunoTO read(String id) throws SQLException{
          vacunoTO result = null;
         
@@ -175,7 +151,7 @@ public class vacunoDAO {
         return result;
     }
         
-        
+     /*Actualiza información de un vacuno*/   
     public boolean update(vacunoTO vacuno) throws SQLException{
         boolean resultado = false;
         try{
@@ -212,7 +188,7 @@ public class vacunoDAO {
     
     }
     
-    
+    /*Elimina vacuno registrado*/
         public boolean delete(vacunoTO vacuno) throws SQLException{
         boolean resultado = false;
         try{
@@ -229,7 +205,7 @@ public class vacunoDAO {
         }
        return resultado;
     }
-    
+    /*Total de vacunos registrados en el sistema*/
     public int totalVacunos() throws SQLException {
     	conexion = getConnection();
         PreparedStatement ps1=conexion.prepareStatement(TOTAL_QUERY);

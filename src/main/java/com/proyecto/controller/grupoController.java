@@ -5,20 +5,16 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.LinkedList;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.proyecto.persistence.grupoDAO;
-import com.proyecto.persistence.inventarioDAO;
 import com.proyecto.persistence.patioDAO;
 import com.proyecto.persistence.vacunoDAO;
 import com.proyecto.transferObject.grupoTO;
@@ -35,42 +31,16 @@ public class grupoController {
 		vista.setViewName("adminGrupos");
 		return vista;
 	}
-	@RequestMapping(value = "createGrupo")
-	public ModelAndView createV(ModelAndView vista) throws SQLException, ParseException {
-		vacunoDAO dao = new vacunoDAO();
-		vista.addObject("lista", dao.readAllV());
-		vista.setViewName("IngresarGrupo");
-		return vista;
-	}
-	/*Lo mismo de arriba con ajax*/
+
+	
 	@RequestMapping(value = "/crearGrupo", method = RequestMethod.GET)
 	public @ResponseBody LinkedList<vacunoTO> crearG() throws SQLException{
 		vacunoDAO dao = new vacunoDAO();
 		LinkedList<vacunoTO> list = dao.readVsinG();
 		return list;
 	}
-	/*Trae vacunos sin grupo y los que estan en el grupo actual*/
-	@RequestMapping(value = "/obtieneVacunosEditar", method = RequestMethod.GET)
-	public @ResponseBody LinkedList<vacunoTO> ObVaE(@RequestParam(value = "id", required = false, defaultValue = "World") int id) throws SQLException{
-		vacunoDAO dao = new vacunoDAO();
-		LinkedList<vacunoTO> list = dao.readVsinGyenGrupo(id);
-		return list;
-	}
-	
-	/*Crear grupo usando ajax y url*/
-	@RequestMapping(value="/nuevoGrupo", method = RequestMethod.GET)
-	public String nuevoG(@RequestParam(value = "diio", required = false, defaultValue = "World") String [] diio)  {
-	    String x = "si";
-	    System.out.println("Entro en nuevo grupo");
-	    
-	    for(int i=0;i<=5;i++) {
-	    	System.out.println(diio[i]);
-	    }
 
-	    return x;	
-	}
 	
-	/*Crear grupo con otro metodo*/
 	
 	@RequestMapping(value="/newG", method = RequestMethod.POST)
 	public ModelAndView newG(@RequestParam(value = "name", required = false, defaultValue = "World") String name,
@@ -81,12 +51,6 @@ public class grupoController {
 			@RequestParam(value = "patio", required = false, defaultValue = "World") int patio,
 			@RequestParam(value = "diio", required = false, defaultValue = "World") String [] diio,
 			ModelAndView vista			) throws SQLException  {
-		/*
-	    for(int i=0;i<=5;i++) {
-	    	System.out.println(diio[i]);
-	    }
-        System.out.println(name+estado+fecha+peso);
-	   	*/
 		grupoDAO dao = new grupoDAO();
 		grupoTO to = new grupoTO();
 		java.sql.Date fechaI = java.sql.Date.valueOf(fecha);
@@ -95,10 +59,6 @@ public class grupoController {
 		
 		to.setFecha_ingreso(fechaI);
 		to.setPeso(peso);
-		/**********************************/
-		/**********************************/
-		/************************************/
-	 	System.out.println("id trabajador" + idusuario);
 		dao.createGrupo(to,diio,patio,idusuario);
 		
         grupoDAO daoo = new grupoDAO();
@@ -127,7 +87,6 @@ public class grupoController {
 			@RequestParam(value = "fechaS", required = false, defaultValue = "World") String fechaS,
 			ModelAndView vista
 			) throws SQLException  {
-		System.out.println(id+" "+name+" "+estado+" "+fecha+" "+peso+" "+fechaS+" "+patio+"**************************************");
 
 		grupoDAO dao = new grupoDAO();
 		grupoTO to = new grupoTO();

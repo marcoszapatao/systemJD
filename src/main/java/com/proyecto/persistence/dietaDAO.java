@@ -34,6 +34,7 @@ public class dietaDAO {
     private static final String PASSWORD="";
     private static Connection conexion = null;
     
+    /*Calcula dieta segun datos almacenados, insumos seleccionados y nro de animales en grupo*/
    public LinkedList<resultadoDietaTO> calculandoDieta(int idGrupo, int semana, String [] insumos) throws SQLException{
 	   LinkedList<resultadoDietaTO> resultado = new LinkedList<resultadoDietaTO>();
 	   /*Obtengo el numero de vacunos que tiene el grupo*/
@@ -43,8 +44,7 @@ public class dietaDAO {
   	   ResultSet rs = ps.executeQuery();
        int nroVacunos=0;
        if(rs.next()) {
-           nroVacunos =rs.getInt(1);
-           System.out.println("nro Vacunos"+nroVacunos);
+           nroVacunos =rs.getInt(1);           
        }
        for(int i=1; i<insumos.length;i++) {
     	   System.out.println("i: "+i);
@@ -59,11 +59,10 @@ public class dietaDAO {
            float proporcion=0;
            if(rs1.next()) {
                proporcion =rs1.getFloat(1);
-               System.out.println("porporcion: "+proporcion);
+              
            }
            /*Aqui calcula cuanto de cada insumo*/
            float resultadoCalculo = nroVacunos*proporcion*3;
-           System.out.println("Resulatdo dietas: "+resultadoCalculo);
            /*---------------------------------*/
            conexion = getConnection();
            PreparedStatement ps2 = conexion.prepareStatement(READ_INSUMO);
@@ -84,7 +83,7 @@ public class dietaDAO {
        return resultado;
 	   
     }
-   
+   /*Actualiza stock de insumos segun calculo de dietas*/
    public int descuentaInsumos(String [] lista) throws SQLException {
 	   int retorna=0;
 	   try {
@@ -95,16 +94,13 @@ public class dietaDAO {
 	   for(int i=0;i<lista.length;i++) {
 		  j++;
 		  switch (j) {
-          case 1: 
-          	System.out.println("caso 1 "+lista[i]);
+          case 1:           	
           	nombre = lista[i];
           	break;
-          case 2:
-          	System.out.println("caso 2 "+lista[i]);
+          case 2:          	
           	semana=Integer.parseInt(lista[i]);
           	break;
-          case 3:
-          	System.out.println("caso 3 "+lista[i]);
+          case 3:          	
           	resultado = Float.parseFloat(lista[i]);
           	break;
           }

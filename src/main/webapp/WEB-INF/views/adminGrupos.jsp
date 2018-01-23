@@ -6,6 +6,9 @@
 <%@page import="java.util.LinkedList"%>
 <%@page import="com.proyecto.transferObject.grupoTO"%>
 <%@page import="com.proyecto.transferObject.patioTO"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -38,6 +41,8 @@
   
   <script>
   var cont =0;
+  /*Despliega ventana modal para ingreso de nuevo grupo, en ella muestra mediante CheckBox los DIIO
+  de los vacunos que se desean incluir en el nuevo grupo */
   function botonAgregarGru(){
 		 $.ajax({
 			 type:'GET',
@@ -80,50 +85,23 @@
 		 });
 	 }
 
-
+     /*Esta función captura los datos del Form, para ello ingresa en un arreglo los DIIO seleccionados,
+     y crea el nuevo grupo de vacunos*/
      function botonCrearG(){
     	 /*INCLUIR DIIO DE VACUNOS SELECCIONADOS EN EL FORM EN UNA ARREGLO*/
     	 var checkedValue = ["Inicio"];
     	 for(var i=1; i<(cont+1); i++){
-        	 //alert(i);
     		 var message = "messageCheckbox";
     		 var letra = i;
     		 var res = message.concat(letra);
-    		 //alert(res);
     		 var valor =$('.'+res+':checked').val();
-    		 //alert("valor "+valor);
-    		 if(valor === undefined){
-            	 
+    		 if(valor === undefined){            	 
              }else{
         		 checkedValue.push(valor);
              }
-         /*
-         //var valor = "si";
-         //while(valor != undefined){
-    		 var message = "messageCheckbox";
-    		 var letra = i;
-    		 var res = message.concat(letra);
-    		 //letra++;
-    		 //alert(res);
-    		 var valor =$('.'+res+':checked').val();
-    		 //alert("valor "+valor);
-    		 if(valor === undefined){
-    			 break;
-    		 }
-    		 checkedValue.push(valor);
-    	 //}
-         */
     	 }
-    	 //for(var i=0; i<6; i++){
-    		 //alert(checkedValue[i]);
-    	 //}
-         //var checkedValue = $('.messageCheckbox:checked').val();
-         //alert(checkedValue);
+
          
-        /*----PRUEBA SERIALIZANDO DATOS DEL FORM---*/
-         //var dataString = $('#form_crearG').serialize();
-         //alert('Datos serializados: '+dataString);
-        /*----------------OTRAS PRUEBAS------------*/
         var name = jQuery("#nombreGrupo").val();
         var estado = jQuery("#estadoGrupo").val();
         var patio = jQuery("#patioGrupo").val();
@@ -131,28 +109,20 @@
         var peso = jQuery("#pesoGrupo").val();
         var idusuario = jQuery("#idusuario").val();
         var object = {name:name,estado:estado,fecha:fecha,peso:peso,patio:patio,idusuario:idusuario};
-        jQuery.ajax("/systemjd/newG.htm?diio="+checkedValue,
+        var promise = jQuery.ajax("/systemjd/newG.htm?diio="+checkedValue,
         	    {
         	        type:"POST",
         	        data: object
         	    }); 
-        //window.location.reload(true);        /*------------------FIN PRUEBAS-------------*/
         
-        /*Usando ajax*/
-        //$.ajax({
-        //	 type: 'GET',
-        //	 url:"/systemjd/nuevoGrupo.htm?diio="+checkedValue,
-        //	 success:function(data){
-        //		 alert("Entro al success");
-        //	 },
-		 //    error:function(jqXHR,errorThrown){
-		  //  	 alert("Alerta "+errorThrown);
-		   //  }
-        // });
-         /*FIN usando ajax*/
+
+               /*------------------FIN FUNCION-------------*/
+        
+   
 
      }
      var contador = 0;
+     /*Obtiene informacion del grupo seleccionado y la despliega en una ventana Modal*/
      function botonEditG(id){
     	 $.ajax({
     		 type:'GET',
@@ -179,70 +149,11 @@
    		    	 alert("Alerta "+errorThrown);
    		     }
     	 })
-		 /*$.ajax({
-			 type:'GET',
-			 url:"/systemjd/obtieneVacunosEditar.htm?id="+id,
-		     //dataType:'json',
-		     success:function(data){
-                  
-		    	  var result = "<thead><tr><th>Marcar todos   <input type=checkbox id=marcaTodos></input></th><th>Diio</th></tr></thead>";
-                  result += "<tbody>";
-                  var num = 1;
-                  $.each(data,function(k,v){
-                  	contador++;
-                	var id = v.diio;
-                	result += "<tr>";
-                  	result += "<td>";
-                  	result += "<center>";
-                  	result += "<input class=messageCheckbox";
-                  	result += num
-                  	result +=" type=checkbox value='";
-                  	num++;
-                  	result += id
-                  	result += "'>";
-                  	result += "</center>";
-                  	result += "</td>";
-                  	result += "<td>";
-                  	result += v.diio
-                  	result += "</td>";
-                  	result += "</tr>";
-                  })
-                  result += "</tbody>";
-                  $("#tablaresultado").html(result);
-             
-             $('#myModalEditarG').modal('show');
-	   		  $("#marcaTodos").change(function () {
-			      $("input:checkbox").prop('checked', $(this).prop("checked"));
-			  });
-		     },
-		     error:function(jqXHR,errorThrown){
-		    	 alert("Alerta "+errorThrown);
-		     }
-		 });*/
+
      }
      
      
      function botonActualizarG(){
-    	 /*INCLUIR DIIO DE VACUNOS SELECCIONADOS EN EL FORM EN UNA ARREGLO
-    	 alert("Entro aqui en boton")
-    	 var checkedValue = ["Inicio"];
-    	 for(var i=1; i<(contador+1); i++){
-        	 alert(i);
-    		 var message = "messageCheckbox";
-    		 var letra = i;
-    		 var res = message.concat(letra);
-    		 //alert(res);
-    		 var valor =$('.'+res+':checked').val();
-    		 alert("valor "+valor);
-    		 if(valor === undefined){
-            	 
-             }else{
-        		 checkedValue.push(valor);
-             }
-    	 };
-    	 alert("Paso el for");*/
-        /*----------------OTRAS PRUEBAS------------*/
-        //var id = $('input[type=hidden]').val();
     	var id = jQuery("#idGrupoE").val();
         var name = jQuery("#nameGrupoE").val();
         var estado = jQuery("#estadoGrupoE").val();
@@ -342,7 +253,7 @@
                     <tr> <td><%=task.getNombre()%></td> <td><%=task.getEstado()%></td> <td><%=task.getPatio()%></td> <td><%=task.getFecha_ingreso()%></td> <%if(task.getFecha_Salida()!=null){%><td><%=task.getFecha_Salida()%></td><% }else{%><td> - </td><% }%></td> 
                     <td>
                     <button type="button" class="btn btn-success btn-xs"  onclick="botonEditG('<%=task.getId_grupo()%>');"><i class="fa fa-edit"></i> Editar</button> &nbsp; &nbsp; &nbsp;
-                    <a href="deleteGrupo.htm?id=<%=task.getId_grupo()%>" class="btn btn-danger btn-xs"  onclick="return confirm('¿Está seguro que desea eliminar el grupo con ID:  <%=task.getId_grupo()%>?');"><i class="fa fa-close"></i>  Eliminar</a></td>  </tr>
+                    <a href="deleteGrupo.htm?id=<%=task.getId_grupo()%>" class="btn btn-danger btn-xs"  onclick="return confirm('¿Está seguro que desea eliminar el grupo :  <%=task.getNombre()%>?');"><i class="fa fa-close"></i>  Eliminar</a></td>  </tr>
                     <%} else{%>
                         <h1>No hay datos</h1>
                     <%}%> 

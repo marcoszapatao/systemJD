@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.proyecto.persistence.inventarioDAO;
-import com.proyecto.transferObject.inventarioTO;
 import com.proyecto.transferObject.vacunoTO;
 
 @Controller
@@ -25,17 +24,7 @@ public class inventarioController {
 		return vista;
 	}
 	
-	@RequestMapping(value = "/verInven", method = RequestMethod.GET)
-	@ResponseBody
-	public ModelAndView verInventario(
-			@RequestParam(value = "id", required = false, defaultValue = "World") int idVacuno, ModelAndView vista) throws SQLException {
-        inventarioDAO dao = new inventarioDAO();
-		vista.addObject("lista", dao.leeVacunos(idVacuno));
-		vista.setViewName("verInventario");
-		return vista;
-	}
-	
-    /*Prueba con ajax*/
+
 	@RequestMapping(value = "/verInventa", method = RequestMethod.GET)
 	public @ResponseBody LinkedList<vacunoTO> verInven(@RequestParam(value = "id", required = false, defaultValue = "World") int idVacuno) throws SQLException{
 		inventarioDAO dao = new inventarioDAO();

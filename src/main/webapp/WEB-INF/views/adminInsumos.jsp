@@ -18,7 +18,7 @@
     <script>
 
    	     function botonEdit(id){
-   		 console.log("IDEEE "+id);
+   		
    		 $.ajax({
    			 type:'GET',
    			 url:"/systemjd/editarIn.htm?id="+id,
@@ -125,7 +125,7 @@
               <table id="example" class="table table-bordered table-hover">
                 <thead>
                 <tr>
-                  <th>ID</th>
+                  
                   <th>Nombre</th>
                   <th>Descripción</th> 
                   <th>Tipo</th>
@@ -144,7 +144,7 @@
                             insumoTO task = list.get(i);
                             float cantidad = list2.get(i);
                     %>
-                    <tr> <td><%=task.getId_insumo()%></td> <td><%=task.getNombre_insumo()%></td> <td><%=task.getDescripcion_insumo()%></td> <td><%=task.getTipoInsumo()%></td> <%if(!task.getTipoInsumo().equals("Suplemento")){%><td><%=cantidad%></td><% }else{%><td> - </td><% }%></td> 
+                    <tr>  <td><%=task.getNombre_insumo()%></td> <td><%=task.getDescripcion_insumo()%></td> <td><%=task.getTipoInsumo()%></td> <%if(!task.getTipoInsumo().equals("Suplemento")){%><td><%=cantidad%></td><% }else{%><td> - </td><% }%></td> 
                     <td>
                      <!--input type="hidden" id="idvacuno" value="<%=task.getId_insumo()%>"/-->
                      <button type="button" class="btn btn-success btn-xs"  onclick="botonEdit('<%=task.getId_insumo()%>');"><i class="fa fa-edit"></i> Editar</button>
@@ -157,7 +157,7 @@
                 </tbody>
                 <tfoot>
                 <tr>
-                  <th>ID</th>
+                  
                   <th>Nombre</th>
                   <th>Descripción</th>
                   <th>Tipo</th>

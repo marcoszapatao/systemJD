@@ -22,7 +22,7 @@
    			 url:"/systemjd/editarUser.htm?id="+id,
    		     dataType:'json',
    		     success:function(data){
-   		    	 console.log(data);
+   		    	 
    		    	 var traId = data.idTrabajador;
    		    	 var traNombre = data.nombreTrabajador;
    		    	 var traCargo = data.cargoTrabajador;

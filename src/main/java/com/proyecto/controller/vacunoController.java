@@ -30,12 +30,6 @@ public class vacunoController {
 		vista.setViewName("adminVacunos");
 		return vista;
 	}
-	@RequestMapping(value = "create")
-	public ModelAndView createV() throws SQLException, ParseException {
-		ModelAndView vista=new ModelAndView();
-		vista.setViewName("IngresarVacuno2");
-		return vista;
-	}
 	
 	@RequestMapping(value = "/saveVacuno", method = RequestMethod.POST)
 	public ModelAndView login(
@@ -45,25 +39,6 @@ public class vacunoController {
 			@RequestParam(value = "sexo", required = false, defaultValue = "World") String sexo,
 			@RequestParam(value = "fecha_in", required = false, defaultValue = "World") String fecha_in,
 			ModelAndView vista) throws SQLException, ParseException {
-		    /*
-			// Validar fechas
-			DateFormat parser = new SimpleDateFormat("yyyy-MM-dd");
-			Date date1 = parser.parse(fecha_in);
-			Date fechaSistema = new Date();
-	
-			if (date1.getDate() > fechaSistema.getDate() || date1.getMonth() > fechaSistema.getMonth()
-					|| date1.getYear() > fechaSistema.getYear()) {
-				vista.addObject("validaF", "fecha ingresada posterior a la fecha actual");
-				
-				vacunoDAO daoo = new vacunoDAO();
-		        razaDAO razaV = new razaDAO();
-		        vista.addObject("raza",razaV.readAll());
-				vista.addObject("lista", daoo.readAllV());
-				vista.setViewName("adminVacunos");
-				return vista;
-				// hasta aqui se valida fecha
-	
-			}*/
 		
 			vacunoDAO dao = new vacunoDAO();
 			vacunoTO to = new vacunoTO();
@@ -73,7 +48,7 @@ public class vacunoController {
 			to.setRaza(raza);
 			to.setTipo(tipo);
 			to.setSexo(sexo);
-			// to.setFecha(dateMenu);
+			
 	
 			int j = dao.createVacuno(to);
 	        if(j==0) {
@@ -110,18 +85,8 @@ public class vacunoController {
 		return vista;
 	}
 	
-	@RequestMapping(value = "/editarV", method = RequestMethod.GET)
-	public ModelAndView editarV(
-			@RequestParam(value = "id", required = false, defaultValue = "World") String diio, ModelAndView vista) throws SQLException {
-        vacunoDAO dao = new vacunoDAO();
-        vacunoTO task = dao.read(diio);
-		
-		vista.addObject("update", task);
-		vista.setViewName("editarVacuno");
-		return vista;
-	}
 	
-	//Prueba de JQUERY
+	
 	@RequestMapping(value = "/editarVa", method = RequestMethod.GET)
 	@ResponseBody
 	public vacunoTO editarVa(
@@ -140,7 +105,7 @@ public class vacunoController {
 			@RequestParam(value = "sexoV", required = false, defaultValue = "World") String sexo,
 			@RequestParam(value = "fecha_in", required = false, defaultValue = "World") String fecha_in,
 			ModelAndView vista) throws SQLException {
-	        System.out.println("diio en actualizar " +diio);
+
 	        vacunoDAO dao = new vacunoDAO();
 	        vacunoTO to = new vacunoTO();
 			java.sql.Date fecha = java.sql.Date.valueOf(fecha_in);

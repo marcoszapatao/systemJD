@@ -54,6 +54,8 @@ public class dietaController {
 		return devolver;
 	}
 	
+	/*---------CRUD DE DIETAS-----------*/
+	
 	@RequestMapping(value = "adminDietas")
 	public ModelAndView adminDieta(ModelAndView vista) throws SQLException, ParseException {
 		insumoDAO daoi = new insumoDAO();
